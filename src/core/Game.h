@@ -5,9 +5,6 @@
 #include "../Utils/SpatialHash.h"
 
 
-#include "../components/collisionComponents.h"
-
-
 //Include thêm các hệ thống khác ở đây
 #include "../systems/MovementSystem.h"
 #include "../systems/CollisionSystem.h"
