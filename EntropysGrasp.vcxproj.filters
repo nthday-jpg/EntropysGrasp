@@ -40,6 +40,9 @@
     <Filter Include="Source Files\behaviors">
       <UniqueIdentifier>{2691ec35-abca-4ecc-a46a-cc3294cd5785}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\control">
+      <UniqueIdentifier>{d5e18db7-8c86-434e-9ee4-e7d442750064}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\EffectTag.h">
@@ -77,6 +80,15 @@
     </ClInclude>
     <ClInclude Include="src\behaviors\EffectSystem.h">
       <Filter>Header Files\behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\control\command.h">
+      <Filter>Header Files\control</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\SpellSystem.h">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Spell.h">
+      <Filter>Header Files\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

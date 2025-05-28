@@ -135,11 +135,14 @@
     <ClInclude Include="src\components\hitbox.h" />
     <ClInclude Include="src\components\lookingDirection.h" />
     <ClInclude Include="src\components\movementComponents.h" />
+    <ClInclude Include="src\components\Spell.h" />
     <ClInclude Include="src\components\statComponent.h" />
+    <ClInclude Include="src\control\command.h" />
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\systems\CollisionSystem.h" />
     <ClInclude Include="src\systems\CombatSystem.h" />
     <ClInclude Include="src\systems\MovementSystem.h" />
+    <ClInclude Include="src\systems\SpellSystem.h" />
     <ClInclude Include="src\Utils\SpatialHash.h" />
   </ItemGroup>
   <ItemGroup>
