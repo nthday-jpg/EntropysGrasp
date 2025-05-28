@@ -143,6 +143,7 @@
     <ClInclude Include="src\Utils\SpatialHash.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="src\behaviors\EffectSystem.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\systems\CollisionSystem.cpp" />

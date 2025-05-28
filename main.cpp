@@ -1,4 +1,4 @@
-﻿#include "../src/core/Game.h"
+﻿#include "src/core/Game.h"
 
 //Không đụng vào file này
 

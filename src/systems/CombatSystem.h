@@ -1,7 +1,6 @@
 #pragma once
 #include <entt/entt.hpp>
 #include <vector>
-#include "../components/collisionComponents.h"
 #include "../systems/CollisionSystem.h"
 
 void handleCollision(std::vector<CollisionEvent>& collisionEvents) 

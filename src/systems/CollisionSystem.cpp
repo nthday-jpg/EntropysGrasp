@@ -1,4 +1,4 @@
-#include "../systems/CollisionSystem.h"
+#include "CollisionSystem.h"
 
 bool CollisionSystem::isIntersect(Hitbox& hitbox1, Hitbox& hitbox2)
 {

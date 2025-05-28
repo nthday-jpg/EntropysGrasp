@@ -1,4 +1,4 @@
-﻿#include "../core/Game.h"
+﻿#include "Game.h"
 #include <iostream>
 
 using namespace sf;

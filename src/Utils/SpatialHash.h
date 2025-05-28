@@ -10,7 +10,7 @@ struct HashFunc {
 };
 
 class SpatialHashGrid {
-    float cellSize;
+    float cellSize = 0;
     std::unordered_map<sf::Vector2i, std::vector<entt::entity>, HashFunc> grid;
 
     void insert(entt::entity entity, const sf::Vector2f& position);
