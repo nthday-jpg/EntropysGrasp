@@ -38,28 +38,25 @@ class CollisionSystem
 	//Function to check if two hitboxes intersect
 	bool isIntersect(Hitbox& hitbox1, Hitbox& hitbox2);
 
-	//clear every frame
-	//check for collision and add them to the list
-	void collectCollision();
 
 	//Get the collision type based on the entity tags
 	CollisionType getCollisionType(entt::entity e);
 
 	//resolve the collisions in the collisionEvents list
 	//trigger the appropriate events
-	void resolveCollsions();
 public:
 	CollisionSystem(entt::registry& registry, entt::dispatcher& dispatcher)
 		: registry(registry), dispatcher(dispatcher) {
 		collisionEvents.reserve(200);
 	}
 
-	void update()
-	{
-		collectCollision();
-		resolveCollsions();
+	//clear every frame
+	//check for collision and add them to the list
+	void collectCollision();
+	
+	std::vector<CollisionEvent>& getCollisionEvents() {
+		return collisionEvents;
 	}
-
 };
 
 
