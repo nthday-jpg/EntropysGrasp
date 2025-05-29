@@ -4,6 +4,7 @@
 
 struct SpellData {
     std::string id;
+	float damage;
     float manaCost;
     float castTime;
     float cooldowns;
@@ -18,3 +19,7 @@ std::unordered_map<std::string, SpellData> spellDatabase;
 SpellData getSpellData(std::string spellName) {
     return spellDatabase[spellName];
 }
+
+struct whatSpell {
+    std::string spellid;
+};
