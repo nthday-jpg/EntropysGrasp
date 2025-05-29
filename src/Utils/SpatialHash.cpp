@@ -15,14 +15,14 @@ void SpatialHashGrid::insert(entt::entity entity, const sf::Vector2f& position)
     grid[cellPosition].push_back(entity);
 }
 
-void SpatialHashGrid::makeGrid(entt::registry& registry, SpatialHashGrid& spatialHashGrid)
+void SpatialHashGrid::makeGrid(entt::registry& registry)
 {
-    spatialHashGrid.clear();
+    clear();
 
     auto view = registry.view<Position, Hitbox>();
     for (auto [entity, pos, vel] : view.each())
     {
-        spatialHashGrid.insert(entity, pos);
+        insert(entity, pos);
     }
 }
 
