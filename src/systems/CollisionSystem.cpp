@@ -92,8 +92,8 @@ void CollisionSystem::collectCollision()
 			auto& otherHitbox = registry.get<Hitbox>(otherEntity);
 			if (isIntersect(hitbox, otherHitbox))
 			{
-				CollisionType type1 = getCollisionType(registry, entity);
-				CollisionType type2 = getCollisionType(registry, otherEntity);
+				CollisionType type1 = getCollisionType(entity);
+				CollisionType type2 = getCollisionType(otherEntity);
 
 				collisionEvents.emplace_back(entity, otherEntity, type1, type2);
 			}
@@ -101,7 +101,7 @@ void CollisionSystem::collectCollision()
 	}
 }
 
-void CollisionSystem::resolveCollsions(entt::registry& registry)
+void CollisionSystem::resolveCollsions()
 {
 	for (auto& event : collisionEvents)
 	{
@@ -174,7 +174,7 @@ void CollisionSystem::resolveCollsions(entt::registry& registry)
 	}
 }
 
-CollisionType CollisionSystem::getCollisionType(const entt::registry& registry, entt::entity e) {
+CollisionType CollisionSystem::getCollisionType(entt::entity e) {
 	if (registry.all_of<PlayerTag>(e))
 	{
 		return CollisionType::Player;

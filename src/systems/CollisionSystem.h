@@ -43,11 +43,11 @@ class CollisionSystem
 	void collectCollision();
 
 	//Get the collision type based on the entity tags
-	CollisionType getCollisionType(const entt::registry& registry, entt::entity e);
+	CollisionType getCollisionType(entt::entity e);
 
 	//resolve the collisions in the collisionEvents list
 	//trigger the appropriate events
-	void resolveCollsions(entt::registry& registry);
+	void resolveCollsions();
 public:
 	CollisionSystem(entt::registry& registry, entt::dispatcher& dispatcher)
 		: registry(registry), dispatcher(dispatcher) {
@@ -57,7 +57,7 @@ public:
 	void update()
 	{
 		collectCollision();
-		resolveCollsions(registry);
+		resolveCollsions();
 	}
 
 };
