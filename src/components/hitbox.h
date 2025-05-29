@@ -4,6 +4,7 @@ enum class HitboxType {
     Circle                                                  
 };
 
+
 struct Hitbox {
     HitboxType type;                                
 
