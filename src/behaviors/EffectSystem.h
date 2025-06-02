@@ -4,15 +4,36 @@
 #include "../components/Entitytag.h"
 #include "../components/EffectTag.h"
 
+enum class EffectType {
+	Frozen,
+	Burning,
+	Poisoned,
+	Aggressive,
+};
+
+void applyEffect(entt::entity entity, entt::registry& registry, EffectType effectType) {
+	switch (effectType) {
+	case EffectType::Frozen:
+		registry.emplace_or_replace<FrozenTag>(entity);
+		break;
+	case EffectType::Burning:
+		registry.emplace_or_replace<BurningTag>(entity);
+		break;
+	case EffectType::Poisoned:
+		registry.emplace_or_replace<PoisonedTag>(entity);
+		break;
+	case EffectType::Aggressive:
+		registry.emplace_or_replace<AggressiveTag>(entity);
+		break;
+	default:
+		break;
+	}
+}
+
 class EffectSystem {
 public:
 	virtual ~EffectSystem() {};
 	virtual void apply(entt::registry& registry) = 0;
-	virtual void update(entt::registry& registry, float delta_t) = 0;
-	virtual bool isActive() const 
-	{
-		return true; 
-	}
 };
 
 class FrozenEffect : public EffectSystem {

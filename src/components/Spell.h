@@ -2,6 +2,18 @@
 #include <string>
 #include <entt/entt.hpp>
 
+enum class SpellEffect {
+    Burn,
+	Freeze,
+    Heal,
+    Shield,
+    Teleport,
+    SummonCreature,
+	Poison
+};
+
+using BehaviorFunction = std::function<void(entt::entity, entt::registry&, float)>;
+
 struct SpellData {
     std::string id;
 	float damage;
@@ -11,7 +23,8 @@ struct SpellData {
     float velo;
     float size;
     float duration;
-    std::string effectId;
+	SpellEffect effect;
+	BehaviorFunction updateFunction;
 };
 
 std::unordered_map<std::string, SpellData> spellDatabase;

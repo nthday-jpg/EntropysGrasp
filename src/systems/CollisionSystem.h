@@ -57,6 +57,8 @@ public:
 	std::vector<CollisionEvent>& getCollisionEvents() {
 		return collisionEvents;
 	}
+
+	void resolvePhysicalOverlap(entt::entity e1, entt::entity e2);
 };
 
 

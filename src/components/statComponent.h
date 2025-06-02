@@ -2,13 +2,13 @@
 
 struct HealthComponent 
 {
-	int health;
-	int maxHealth;
+	float health;
+	float maxHealth;
 };
 
 struct ManaComponent 
 {
-	int mana;
+	float mana;
 };
 
 struct SpeedComponent 
