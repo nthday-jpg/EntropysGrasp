@@ -17,7 +17,7 @@ struct Hitbox {
     float radius = 0.0f;
 
 
-    // Common offset
+	// offset from the entity's position
     float offsetX = 0.0f;
     float offsetY = 0.0f;
 

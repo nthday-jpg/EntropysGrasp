@@ -36,7 +36,7 @@ class CollisionSystem
 	entt::dispatcher& dispatcher;
 
 	//Function to check if two hitboxes intersect
-	bool isIntersect(Hitbox& hitbox1, Hitbox& hitbox2);
+	bool isIntersect(entt::entity e1, entt::entity e2);
 
 
 	//Get the collision type based on the entity tags
