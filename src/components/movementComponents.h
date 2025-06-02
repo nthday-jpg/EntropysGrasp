@@ -1,6 +1,10 @@
 ﻿#pragma once
 #include "SFML/System/Vector2.hpp"
 
+struct Velocity : public sf::Vector2f {
+	using sf::Vector2f::Vector2f;
+};
+
 struct Position : public sf::Vector2f {
     using sf::Vector2f::Vector2f;
 };

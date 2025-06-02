@@ -4,12 +4,6 @@
 #include "../components/Spell.h"
 #include "../components/statComponent.h"
 
-
-
-struct StraightMovement{};
-struct HomingMovement {};
-struct OrbitMovement {};
-
 struct SpellCasting
 {
 	std::unordered_map<std::string, float> castTimes; // Maps spell names to their cast times
@@ -45,7 +39,7 @@ void updateCastingSystem(entt::registry& registry, float dt) {
             if (it->second <= 0.0f)
             {
                 // Cast the spell
-                //triggerSpellEffect(registry, entity, it->first);
+                // triggerSpellEffect(registry, entity, it->first);
                 auto& cooldowns = registry.get_or_emplace<SpellCooldown>(entity).cooldowns;
                 cooldowns[it->first] = spellData.cooldowns; // Set the cooldown for the spell
                 registry.get_or_emplace<SpellDuration>(entity).timeLeft[it->first] = spellData.duration; // Set the duration for the spell
@@ -88,9 +82,9 @@ void updateDurationSystem(entt::registry& registry, float dt) {
             it->second -= dt;
             if (it->second <= 0.0f)
             {
-                // Remove the spell effect
-				// call removeSpellEffect(registry, entity, it->first);
                 it = duration.timeLeft.erase(it);
+                // remove spell effect
+                registry.remove<OnActivateSpell>(entity);
             }
             else 
             {
@@ -104,7 +98,7 @@ void triggerSpellEffect(entt::registry& registry, entt::entity caster, const std
     const auto& data = getSpellData(spell_id);
 
     auto spellEntity = registry.create();
-    registry.emplace<whatSpell>(spellEntity, whatSpell{ spell_id });
+    registry.emplace<OnActivateSpell>(spellEntity, OnActivateSpell{ spell_id });
 
     //if (data.effectId == "straight") {
     //    registry.emplace<StraightMovement>(spellEntity);
