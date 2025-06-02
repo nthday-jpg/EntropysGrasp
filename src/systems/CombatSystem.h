@@ -11,6 +11,10 @@ public:
 	void handleCollision(std::vector<CollisionEvent>& collisionEvents);
 	void resolveEnemySpellCollision();
 	void applyDamage(float dmg, entt::entity);
+
+	CombatSystem(entt::registry& reg, entt::dispatcher& disp)
+		: registry(reg), dispatcher(disp) {
+	}
 };
 
 void CombatSystem::handleCollision(std::vector<CollisionEvent>& collisionEvents) {

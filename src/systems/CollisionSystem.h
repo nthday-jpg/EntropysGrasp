@@ -42,8 +42,6 @@ class CollisionSystem
 	//Get the collision type based on the entity tags
 	CollisionType getCollisionType(entt::entity e);
 
-	//resolve the collisions in the collisionEvents list
-	//trigger the appropriate events
 public:
 	CollisionSystem(entt::registry& registry, entt::dispatcher& dispatcher)
 		: registry(registry), dispatcher(dispatcher) {
@@ -52,11 +50,13 @@ public:
 
 	//clear every frame
 	//check for collision and add them to the list
-	void collectCollision();
+	void detectCollisions();
 	
 	std::vector<CollisionEvent>& getCollisionEvents() {
 		return collisionEvents;
 	}
+
+	void resolvePhysicalOverlap(entt::entity e1, entt::entity e2);
 };
 
 

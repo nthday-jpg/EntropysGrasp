@@ -1,5 +1,6 @@
 #include "CollisionSystem.h"
 #include "../components/EntityTag.h"
+#include "../components/statComponent.h"
 #include <iostream>
 
 using namespace std;
@@ -85,7 +86,7 @@ bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2)
 	}  
 }
 
-void CollisionSystem::collectCollision()
+void CollisionSystem::detectCollisions()
 {
 	collisionEvents.clear();
 	spatialHashGrid.makeGrid(registry);
@@ -119,6 +120,86 @@ void CollisionSystem::collectCollision()
 	}
 }
 
+void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
+{
+	auto type1 = getCollisionType(e1);
+	auto type2 = getCollisionType(e2);
+
+
+	Hitbox& hitbox = registry.get<Hitbox>(e1);
+	Hitbox& otherHitbox = registry.get<Hitbox>(e2);
+
+	if (hitbox.type != HitboxType::Rectangle || otherHitbox.type != HitboxType::Rectangle)
+	{
+		cerr << "Currently only rectangle hitboxes are supported for resolving overlap." << endl;
+		return; 
+	};
+
+	float resistance1 = registry.get<ResistanceComponent>(e1).value; 
+	float resistance2 = registry.get<ResistanceComponent>(e2).value;
+	float totalResistance = resistance1 + resistance2;
+
+
+	//0.01f is added to ensure two entities will not be completely stuck together
+	float recoil1 = (resistance2 / totalResistance + 0.01f);
+	float recoil2 = (resistance1 / totalResistance + 0.01f);
+
+	float centerX1 = hitbox.offsetX + hitbox.width / 2.0f;
+	float centerY1 = hitbox.offsetY + hitbox.height / 2.0f;
+
+	float centerX2 = otherHitbox.offsetX + otherHitbox.width / 2.0f;
+	float centerY2 = otherHitbox.offsetY + otherHitbox.height / 2.0f;
+
+	float deltaX = centerX2 - centerX1;
+	float deltaY = centerY2 - centerY1;
+
+	float overlapX = (hitbox.width + otherHitbox.width) / 2.0f - std::abs(deltaX);
+	float overlapY = (hitbox.height + otherHitbox.height) / 2.0f - std::abs(deltaY);
+
+	if (overlapX < 0 || overlapY < 0)
+	{
+		cerr << "No overlap detected, cannot resolve." << endl;
+		return; // No overlap to resolve
+	}
+
+
+	else if (overlapX < overlapY)
+	{
+		// Resolve along X axis
+		float moveAmount1 = recoil1 * overlapX;
+		float moveAmount2 = recoil2 * overlapX;
+
+		if (deltaX > 0)
+		{
+			hitbox.offsetX -= moveAmount1; // Move e1 left
+			otherHitbox.offsetX += moveAmount2; // Move e2 right
+		}
+		else
+		{
+			hitbox.offsetX += moveAmount1; // Move e1 right
+			otherHitbox.offsetX -= moveAmount2; // Move e2 left
+		}
+	}
+	else
+	{
+		// Resolve along Y axis
+		float moveAmount1 = recoil1 * overlapY;
+		float moveAmount2 = recoil2 * overlapY;
+
+		if (deltaY > 0)
+		{
+			hitbox.offsetY -= moveAmount1; // Move e1 up
+			otherHitbox.offsetY += moveAmount2; // Move e2 down
+		}
+		else
+		{
+			hitbox.offsetY += moveAmount1; // Move e1 down
+			otherHitbox.offsetY -= moveAmount2; // Move e2 up
+		}
+	}
+
+}
+
 CollisionType CollisionSystem::getCollisionType(entt::entity e) {
 	if (registry.all_of<PlayerTag>(e))
 	{
@@ -142,3 +223,4 @@ CollisionType CollisionSystem::getCollisionType(entt::entity e) {
 
 	return CollisionType::None;
 }
+

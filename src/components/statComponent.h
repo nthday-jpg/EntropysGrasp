@@ -13,10 +13,15 @@ struct ManaComponent
 
 struct SpeedComponent 
 {
-	float speed;
+	float value;
 };
 
 struct AttackComponent 
 {
-	int attackDamage;
+	int value;
+};
+
+struct ResistanceComponent
+{
+	float value;
 };
