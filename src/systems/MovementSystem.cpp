@@ -1,46 +1,12 @@
-﻿#include <entt/entt.hpp>
-#include "MovementSystem.h"
-#include "../components/EntityTag.h"
-#include "../components/lookingDirection.h"
-#include "../components/movementComponents.h"
+﻿#include "MovementSystem.h"
+#include "../components/movementComponents.h"  
 
-//cho speed và có thể phát triển để có tốc độ và di chuyển theo máu
-#include "../components/statComponent.h" 
 
-//Xử lý chuyển động ở đây
-void PlayerMovementSystem::update(entt::registry& registry, float dt)
+void MovementSystem::update(entt::registry& registry, float dt)
 {
-	auto view = registry.view<PlayerTag>();
-	for (auto entity : view) {
-		auto& position = registry.get<Position>(entity);
-
-		float calculatedSpeed = PlayerMovementSystem::calculatedSpeed(registry, entity);
-		position += registry.get<MovementDirection>(entity) * calculatedSpeed * dt;
-	}
-}
-
-float PlayerMovementSystem::calculatedSpeed(entt::registry& registry, entt::entity playerEntity)
-{
-	//movement and looking is normalized vectors length 1
-	LookingDirection looking = registry.get<LookingDirection>(playerEntity);
-	MovementDirection movement = registry.get<MovementDirection>(playerEntity);
-	float speed = registry.get<SpeedComponent>(playerEntity).value;
-
-	// Using dot product to scale speed 
-	// based on how much the movement direction and looking direction align
-	speed = speed * 0.8 + 0.2 * (looking.x * movement.x + looking.y * movement.y);
-
-	return speed;
-}
-
-// Calculate enemy movement chasing player
-void EnemyMovementSystem::update(entt::registry& registry, float dt)
-{
-	auto view = registry.view<EnemyTag>();
-	for (auto entity : view)
+	auto view = registry.view<Position, Velocity>();
+	for (auto [entity, position, velocity] : view.each())
 	{
-		auto& position = registry.get<Position>(entity);
-		auto& speed = registry.get<SpeedComponent>(entity).value;
-		
+		position += velocity * dt;
 	}
 }

@@ -78,6 +78,9 @@
     <ClInclude Include="src\behaviors\EffectSystem.h">
       <Filter>Header Files\behaviors</Filter>
     </ClInclude>
+    <ClInclude Include="src\behaviors\PlayerMovementSystem.h">
+      <Filter>Header Files\behaviors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\systems\CollisionSystem.cpp">
@@ -100,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp">
+      <Filter>Source Files\behaviors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

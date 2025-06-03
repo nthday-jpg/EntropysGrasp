@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\behaviors\EffectSystem.h" />
+    <ClInclude Include="src\behaviors\PlayerMovementSystem.h" />
     <ClInclude Include="src\components\EffectTag.h" />
     <ClInclude Include="src\components\EntityTag.h" />
     <ClInclude Include="src\components\hitbox.h" />
@@ -145,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\behaviors\EffectSystem.cpp" />
+    <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\systems\CollisionSystem.cpp" />
     <ClCompile Include="src\systems\CombatSystem.cpp" />
