@@ -2,10 +2,6 @@
 #include "../components/hitbox.h"
 #include "../components/movementComponents.h"
 
-void SpatialHashGrid::clear() 
-{
-    grid.clear();
-}
 
 void SpatialHashGrid::insert(entt::entity entity, const sf::Vector2f& position) 
 {
@@ -17,8 +13,6 @@ void SpatialHashGrid::insert(entt::entity entity, const sf::Vector2f& position)
 
 void SpatialHashGrid::makeGrid(entt::registry& registry)
 {
-    clear();
-
     auto view = registry.view<Position, Hitbox>();
     for (auto [entity, pos, vel] : view.each())
     {

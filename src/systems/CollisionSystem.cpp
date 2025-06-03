@@ -1,18 +1,15 @@
+#include <iostream>
+
 #include "CollisionSystem.h"
 #include "../components/EntityTag.h"
 #include "../components/statComponent.h"
-#include <iostream>
-
-using namespace std;
-
-
-#include "CollisionSystem.h"  
-#include "../components/EntityTag.h"  
-#include <iostream>  
+#include "../components/hitbox.h"
+#include "../components/EntityTag.h"
+#include "../components/movementComponents.h"
 
 using namespace std;  
 
-bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2)  
+bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2) const
 {  
 	auto& hitbox1 = registry.get<Hitbox>(e1);  
 	auto& hitbox2 = registry.get<Hitbox>(e2);  
@@ -57,6 +54,7 @@ bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2)
 		return distanceSquared <= (radiusSum * radiusSum);  
 	}  
 
+	// One is rectangle, the other is circle
 	else  
 	{  
 		if (hitbox1.type == HitboxType::Rectangle)  
@@ -79,6 +77,7 @@ bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2)
 			float dy = closestY - circleY;  
 			return (dx * dx + dy * dy) <= (hitbox2.radius * hitbox2.radius);  
 		}  
+
 		else // hitbox1.type == HitboxType::Circle  
 		{  
 			return isIntersect(e2, e1); // Swap the order  
@@ -89,7 +88,8 @@ bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2)
 void CollisionSystem::detectCollisions()
 {
 	collisionEvents.clear();
-	spatialHashGrid.makeGrid(registry);
+	SpatialHashGrid spatialHashGrid(50.0f);
+	spatialHashGrid.makeGrid(registry); 
 	
 	auto view = registry.view<Position, Hitbox>();
 	for (auto [entity, position, hitbox] : view.each())
@@ -162,7 +162,6 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 		return; // No overlap to resolve
 	}
 
-
 	else if (overlapX < overlapY)
 	{
 		// Resolve along X axis
@@ -200,7 +199,13 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 
 }
 
-CollisionType CollisionSystem::getCollisionType(entt::entity e) {
+const std::vector<CollisionEvent>& CollisionSystem::getCollisionEvents() const
+{
+	return collisionEvents;
+}
+
+CollisionType CollisionSystem::getCollisionType(entt::entity e) const
+{
 	if (registry.all_of<PlayerTag>(e))
 	{
 		return CollisionType::Player;
