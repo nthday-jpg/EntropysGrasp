@@ -147,10 +147,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\behaviors\EffectSystem.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\systems\CollisionSystem.cpp" />
     <ClCompile Include="src\systems\CombatSystem.cpp" />
+    <ClCompile Include="src\systems\EffectSystem.cpp" />
     <ClCompile Include="src\systems\MovementSystem.cpp" />
     <ClCompile Include="src\Utils\SpatialHash.cpp" />
   </ItemGroup>

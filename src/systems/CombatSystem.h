@@ -31,7 +31,7 @@ void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity 
 void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity spell) {
 	auto& EnemyHealth = registry.get<HealthComponent>(enemy);
 	// Example: Player takes damage from spell
-	auto& spellName = registry.get<whatSpell>(spell).spellid;
+	auto& spellName = registry.get<OnActivateSpell>(spell).spellid;
 	SpellData spellData = getSpellData(spellName); // Assuming getSpellData is a function that retrieves spell data
 	auto damage = spellData.damage; // Assuming SpellData has a damage field
 	EnemyHealth.health -= damage;
@@ -39,7 +39,7 @@ void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity sp
 		// Handle enemy death, e.g., remove entity or trigger death animation
 		registry.destroy(enemy); // Example of removing the enemy entity
 	}
-	std::string spellType = spellData.effectId;
+	SpellEffect spellType = spellData.effect;
 	//if (spellType == "fireball") {
 	//	std::cout << "Enemy hit by fireball spell!" << std::endl;
 	// 	registry.emplace_or_replace<EffectTag>(enemy);
