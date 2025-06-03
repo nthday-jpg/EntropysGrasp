@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include <entt/entt.hpp>
 #include "../components/EntityTag.h"
-
 struct PlayerMovementSystem
 {
 	static void update(entt::registry& registry, float dt);

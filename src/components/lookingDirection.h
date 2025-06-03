@@ -6,6 +6,7 @@
 //Dùng để tính toán di chuyển và hướng của phép 
 struct LookingDirection: sf::Vector2f
 {
+	using sf::Vector2f::Vector2f;
 };
 
 

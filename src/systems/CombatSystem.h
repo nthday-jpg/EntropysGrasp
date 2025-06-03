@@ -7,6 +7,7 @@
 class CombatSystem {
 	entt::registry& registry;
 	entt::dispatcher& dispatcher;
+	 
 public:
 	void handleCollision(std::vector<CollisionEvent>& collisionEvents);
 	void resolveEnemySpellCollision();
