@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\behaviors\EffectSystem.h" />
+    <ClInclude Include="src\behavior\EntityBehavior.h" />
     <ClInclude Include="src\components\EffectTag.h" />
     <ClInclude Include="src\components\EntityTag.h" />
     <ClInclude Include="src\components\hitbox.h" />

@@ -90,6 +90,9 @@
     <ClInclude Include="src\components\Spell.h">
       <Filter>Header Files\components</Filter>
     </ClInclude>
+    <ClInclude Include="src\behavior\EntityBehavior.h">
+      <Filter>Header Files\behaviors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\systems\CollisionSystem.cpp">
@@ -107,10 +110,10 @@
     <ClCompile Include="src\Utils\SpatialHash.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\behaviors\EffectSystem.cpp">
-      <Filter>Source Files\behaviors</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\systems\EffectSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
