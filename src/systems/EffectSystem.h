@@ -1,8 +1,5 @@
 #pragma once
 #include <entt/entt.hpp>
-#include "../components/statComponent.h"
-#include "../components/Entitytag.h"
-#include "../components/EffectTag.h"
 
 enum class EffectType {
 	Frozen,
@@ -10,25 +7,6 @@ enum class EffectType {
 	Poisoned,
 	Aggressive,
 };
-
-void applyEffect(entt::entity entity, entt::registry& registry, EffectType effectType) {
-	switch (effectType) {
-	case EffectType::Frozen:
-		registry.emplace_or_replace<FrozenTag>(entity);
-		break;
-	case EffectType::Burning:
-		registry.emplace_or_replace<BurningTag>(entity);
-		break;
-	case EffectType::Poisoned:
-		registry.emplace_or_replace<PoisonedTag>(entity);
-		break;
-	case EffectType::Aggressive:
-		registry.emplace_or_replace<AggressiveTag>(entity);
-		break;
-	default:
-		break;
-	}
-}
 
 class EffectSystem {
 public:
@@ -38,40 +16,20 @@ public:
 
 class FrozenEffect : public EffectSystem {
 public:
-	void apply(entt::registry& registry) override 
-	{
-		auto view = registry.view<FrozenTag, EnemyTag>();
-		// speed = 0, disable shooting, etc.
-		// call update
-	}
+	void apply(entt::registry& registry) override;
 };
 
 class BurningEffect : public EffectSystem {
 public:
-	void apply(entt::registry& registry) override 
-	{
-		// call update
-	}
+	void apply(entt::registry& registry) override;
 };
 
 class PoisonedEffect : public EffectSystem {
 public:
-	void apply(entt::registry& registry) override
-	{
-		auto view = registry.view<PoisonedTag, EnemyTag>();
-		// reduce speed, atk
-		// call update
-	}
+	void apply(entt::registry& registry) override;
 };
 
 class AggressiveEffect : public EffectSystem {
 public:
-	void apply(entt::registry& registry) override 
-	{
-		auto check = registry.view<AggressiveTag, EnemyTag>();
-		for (auto [entity, aggressiveTag] : check.each()) {
-			auto stats = registry.try_get<SpeedComponent, AttackComponent>(entity);
-			// Increase speed and attack power
-		}
-	}
+	void apply(entt::registry& registry) override;
 };

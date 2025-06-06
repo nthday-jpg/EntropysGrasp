@@ -129,8 +129,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\behaviors\EffectSystem.h" />
     <ClInclude Include="src\behavior\EntityBehavior.h" />
+    <ClInclude Include="src\components\Behavior.h" />
     <ClInclude Include="src\components\EffectTag.h" />
     <ClInclude Include="src\components\EntityTag.h" />
     <ClInclude Include="src\components\hitbox.h" />
@@ -140,19 +140,24 @@
     <ClInclude Include="src\components\statComponent.h" />
     <ClInclude Include="src\control\command.h" />
     <ClInclude Include="src\core\Game.h" />
+    <ClInclude Include="src\resources\SpellLibrary.h" />
+    <ClInclude Include="src\systems\BehaviorSystem.h" />
     <ClInclude Include="src\systems\CollisionSystem.h" />
     <ClInclude Include="src\systems\CombatSystem.h" />
+    <ClInclude Include="src\systems\EffectSystem.h" />
     <ClInclude Include="src\systems\MovementSystem.h" />
     <ClInclude Include="src\systems\SpellSystem.h" />
     <ClInclude Include="src\Utils\SpatialHash.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\behavior\EntityBehavior.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\systems\CollisionSystem.cpp" />
     <ClCompile Include="src\systems\CombatSystem.cpp" />
     <ClCompile Include="src\systems\EffectSystem.cpp" />
     <ClCompile Include="src\systems\MovementSystem.cpp" />
+    <ClCompile Include="src\systems\SpellSystem.cpp" />
     <ClCompile Include="src\Utils\SpatialHash.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

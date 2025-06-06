@@ -43,6 +43,9 @@
     <Filter Include="Header Files\control">
       <UniqueIdentifier>{d5e18db7-8c86-434e-9ee4-e7d442750064}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\resources">
+      <UniqueIdentifier>{e5a6a4bb-008f-437c-8bcf-8a98a507d971}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\EffectTag.h">
@@ -78,9 +81,6 @@
     <ClInclude Include="src\systems\MovementSystem.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\behaviors\EffectSystem.h">
-      <Filter>Header Files\behaviors</Filter>
-    </ClInclude>
     <ClInclude Include="src\control\command.h">
       <Filter>Header Files\control</Filter>
     </ClInclude>
@@ -92,6 +92,18 @@
     </ClInclude>
     <ClInclude Include="src\behavior\EntityBehavior.h">
       <Filter>Header Files\behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\EffectSystem.h">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Behavior.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\BehaviorSystem.h">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\SpellLibrary.h">
+      <Filter>Header Files\resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -113,8 +125,14 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\systems\SpellSystem.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
     <ClCompile Include="src\systems\EffectSystem.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\behavior\EntityBehavior.cpp">
+      <Filter>Source Files\behaviors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,6 +3,12 @@
 #include <entt/entt.hpp>
 #include "../components/lookingDirection.h"
 
+enum class SpellBehaviorType {
+    Straight,
+    Homing,
+    Orbit
+};
+
 enum class SpellEffect {
     Burn,
 	Freeze,
@@ -10,38 +16,28 @@ enum class SpellEffect {
     Shield,
     Teleport,
     SummonCreature,
-	Poison
-};
-
-enum class SpellBehaviorType {
-	StraightMovement,
-	HomingMovement,
-	OrbitMovement
+	Poison,
 };
 
 struct SpellData {
-    std::string id;
-	float damage;
+    float damage;
     float manaCost;
     float castTime;
     float cooldowns;
     float speed;
     float size;
     float duration;
-	SpellEffect effect;
-	SpellBehaviorType behaviorType;
+    float radius;
+    SpellEffect effect;
+    SpellBehaviorType behaviorType;
 };
 
-using BehaviorFunction = std::function<void(entt::entity, entt::registry&, const SpellData&)>;
-std::unordered_map<SpellBehaviorType, BehaviorFunction> behaviorMap;
-
-std::unordered_map<std::string, SpellData> spellDatabase;
-
-SpellData getSpellData(std::string spellName) {
-    return spellDatabase[spellName];
-}
 
 struct OnActivateSpell {
-    OnActivateSpell(std::string s) : spellid(s) {}
-    std::string spellid;
+    std::string spellID;
+    OnActivateSpell(std::string s) : spellID(s) {}
+};
+
+struct SpellID {
+	std::string spellID;
 };
