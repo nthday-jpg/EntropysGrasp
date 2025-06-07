@@ -40,6 +40,12 @@
     <Filter Include="Source Files\behaviors">
       <UniqueIdentifier>{2691ec35-abca-4ecc-a46a-cc3294cd5785}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\resources">
+      <UniqueIdentifier>{81ad878e-37da-4bea-b102-4d8f3bad069c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resources">
+      <UniqueIdentifier>{10336596-877c-4c19-ae17-3d497ffc6a76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\EffectTags.h">
@@ -75,12 +81,6 @@
     <ClInclude Include="src\systems\MovementSystem.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\Spell.h">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\behaviors\EffectSystem.h">
-      <Filter>Header Files\systems</Filter>
-    </ClInclude>
     <ClInclude Include="src\components\Enemy.h">
       <Filter>Header Files\components</Filter>
     </ClInclude>
@@ -92,6 +92,12 @@
     </ClInclude>
     <ClInclude Include="src\behaviors\PlayerMovementSystem.h">
       <Filter>Header Files\behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\EnemyLibrary.h">
+      <Filter>Header Files\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\SpellLibrary.h">
+      <Filter>Header Files\resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -110,12 +116,6 @@
     <ClCompile Include="src\Utils\SpatialHash.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\systems\SpellSystem.cpp">
-      <Filter>Source Files\systems</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\behaviors\EffectSystem.cpp">
       <Filter>Source Files\behaviors</Filter>
     </ClCompile>
@@ -124,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="src\systems\EnemyManager.cpp">
       <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\EnemyLibrary.cpp">
+      <Filter>Source Files\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

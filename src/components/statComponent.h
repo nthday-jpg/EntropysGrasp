@@ -2,13 +2,13 @@
 
 struct Health
 {
-	int current;
-	int max;
+	float current;
+	float max;
 };
 
 struct Mana
 {
-	int value;
+	float value;
 };
 
 struct Speed
@@ -18,7 +18,7 @@ struct Speed
 
 struct Attack 
 {
-	int value;
+	float value;
 };
 
 struct Resistance

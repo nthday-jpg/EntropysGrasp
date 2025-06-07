@@ -1,6 +1,5 @@
 #include <iostream>
-
-#include "CollisionSystem.h"
+#include "../systems/CollisionSystem.h"
 #include "../components/EntityTags.h"
 #include "../components/statComponent.h"
 #include "../components/hitbox.h"

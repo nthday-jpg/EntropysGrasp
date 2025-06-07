@@ -1,4 +1,5 @@
-#include "EnemyManager.h"
+#include <SFML/System/Time.hpp>
+#include "../systems/EnemyManager.h"
 #include "../components/EntityTags.h"
 #include "../components/Enemy.h"
 #include "../components/MovementComponents.h"
@@ -30,6 +31,7 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
     }
 
     entt::entity entity = registry.create();
+	registry.emplace<EnemyTag>(entity);
     registry.emplace<Position>(entity, position.x, position.y);
     registry.emplace<Health>(entity, health, health);
     registry.emplace<Speed>(entity, speed);
@@ -95,9 +97,16 @@ bool EnemyManager::isInLoadChunk(Position position)
     return true;
 }
 
-void EnemyManager::update(float dt) {
+void EnemyManager::update(float dt) 
+{
 
 	spawning(spawnInfos, dt);
 
 	removing();
 }
+
+EnemyManager::EnemyManager(entt::registry registry, EnemyLibrary& enemyLibrary, 
+                            sf::View& view, sf::Clock& gameClock)
+    : registry(registry), enemyLibrary(enemyLibrary), view(view), gameClock(gameClock) 
+{
+};
