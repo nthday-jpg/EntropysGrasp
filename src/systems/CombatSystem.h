@@ -1,24 +1,16 @@
 #pragma once
 #include <entt/entt.hpp>
 #include <vector>
-#include "../systems/CollisionSystem.h"
 #include <iostream>
-
-// This file defines the CombatSystem class which handles combat-related logic
-// including collision handling, damage application, and spell effects.
-
+#include "../systems/CollisionSystem.h"
+#include "../resources/SpellLibrary.h"
 
 class CombatSystem {
 	entt::registry& registry;
 	entt::dispatcher& dispatcher;
-	 
 public:
 	void handleCollision(std::vector<CollisionEvent>& collisionEvents);
-	void resolveEnemySpellCollision();
 	void applyDamage(float dmg, entt::entity);
-
-	CombatSystem(entt::registry& reg, entt::dispatcher& disp)
-		: registry(reg), dispatcher(disp) {
-	}
+	void handlePlayerEnemyCollision(entt::entity player, entt::entity enemy);
+	void handleEnemySpellCollision(entt::entity enemy, entt::entity spell, SpellLibrary spellLibrary);
 };
-

@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\behaviors\PlayerMovementSystem.h" />
+    <ClInclude Include="src\components\Behavior.h" />
     <ClInclude Include="src\components\EffectTags.h" />
     <ClInclude Include="src\components\Enemy.h" />
     <ClInclude Include="src\components\EnemySpawnInfo.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="src\components\hitbox.h" />
     <ClInclude Include="src\components\lookingDirection.h" />
     <ClInclude Include="src\components\movementComponents.h" />
+    <ClInclude Include="src\components\Spell.h" />
     <ClInclude Include="src\components\statComponent.h" />
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\resources\EnemyLibrary.h" />

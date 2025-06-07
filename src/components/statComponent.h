@@ -25,3 +25,13 @@ struct Resistance
 {
 	float value;
 };
+
+struct Radius
+{
+	float value;
+};
+
+struct Size
+{
+	float value;
+};
