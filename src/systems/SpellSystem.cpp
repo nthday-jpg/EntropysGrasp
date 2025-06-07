@@ -2,6 +2,7 @@
 #include "../behavior/EntityBehavior.h"
 #include "../components/EntityTag.h"
 #include "../components/Spell.h"
+#include "BehaviorSystem.h"
 #include "SpellSystem.h"
 
 void SpellSystem::updateCastingSystem(entt::registry& registry, float dt, SpellLibrary spellLibrary) {
@@ -11,26 +12,28 @@ void SpellSystem::updateCastingSystem(entt::registry& registry, float dt, SpellL
         {
             auto& mana = registry.get<ManaComponent>(player);
             const auto& spellData = spellLibrary.getSpell(it->first);
-            if (mana.mana < spellData.manaCost)
+            if (cooldowns.find(it->first) == cooldowns.end() || cooldowns[it->first] == 0.0f)
             {
-                it = castTimes.erase(it); // Remove spell if not enough mana
-                continue;
-            }
-            mana.mana -= spellData.manaCost; // Deduct mana cost
+                if (mana.mana < spellData.manaCost)
+                {
+                    it = castTimes.erase(it); // Remove spell if not enough mana
+                    continue;
+                }
+                mana.mana -= spellData.manaCost; // Deduct mana cost
 
-            // Reduce the cast time
-            it->second -= dt;
-            if (it->second <= 0.0f)
-            {
-				registry.emplace<OnActivateSpell>(player, it->first);
-                // Cast the spell
-                entt::entity spell = triggerSpellEffect(registry, player, it->first, spellLibrary);
-                cooldowns[it->first] = spellData.cooldowns; // Set the cooldown for the spell
-                timeLeft[spell] = spellData.duration; // Set the duration for the spell
-                it = castTimes.erase(it);
-            }
-            else {
-                ++it;
+                // Reduce the cast time
+                it->second -= dt;
+                if (it->second <= 0.0f)
+                {
+                    // Cast the spell
+                    entt::entity spell = createSpell(registry, player, it->first, spellLibrary);
+                    cooldowns[it->first] = spellData.cooldowns; // Set the cooldown for the spell
+                    timeLeft[spell] = spellData.duration; // Set the duration for the spell
+                    it = castTimes.erase(it);
+                }
+                else {
+                    ++it;
+                }
             }
         }
 }
@@ -57,7 +60,7 @@ void SpellSystem::updateDurationSystem(entt::registry& registry, float dt) {
         {
             it = timeLeft.erase(it);
             // remove spell effect
-            registry.remove<OnActivateSpell>(it->first);
+            registry.destroy(it->first);
         }
         else
         {

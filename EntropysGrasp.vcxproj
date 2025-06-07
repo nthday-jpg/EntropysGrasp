@@ -153,6 +153,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\behavior\EntityBehavior.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
+    <ClCompile Include="src\systems\BehaviorSystem.cpp" />
     <ClCompile Include="src\systems\CollisionSystem.cpp" />
     <ClCompile Include="src\systems\CombatSystem.cpp" />
     <ClCompile Include="src\systems\EffectSystem.cpp" />

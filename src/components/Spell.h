@@ -2,12 +2,7 @@
 #include <string>
 #include <entt/entt.hpp>
 #include "../components/lookingDirection.h"
-
-enum class SpellBehaviorType {
-    Straight,
-    Homing,
-    Orbit
-};
+#include "Behavior.h"
 
 enum class SpellEffect {
     Burn,
@@ -17,6 +12,9 @@ enum class SpellEffect {
     Teleport,
     SummonCreature,
 	Poison,
+	Penetrate,
+	Knockback,
+	Explosion,
 };
 
 struct SpellData {
@@ -29,13 +27,7 @@ struct SpellData {
     float duration;
     float radius;
     SpellEffect effect;
-    SpellBehaviorType behaviorType;
-};
-
-
-struct OnActivateSpell {
-    std::string spellID;
-    OnActivateSpell(std::string s) : spellID(s) {}
+    BehaviorType behaviorType;
 };
 
 struct SpellID {

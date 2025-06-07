@@ -134,5 +134,8 @@
     <ClCompile Include="src\behavior\EntityBehavior.cpp">
       <Filter>Source Files\behaviors</Filter>
     </ClCompile>
+    <ClCompile Include="src\systems\BehaviorSystem.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

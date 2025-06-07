@@ -1,6 +1,6 @@
 #include "CombatSystem.h"
 #include "../components/statComponent.h"
-#include "../components/Spell.h"
+#include "../components/Behavior.h"
 
 void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity enemy) {
 	auto& playerHealth = registry.get<HealthComponent>(player);
@@ -16,7 +16,7 @@ void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity 
 void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity spell, SpellLibrary spellLibrary) {
 	auto& EnemyHealth = registry.get<HealthComponent>(enemy);
 	// Example: Player takes damage from spell
-	std::string spellName = registry.get<OnActivateSpell>(spell).spellID;
+	std::string spellName = registry.get<SpellID>(spell).spellID;
 	SpellData spellData = spellLibrary.getSpell(spellName); // Assuming getSpellData is a function that retrieves spell data
 	auto damage = spellData.damage; // Assuming SpellData has a damage field
 	EnemyHealth.health -= damage;
