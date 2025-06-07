@@ -7,8 +7,8 @@ void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity 
 	auto& enemyHealth = registry.get<Health>(enemy);
 	// Example: Player deals damage to enemy
 	float damage = 10.0f; // Example damage value
-	playerHealth.health -= damage * 0.1f;
-	if (playerHealth.health <= 0) {
+	playerHealth.current -= damage * 0.1f;
+	if (playerHealth.current <= 0) {
 		//exit the game or respawn player
 	}
 }
@@ -19,8 +19,8 @@ void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity sp
 	SpellID spellName = registry.get<SpellID>(spell);
 	SpellData spellData = spellLibrary.getSpell(spellName); // Assuming getSpellData is a function that retrieves spell data
 	auto damage = spellData.damage; // Assuming SpellData has a damage field
-	EnemyHealth.health -= damage;
-	if (EnemyHealth.health <= 0) {
+	EnemyHealth.current -= damage;
+	if (EnemyHealth.current <= 0) {
 		// Handle enemy death, e.g., remove entity or trigger death animation
 		registry.destroy(enemy); // Example of removing the enemy entity
 	}

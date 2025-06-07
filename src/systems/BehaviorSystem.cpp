@@ -9,11 +9,10 @@ void BehaviorSystem::initializeBehaviorMap() {
 	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity /*unused*/, entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 		auto& position = registry.get<Position>(entity);
 		auto direction = registry.get<LookingDirection>(entity);
-		float speed = registry.get<Speed>(entity).speed;
+		float speed = registry.get<Speed>(entity).value;
 		Velocity velo = { speed * direction.x, speed * direction.y };
 		SpellID spellID = registry.get<SpellID>(entity);
 		SpellData spellData = spellLibrary.getSpell(spellID);
-		auto& direction = registry.get<MovementDirection>(entity);
 
 		velo.x = direction.x * spellData.speed;
 		velo.y = direction.y * spellData.speed;

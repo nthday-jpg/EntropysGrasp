@@ -14,12 +14,12 @@ void SpellSystem::updateCastingSystem(entt::registry& registry, float dt,const S
             SpellData spellData = spellLibrary.getSpell(it->first);
             if (cooldowns.find(it->first) == cooldowns.end() || cooldowns[it->first] == 0.0f)
             {
-                if (mana.mana < spellData.manaCost)
+                if (mana.value < spellData.manaCost)
                 {
                     it = castTimes.erase(it); // Remove spell if not enough mana
                     continue;
                 }
-                mana.mana -= spellData.manaCost; // Deduct mana cost
+                mana.value -= spellData.manaCost; // Deduct mana cost
 
                 // Reduce the cast time
                 it->second -= dt;
