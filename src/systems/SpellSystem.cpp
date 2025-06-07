@@ -1,6 +1,6 @@
 #include "../components/statComponent.h"
-#include "../behavior/EntityBehavior.h"
-#include "../components/EntityTag.h"
+#include "../behaviors/EntityBehavior.h"
+#include "../components/EntityTags.h"
 #include "../components/Spell.h"
 #include "BehaviorSystem.h"
 #include "SpellSystem.h"

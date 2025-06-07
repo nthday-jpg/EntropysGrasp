@@ -33,5 +33,5 @@ struct Radius
 
 struct Resistance
 {
-	int attackDamage;
+	int value;
 };

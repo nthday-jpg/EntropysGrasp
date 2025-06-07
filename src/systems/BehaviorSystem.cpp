@@ -2,7 +2,7 @@
 #include"../resources/SpellLibrary.h"
 #include "../components/Spell.h"
 #include "../components/movementComponents.h"
-#include "../components/EntityTag.h"
+#include "../components/EntityTags.h"
 #include "../components/statComponent.h"
 
 void BehaviorSystem::initializeBehaviorMap() {

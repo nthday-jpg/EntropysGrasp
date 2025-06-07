@@ -114,12 +114,6 @@ void CombatSystem::handleCollision(std::vector<CollisionEvent>& collisionEvents)
 
 }
 
-void CombatSystem::resolveEnemySpellCollision() {
-	// rename later
-	// indicate which pell hit which enemy
-	// calulate dmg 
-	// apply dmg to enemy
-}
 
 void CombatSystem::applyDamage(float dmg, entt::entity) {
 	// Apply damage to entities based on collision and spell effects

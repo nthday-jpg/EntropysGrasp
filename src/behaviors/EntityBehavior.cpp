@@ -1,5 +1,5 @@
 #include "../components/movementComponents.h"
-#include "../components/EntityTag.h"
+#include "../components/EntityTags.h"
 #include "../components/statComponent.h"
 #include "EntityBehavior.h"
 

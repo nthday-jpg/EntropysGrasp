@@ -46,6 +46,9 @@
     <Filter Include="Source Files\resources">
       <UniqueIdentifier>{10336596-877c-4c19-ae17-3d497ffc6a76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\control">
+      <UniqueIdentifier>{d10722b6-961a-42e4-91d6-be58559bb032}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\EffectTags.h">
@@ -93,11 +96,29 @@
     <ClInclude Include="src\behaviors\PlayerMovementSystem.h">
       <Filter>Header Files\behaviors</Filter>
     </ClInclude>
-    <ClInclude Include="src\resources\EnemyLibrary.h">
-      <Filter>Header Files\resources</Filter>
-    </ClInclude>
     <ClInclude Include="src\resources\SpellLibrary.h">
       <Filter>Header Files\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Behavior.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\BehaviorSystem.h">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\EffectSystem.h">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Spell.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\control\command.h">
+      <Filter>Header Files\control</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\SpellSystem.h">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\behaviors\EntityBehavior.h">
+      <Filter>Header Files\behaviors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -116,9 +137,6 @@
     <ClCompile Include="src\Utils\SpatialHash.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\behaviors\EffectSystem.cpp">
-      <Filter>Source Files\behaviors</Filter>
-    </ClCompile>
     <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp">
       <Filter>Source Files\behaviors</Filter>
     </ClCompile>
@@ -130,6 +148,18 @@
     </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\systems\EffectSystem.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\systems\BehaviorSystem.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\systems\SpellSystem.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\behaviors\EntityBehavior.cpp">
+      <Filter>Source Files\behaviors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

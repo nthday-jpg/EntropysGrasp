@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\behaviors\EntityBehavior.h" />
     <ClInclude Include="src\behaviors\PlayerMovementSystem.h" />
     <ClInclude Include="src\components\Behavior.h" />
     <ClInclude Include="src\components\EffectTags.h" />
@@ -153,10 +154,8 @@
     <ClInclude Include="src\Utils\SpatialHash.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\behaviors\EffectSystem.cpp" />
+    <ClCompile Include="src\behaviors\EntityBehavior.cpp" />
     <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\behavior\EntityBehavior.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\systems\BehaviorSystem.cpp" />
     <ClCompile Include="src\main.cpp" />
