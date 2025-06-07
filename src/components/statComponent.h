@@ -21,7 +21,7 @@ struct Attack
 	float value;
 };
 
-struct Resistance
+struct Size
 {
 	float value;
 };
@@ -31,7 +31,7 @@ struct Radius
 	float value;
 };
 
-struct Size
+struct Resistance
 {
-	float value;
+	int attackDamage;
 };

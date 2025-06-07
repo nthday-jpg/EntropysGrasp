@@ -1,10 +1,7 @@
 ﻿#pragma once
 #include <entt/entt.hpp>
 #include <SFML/Graphics.hpp>
-
 #include "../Utils/SpatialHash.h"
-
-
 //Include thêm các hệ thống khác ở đây
 #include "../systems/MovementSystem.h"
 #include "../systems/CollisionSystem.h"

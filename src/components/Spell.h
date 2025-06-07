@@ -5,12 +5,12 @@
 #include "Behavior.h"
 
 enum class SpellEffect {
-	Burn,
+    Burn,
 	Freeze,
-	Heal,
-	Shield,
-	Teleport,
-	SummonCreature,
+    Heal,
+    Shield,
+    Teleport,
+    SummonCreature,
 	Poison,
 	Penetrate,
 	Knockback,
@@ -18,16 +18,16 @@ enum class SpellEffect {
 };
 
 struct SpellData {
-	float damage;
-	float manaCost;
-	float castTime;
-	float cooldowns;
-	float speed;
-	float size;
-	float duration;
-	float radius;
-	SpellEffect effect;
-	BehaviorType behaviorType;
+    float damage;
+    float manaCost;
+    float castTime;
+    float cooldowns;
+    float speed;
+    float size;
+    float duration;
+    float radius;
+    SpellEffect effect;
+    BehaviorType behaviorType;
 };
 
 enum class SpellID {
