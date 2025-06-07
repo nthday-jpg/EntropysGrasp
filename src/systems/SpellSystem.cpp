@@ -10,7 +10,7 @@ void SpellSystem::updateCastingSystem(entt::registry& registry, float dt,const S
     for (auto player : view)
         for (auto it = castTimes.begin(); it != castTimes.end();)
         {
-            auto& mana = registry.get<ManaComponent>(player);
+            auto& mana = registry.get<Mana>(player);
             SpellData spellData = spellLibrary.getSpell(it->first);
             if (cooldowns.find(it->first) == cooldowns.end() || cooldowns[it->first] == 0.0f)
             {
@@ -28,7 +28,7 @@ void SpellSystem::updateCastingSystem(entt::registry& registry, float dt,const S
                     // Cast the spell
                     entt::entity spell = createSpell(registry, player, it->first, spellLibrary);
                     cooldowns[it->first] = spellData.cooldowns; // Set the cooldown for the spell
-                    timeLeft[spell] = spellData.duration; // Set the duration for the spell
+                    durations[spell] = spellData.duration; // Set the duration for the spell
                     it = castTimes.erase(it);
                 }
                 else {
@@ -53,12 +53,12 @@ void SpellSystem::updateCooldownSystem(entt::registry& registry, float dt) {
 }
 
 void SpellSystem::updateDurationSystem(entt::registry& registry, float dt) {
-    for (auto it = timeLeft.begin(); it != timeLeft.end();)
+    for (auto it = durations.begin(); it != durations.end();)
     {
         it->second -= dt;
         if (it->second <= 0.0f)
         {
-            it = timeLeft.erase(it);
+            it = durations.erase(it);
             // remove spell effect
             registry.destroy(it->first);
         }

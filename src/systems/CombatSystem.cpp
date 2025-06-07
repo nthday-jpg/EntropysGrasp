@@ -3,8 +3,8 @@
 #include "../components/Behavior.h"
 
 void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity enemy) {
-	auto& playerHealth = registry.get<HealthComponent>(player);
-	auto& enemyHealth = registry.get<HealthComponent>(enemy);
+	auto& playerHealth = registry.get<Health>(player);
+	auto& enemyHealth = registry.get<Health>(enemy);
 	// Example: Player deals damage to enemy
 	float damage = 10.0f; // Example damage value
 	playerHealth.health -= damage * 0.1f;
@@ -14,9 +14,9 @@ void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity 
 }
 
 void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity spell, SpellLibrary spellLibrary) {
-	auto& EnemyHealth = registry.get<HealthComponent>(enemy);
+	auto& EnemyHealth = registry.get<Health>(enemy);
 	// Example: Player takes damage from spell
-	std::string spellName = registry.get<SpellID>(spell).spellID;
+	SpellID spellName = registry.get<SpellID>(spell);
 	SpellData spellData = spellLibrary.getSpell(spellName); // Assuming getSpellData is a function that retrieves spell data
 	auto damage = spellData.damage; // Assuming SpellData has a damage field
 	EnemyHealth.health -= damage;

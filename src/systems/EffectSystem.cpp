@@ -59,7 +59,7 @@ void AggressiveEffect::apply(entt::registry& registry)
 {
 	auto check = registry.view<AggressiveTag, EnemyTag>();
 	for (auto [entity, aggressiveTag] : check.each()) {
-		auto stats = registry.try_get<SpeedComponent, AttackComponent>(entity);
+		auto stats = registry.try_get<Speed, Attack>(entity);
 		// Increase speed and attack power
 	}
 }

@@ -1,22 +1,32 @@
 #pragma once
 
-struct HealthComponent 
+struct Health 
 {
 	float health;
 	float maxHealth;
 };
 
-struct ManaComponent 
+struct Mana
 {
 	float mana;
 };
 
-struct SpeedComponent 
+struct Speed
 {
 	float speed;
 };
 
-struct AttackComponent 
+struct Attack
 {
 	int attackDamage;
+};
+
+struct Size
+{
+	float size;
+};
+
+struct Radius
+{
+	float radius;
 };

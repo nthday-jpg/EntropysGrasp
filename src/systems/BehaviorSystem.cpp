@@ -3,23 +3,26 @@
 #include "../components/Spell.h"
 #include "../components/movementComponents.h"
 #include "../components/EntityTag.h"
+#include "../components/statComponent.h"
 
 void BehaviorSystem::initializeBehaviorMap() {
 	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity /*unused*/, entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 		auto& position = registry.get<Position>(entity);
-		auto& velo = registry.get<Velocity>(entity);
-		std::string spellID = registry.get<SpellID>(entity).spellID;
+		auto direction = registry.get<LookingDirection>(entity);
+		float speed = registry.get<Speed>(entity).speed;
+		Velocity velo = { speed * direction.x, speed * direction.y };
+		SpellID spellID = registry.get<SpellID>(entity);
 		SpellData spellData = spellLibrary.getSpell(spellID);
 		auto& direction = registry.get<MovementDirection>(entity);
 
 		velo.x = direction.x * spellData.speed;
 		velo.y = direction.y * spellData.speed;
 		position += velo * dt;
-		};
+	};
 	behaviorMap[BehaviorType::Homing] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 		auto& position = registry.get<Position>(entity);
-		auto& velo = registry.get<Velocity>(entity);
-		std::string spellID = registry.get<SpellID>(entity).spellID;
+		Velocity velo;
+		SpellID spellID = registry.get<SpellID>(entity);
 		SpellData spellData = spellLibrary.getSpell(spellID);
 		auto& enemyPosition = registry.get<Position>(target);
 
@@ -33,10 +36,10 @@ void BehaviorSystem::initializeBehaviorMap() {
 			velo.y = direction.y * spellData.speed;
 		}
 		position += velo * dt; // Move the spell towards the enemy
-		};
+	};
 	behaviorMap[BehaviorType::Orbit] = [](entt::entity entity, entt::entity center, entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 		auto& position = registry.get<Position>(entity);
-		std::string spellID = registry.get<SpellID>(entity).spellID;
+		SpellID spellID = registry.get<SpellID>(entity);
 		SpellData spellData = spellLibrary.getSpell(spellID);
 		auto& centerPosition = registry.get<Position>(center);
 		float speed = spellData.speed;
@@ -47,14 +50,14 @@ void BehaviorSystem::initializeBehaviorMap() {
 		// Update position based on orbit radius and angle
 		position.x = centerPosition.x + radius * cos(angle);
 		position.y = centerPosition.y + radius * sin(angle);
-		};
+	};
 }
 
 void BehaviorSystem::updateBehavior(entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 	auto view = registry.view<BehaviorType>();
 	for (auto [entity, behaviorType] : view.each()) {
 		if (registry.all_of<SpellTag>(entity)) {
-			auto& spellName = registry.get<SpellID>(entity).spellID;
+			SpellID spellName = registry.get<SpellID>(entity);
 			SpellData spell = spellLibrary.getSpell(spellName);
 			auto it = behaviorMap.find(spell.behaviorType);
 			if (it != behaviorMap.end()) {

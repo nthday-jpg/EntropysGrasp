@@ -3,7 +3,6 @@
 #include "../components/EntityTag.h"
 #include "../components/lookingDirection.h"
 #include "../components/movementComponents.h"
-
 //cho speed và có thể phát triển để có tốc độ và di chuyển theo máu
 #include "../components/statComponent.h" 
 

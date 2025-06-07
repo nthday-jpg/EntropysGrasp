@@ -30,6 +30,15 @@ struct SpellData {
     BehaviorType behaviorType;
 };
 
-struct SpellID {
-	std::string spellID;
+enum class SpellID {
+	Fireball,
+	IceSpike,
+	Heal,
+	Shield,
+	Teleport,
+	SummonCreature,
+	PoisonCloud,
+	PenetratingShot,
+	KnockbackBlast,
+	ExplosionWave,
 };
