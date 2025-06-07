@@ -131,17 +131,16 @@
   <ItemGroup>
     <ClInclude Include="src\behaviors\EffectSystem.h" />
     <ClInclude Include="src\behaviors\PlayerMovementSystem.h" />
-    <ClInclude Include="src\components\EffectTag.h" />
+    <ClInclude Include="src\components\EffectTags.h" />
     <ClInclude Include="src\components\Enemy.h" />
     <ClInclude Include="src\components\EnemySpawnInfo.h" />
     <ClInclude Include="src\components\EntityTags.h" />
     <ClInclude Include="src\components\hitbox.h" />
     <ClInclude Include="src\components\lookingDirection.h" />
     <ClInclude Include="src\components\movementComponents.h" />
+    <ClInclude Include="src\components\Spell.h" />
     <ClInclude Include="src\components\statComponent.h" />
     <ClInclude Include="src\core\Game.h" />
-    <ClInclude Include="src\resources\EnemyLibrary.h" />
-    <ClInclude Include="src\resources\SpellLibrary.h" />
     <ClInclude Include="src\systems\CollisionSystem.h" />
     <ClInclude Include="src\systems\CombatSystem.h" />
     <ClInclude Include="src\systems\EnemyManager.h" />
@@ -152,12 +151,11 @@
     <ClCompile Include="src\behaviors\EffectSystem.cpp" />
     <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\resources\EnemyLibrary.cpp" />
     <ClCompile Include="src\systems\CollisionSystem.cpp" />
     <ClCompile Include="src\systems\CombatSystem.cpp" />
     <ClCompile Include="src\systems\EnemyManager.cpp" />
     <ClCompile Include="src\systems\MovementSystem.cpp" />
+    <ClCompile Include="src\systems\SpellSystem.cpp" />
     <ClCompile Include="src\Utils\SpatialHash.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

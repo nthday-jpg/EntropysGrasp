@@ -40,15 +40,9 @@
     <Filter Include="Source Files\behaviors">
       <UniqueIdentifier>{2691ec35-abca-4ecc-a46a-cc3294cd5785}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\resources">
-      <UniqueIdentifier>{c39530cd-513a-43c3-9976-547f6fcb3085}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\resources">
-      <UniqueIdentifier>{94615f45-049c-4d5f-b50d-01b61956ab37}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\components\EffectTag.h">
+    <ClInclude Include="src\components\EffectTags.h">
       <Filter>Header Files\components</Filter>
     </ClInclude>
     <ClInclude Include="src\components\EntityTags.h">
@@ -81,26 +75,23 @@
     <ClInclude Include="src\systems\MovementSystem.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\behaviors\EffectSystem.h">
-      <Filter>Header Files\behaviors</Filter>
+    <ClInclude Include="src\components\Spell.h">
+      <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\behaviors\PlayerMovementSystem.h">
-      <Filter>Header Files\behaviors</Filter>
+    <ClInclude Include="src\behaviors\EffectSystem.h">
+      <Filter>Header Files\systems</Filter>
     </ClInclude>
     <ClInclude Include="src\components\Enemy.h">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\resources\EnemyLibrary.h">
-      <Filter>Header Files\resources</Filter>
+    <ClInclude Include="src\components\EnemySpawnInfo.h">
+      <Filter>Header Files\components</Filter>
     </ClInclude>
     <ClInclude Include="src\systems\EnemyManager.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\EnemySpawnInfo.h">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\resources\SpellLibrary.h">
-      <Filter>Header Files\resources</Filter>
+    <ClInclude Include="src\behaviors\PlayerMovementSystem.h">
+      <Filter>Header Files\behaviors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,17 +110,17 @@
     <ClCompile Include="src\Utils\SpatialHash.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\systems\SpellSystem.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\behaviors\EffectSystem.cpp">
       <Filter>Source Files\behaviors</Filter>
     </ClCompile>
     <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp">
       <Filter>Source Files\behaviors</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\resources\EnemyLibrary.cpp">
-      <Filter>Source Files\resources</Filter>
     </ClCompile>
     <ClCompile Include="src\systems\EnemyManager.cpp">
       <Filter>Source Files\systems</Filter>
