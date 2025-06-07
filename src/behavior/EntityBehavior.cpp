@@ -2,6 +2,8 @@
 #include "../components/Spell.h"
 #include "EntityBehavior.h"
 
+std::unordered_map<SpellBehaviorType, BehaviorFunction> behaviorMap;
+
 void initializeBehaviorMap() {
 	behaviorMap[SpellBehaviorType::Straight] = [](entt::entity entity, entt::entity /*unused*/, entt::registry& registry, float dt, SpellLibrary spellLibrary) {
 		auto& position = registry.get<Position>(entity);
