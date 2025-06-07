@@ -7,8 +7,8 @@
 class SpellLibrary {
 	std::unordered_map<std::string, SpellData> spellDatabase;
 public:
-	const SpellData& getSpell(const std::string& spellName) {
-		return spellDatabase[spellName];
+	SpellData getSpell(const std::string& spellName) const {
+		return spellDatabase.at(spellName);
 	}
 	void loadSpells(const std::string& filePath) {
 		// Load spells from a file or database

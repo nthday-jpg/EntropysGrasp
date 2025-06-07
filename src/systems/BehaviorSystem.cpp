@@ -5,7 +5,7 @@
 #include "../components/EntityTag.h"
 
 void BehaviorSystem::initializeBehaviorMap() {
-	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity /*unused*/, entt::registry& registry, float dt, SpellLibrary spellLibrary) {
+	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity /*unused*/, entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 		auto& position = registry.get<Position>(entity);
 		auto& velo = registry.get<Velocity>(entity);
 		std::string spellID = registry.get<SpellID>(entity).spellID;
@@ -16,7 +16,7 @@ void BehaviorSystem::initializeBehaviorMap() {
 		velo.y = direction.y * spellData.speed;
 		position += velo * dt;
 		};
-	behaviorMap[BehaviorType::Homing] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt, SpellLibrary spellLibrary) {
+	behaviorMap[BehaviorType::Homing] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 		auto& position = registry.get<Position>(entity);
 		auto& velo = registry.get<Velocity>(entity);
 		std::string spellID = registry.get<SpellID>(entity).spellID;
@@ -34,7 +34,7 @@ void BehaviorSystem::initializeBehaviorMap() {
 		}
 		position += velo * dt; // Move the spell towards the enemy
 		};
-	behaviorMap[BehaviorType::Orbit] = [](entt::entity entity, entt::entity center, entt::registry& registry, float dt, SpellLibrary spellLibrary) {
+	behaviorMap[BehaviorType::Orbit] = [](entt::entity entity, entt::entity center, entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 		auto& position = registry.get<Position>(entity);
 		std::string spellID = registry.get<SpellID>(entity).spellID;
 		SpellData spellData = spellLibrary.getSpell(spellID);
@@ -50,7 +50,7 @@ void BehaviorSystem::initializeBehaviorMap() {
 		};
 }
 
-void BehaviorSystem::updateBehavior(entt::registry& registry, float dt, SpellLibrary spellLibrary) {
+void BehaviorSystem::updateBehavior(entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 	auto view = registry.view<BehaviorType>();
 	for (auto [entity, behaviorType] : view.each()) {
 		if (registry.all_of<SpellTag>(entity)) {

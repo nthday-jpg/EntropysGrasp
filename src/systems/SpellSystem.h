@@ -10,7 +10,7 @@ private:
     std::unordered_map<std::string, float> cooldowns; // Maps spell names to their cooldown times
     std::unordered_map<entt::entity, float> timeLeft;
 public:
-    void updateCastingSystem(entt::registry& registry, float dt, SpellLibrary spellLibrary);
+    void updateCastingSystem(entt::registry& registry, float dt, const SpellLibrary& spellLibrary);
     void updateCooldownSystem(entt::registry& registry, float dt);
     void updateDurationSystem(entt::registry& registry, float dt);
 };

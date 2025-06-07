@@ -5,13 +5,13 @@
 #include "BehaviorSystem.h"
 #include "SpellSystem.h"
 
-void SpellSystem::updateCastingSystem(entt::registry& registry, float dt, SpellLibrary spellLibrary) {
+void SpellSystem::updateCastingSystem(entt::registry& registry, float dt,const SpellLibrary& spellLibrary) {
     auto view = registry.view<PlayerTag>();
     for (auto player : view)
         for (auto it = castTimes.begin(); it != castTimes.end();)
         {
             auto& mana = registry.get<ManaComponent>(player);
-            const auto& spellData = spellLibrary.getSpell(it->first);
+            SpellData spellData = spellLibrary.getSpell(it->first);
             if (cooldowns.find(it->first) == cooldowns.end() || cooldowns[it->first] == 0.0f)
             {
                 if (mana.mana < spellData.manaCost)
