@@ -11,5 +11,5 @@ struct MovementSystem
    // Parameters:  
    // - registry: The entity registry containing all entities and their components.  
    // - deltaTime: The time elapsed since the last update, used for calculating movement.  
-   void update(entt::registry& registry, float deltaTime);  
+   static void update(entt::registry& registry, float deltaTime);  
 };
