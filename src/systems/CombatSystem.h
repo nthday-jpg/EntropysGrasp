@@ -4,6 +4,10 @@
 #include "../systems/CollisionSystem.h"
 #include <iostream>
 
+// This file defines the CombatSystem class which handles combat-related logic
+// including collision handling, damage application, and spell effects.
+
+
 class CombatSystem {
 	entt::registry& registry;
 	entt::dispatcher& dispatcher;

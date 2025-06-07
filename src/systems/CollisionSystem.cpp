@@ -1,10 +1,9 @@
 #include <iostream>
 
 #include "CollisionSystem.h"
-#include "../components/EntityTag.h"
+#include "../components/EntityTags.h"
 #include "../components/statComponent.h"
 #include "../components/hitbox.h"
-#include "../components/EntityTag.h"
 #include "../components/movementComponents.h"
 
 using namespace std;  
@@ -135,8 +134,8 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 		return; 
 	};
 
-	float resistance1 = registry.get<ResistanceComponent>(e1).value; 
-	float resistance2 = registry.get<ResistanceComponent>(e2).value;
+	float resistance1 = registry.get<Resistance>(e1).value; 
+	float resistance2 = registry.get<Resistance>(e2).value;
 	float totalResistance = resistance1 + resistance2;
 
 
