@@ -4,8 +4,9 @@
 #include "../components/Spell.h"
 #include "BehaviorSystem.h"
 #include "SpellSystem.h"
+#include <iostream>
 
-void SpellSystem::updateCastingSystem(entt::registry& registry, float dt,const SpellLibrary& spellLibrary) {
+void SpellSystem::updateCastingSystem(entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
     auto view = registry.view<PlayerTag>();
     for (auto player : view)
         for (auto it = castTimes.begin(); it != castTimes.end();)
@@ -58,13 +59,19 @@ void SpellSystem::updateDurationSystem(entt::registry& registry, float dt) {
         it->second -= dt;
         if (it->second <= 0.0f)
         {
-            it = durations.erase(it);
             // remove spell effect
             registry.destroy(it->first);
+            it = durations.erase(it);
         }
         else
         {
             ++it;
         }
     }
+}
+
+void SpellSystem::update(entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
+    updateCastingSystem(registry, dt, spellLibrary);
+    updateCooldownSystem(registry, dt);
+    updateDurationSystem(registry, dt);
 }

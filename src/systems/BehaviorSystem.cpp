@@ -7,16 +7,6 @@
 
 void BehaviorSystem::initializeBehaviorMap() {
 	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity /*unused*/, entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
-		auto& position = registry.get<Position>(entity);
-		auto direction = registry.get<LookingDirection>(entity);
-		float speed = registry.get<Speed>(entity).value;
-		Velocity velo = { speed * direction.x, speed * direction.y };
-		SpellID spellID = registry.get<SpellID>(entity);
-		SpellData spellData = spellLibrary.getSpell(spellID);
-
-		velo.x = direction.x * spellData.speed;
-		velo.y = direction.y * spellData.speed;
-		position += velo * dt;
 	};
 	behaviorMap[BehaviorType::Homing] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 		auto& position = registry.get<Position>(entity);
@@ -34,7 +24,6 @@ void BehaviorSystem::initializeBehaviorMap() {
 			velo.x = direction.x * spellData.speed;
 			velo.y = direction.y * spellData.speed;
 		}
-		position += velo * dt; // Move the spell towards the enemy
 	};
 	behaviorMap[BehaviorType::Orbit] = [](entt::entity entity, entt::entity center, entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
 		auto& position = registry.get<Position>(entity);
