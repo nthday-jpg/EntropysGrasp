@@ -1,7 +1,7 @@
 #pragma once
 #include <entt/entt.hpp>
 #include <unordered_map>
-#include "../behavior/EntityBehavior.h"
+#include "../behaviors/EntityBehavior.h"
 
 using BehaviorFunction = std::function<void(entt::entity, entt::entity, entt::registry&, float, const SpellLibrary&)>;
 

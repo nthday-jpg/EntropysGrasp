@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -129,10 +129,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\behavior\EntityBehavior.h" />
+    <ClInclude Include="src\behaviors\EntityBehavior.h" />
+    <ClInclude Include="src\behaviors\PlayerMovementSystem.h" />
     <ClInclude Include="src\components\Behavior.h" />
-    <ClInclude Include="src\components\EffectTag.h" />
-    <ClInclude Include="src\components\EntityTag.h" />
+    <ClInclude Include="src\components\EffectTags.h" />
+    <ClInclude Include="src\components\Enemy.h" />
+    <ClInclude Include="src\components\EnemySpawnInfo.h" />
+    <ClInclude Include="src\components\EntityTags.h" />
     <ClInclude Include="src\components\hitbox.h" />
     <ClInclude Include="src\components\lookingDirection.h" />
     <ClInclude Include="src\components\movementComponents.h" />
@@ -145,17 +148,21 @@
     <ClInclude Include="src\systems\CollisionSystem.h" />
     <ClInclude Include="src\systems\CombatSystem.h" />
     <ClInclude Include="src\systems\EffectSystem.h" />
+    <ClInclude Include="src\systems\EnemyManager.h" />
     <ClInclude Include="src\systems\MovementSystem.h" />
     <ClInclude Include="src\systems\SpellSystem.h" />
     <ClInclude Include="src\Utils\SpatialHash.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\behavior\EntityBehavior.cpp" />
+    <ClCompile Include="src\behaviors\EntityBehavior.cpp" />
+    <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\systems\BehaviorSystem.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\resources\EnemyLibrary.cpp" />
     <ClCompile Include="src\systems\CollisionSystem.cpp" />
     <ClCompile Include="src\systems\CombatSystem.cpp" />
+    <ClCompile Include="src\systems\EnemyManager.cpp" />
     <ClCompile Include="src\systems\EffectSystem.cpp" />
     <ClCompile Include="src\systems\MovementSystem.cpp" />
     <ClCompile Include="src\systems\SpellSystem.cpp" />

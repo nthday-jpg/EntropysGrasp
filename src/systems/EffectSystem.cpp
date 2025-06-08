@@ -1,7 +1,7 @@
 #include "EffectSystem.h"
 #include "../components/statComponent.h"
-#include "../components/Entitytag.h"
-#include "../components/EffectTag.h"
+#include "../components/Entitytags.h"
+#include "../components/EffectTags.h"
 #include "../components/movementComponents.h"
 
 void applyEffect(entt::entity entity, entt::registry& registry, EffectType effectType) {

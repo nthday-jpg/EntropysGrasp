@@ -5,8 +5,8 @@
 #include "../components/Spell.h"
 
 class SpellLibrary {
-	std::unordered_map<SpellID, SpellData> spellDatabase;
 public:
+	std::unordered_map<SpellID, SpellData> spellDatabase;
 	SpellData getSpell(SpellID spellName) const {
 		return spellDatabase.at(spellName);
 	}

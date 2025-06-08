@@ -1,64 +1,43 @@
 ﻿#pragma once
 #include <entt/entt.hpp>
-#include "../components/hitbox.h"
-#include "../components/EntityTag.h"
 #include "../Utils/SpatialHash.h"
-#include "../components/movementComponents.h"
-
-//include the effect components here
 
 enum class CollisionType {
-	Player = 0,
-	Enemy = 1,
-	Spell = 2,
-	Wall = 3,
-	None = 4,
+    Player,
+    Enemy,
+    Spell,
+    Wall,
+    None
 };
 
 struct CollisionEvent {
-	entt::entity entity1;
-	entt::entity entity2;
+    entt::entity entity1;
+    entt::entity entity2;
+    CollisionType type1;
+    CollisionType type2;
 
-	CollisionType type1;
-	CollisionType type2;
-
-	CollisionEvent(entt::entity e1, entt::entity e2, CollisionType t1, CollisionType t2)
-		: entity1(e1), entity2(e2), type1(t1), type2(t2) {
-	}
+    CollisionEvent(entt::entity e1, entt::entity e2, CollisionType t1, CollisionType t2)
+        : entity1(e1), entity2(e2), type1(t1), type2(t2) {
+    }
 };
 
-
-class CollisionSystem
-{
-	std::vector<CollisionEvent> collisionEvents;
-	SpatialHashGrid spatialHashGrid;
-	entt::registry& registry;
-	entt::dispatcher& dispatcher;
-
-	//Function to check if two hitboxes intersect
-	bool isIntersect(Hitbox& hitbox1, Hitbox& hitbox2);
-
-
-	//Get the collision type based on the entity tags
-	CollisionType getCollisionType(entt::entity e);
-
-	//resolve the collisions in the collisionEvents list
-	//trigger the appropriate events
+class CollisionSystem {
 public:
-	CollisionSystem(entt::registry& registry, entt::dispatcher& dispatcher)
-		: registry(registry), dispatcher(dispatcher) {
-		collisionEvents.reserve(200);
-	}
+    CollisionSystem(entt::registry& registry) : registry(registry)
+    {
+        collisionEvents.reserve(200);
 
-	//clear every frame
-	//check for collision and add them to the list
-	void collectCollision();
-	
-	std::vector<CollisionEvent>& getCollisionEvents() {
-		return collisionEvents;
-	}
+    }
 
-	void resolvePhysicalOverlap(entt::entity e1, entt::entity e2);
+    void detectCollisions();
+    void resolvePhysicalOverlap(entt::entity e1, entt::entity e2);
+
+    const std::vector<CollisionEvent>& getCollisionEvents() const;
+
+private:
+    bool isIntersect(entt::entity e1, entt::entity e2) const;
+    CollisionType getCollisionType(entt::entity e) const;
+
+    std::vector<CollisionEvent> collisionEvents;
+    entt::registry& registry;
 };
-
-

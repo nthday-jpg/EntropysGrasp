@@ -1,11 +1,12 @@
 #include "../components/movementComponents.h"
-#include "../components/EntityTag.h"
+#include "../components/EntityTags.h"
 #include "../components/statComponent.h"
 #include "EntityBehavior.h"
 
 entt::entity createSpell(entt::registry& registry, entt::entity caster, SpellID spellID, const SpellLibrary& spellLibrary) {
 	SpellData spellData = spellLibrary.getSpell(spellID);
 	Position position = registry.get<Position>(caster);
+	auto direction = registry.get<LookingDirection>(caster);
 
 	auto spellEntity = registry.create();
 
@@ -14,6 +15,7 @@ entt::entity createSpell(entt::registry& registry, entt::entity caster, SpellID 
 	registry.emplace<Position>(spellEntity, position);
 	registry.emplace<Attack>(spellEntity, spellData.damage);
 	registry.emplace<Mana>(spellEntity, spellData.manaCost);
+	registry.emplace<Velocity>(spellEntity, direction.x * spellData.speed, direction.y * spellData.speed);
 	registry.emplace<Speed>(spellEntity, spellData.speed);
 	registry.emplace<Size>(spellEntity, spellData.size);
 	registry.emplace<Radius>(spellEntity, spellData.radius);

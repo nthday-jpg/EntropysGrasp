@@ -1,6 +1,6 @@
 #pragma once
 
-struct Health 
+struct Health
 {
 	float current;
 	float max;
@@ -16,7 +16,7 @@ struct Speed
 	float value;
 };
 
-struct Attack
+struct Attack 
 {
 	float value;
 };
@@ -33,5 +33,5 @@ struct Radius
 
 struct Resistance
 {
-	float value;
+	int value;
 };

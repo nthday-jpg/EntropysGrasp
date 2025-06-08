@@ -18,3 +18,7 @@ struct WallTag
 struct SpellTag
 {
 };
+
+struct InactiveEnemyTag 
+{
+};
