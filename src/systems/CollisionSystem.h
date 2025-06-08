@@ -1,25 +1,19 @@
 ﻿#pragma once
 #include <entt/entt.hpp>
+#include "../components/CollisionType.h"
+#include "../components/CollisionEvent.h"
 #include "../Utils/SpatialHash.h"
 
-enum class CollisionType {
-    Player,
-    Enemy,
-    Spell,
-    Wall,
-    None
-};
+// Collision System detects collisions between entities in a game world base on entity's hitbox.
+// 
+// It uses spatial hasing to efficiently manage and detect collisions.
+// Collisions are detected and stored as CollisionEvent objects in a vector
+// for later processing, such as resolving overlaps or triggering game events.
+// 
+// Collision System also provides methods to check if two entities intersect
+// and to resolve physical overlaps between them.
 
-struct CollisionEvent {
-    entt::entity entity1;
-    entt::entity entity2;
-    CollisionType type1;
-    CollisionType type2;
 
-    CollisionEvent(entt::entity e1, entt::entity e2, CollisionType t1, CollisionType t2)
-        : entity1(e1), entity2(e2), type1(t1), type2(t2) {
-    }
-};
 
 class CollisionSystem {
 public:
@@ -30,6 +24,8 @@ public:
     }
 
     void detectCollisions();
+
+    // This method pushes two entities that overlaping away each other
     void resolvePhysicalOverlap(entt::entity e1, entt::entity e2);
 
     const std::vector<CollisionEvent>& getCollisionEvents() const;

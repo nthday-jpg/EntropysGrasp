@@ -123,6 +123,17 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 	auto type1 = getCollisionType(e1);
 	auto type2 = getCollisionType(e2);
 
+	if (type1 == CollisionType::None || type2 == CollisionType::None)
+	{
+		cerr << "Cannot resolve overlap for entities with no collision type." << endl;
+		return; // Cannot resolve overlap if one of the entities has no collision type
+	}
+
+	if (!registry.all_of<Hitbox, Position, Resistance>(e1)
+		|| !registry.all_of<Hitbox, Position, Resistance>(e2))
+	{
+		throw std::runtime_error("Both entities must have Hitbox, Position, and Resistance components to resolve overlap.");
+	}
 
 	Hitbox& hitbox = registry.get<Hitbox>(e1);
 	Hitbox& otherHitbox = registry.get<Hitbox>(e2);
@@ -137,16 +148,18 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 	float resistance2 = registry.get<Resistance>(e2).value;
 	float totalResistance = resistance1 + resistance2;
 
-
 	//0.01f is added to ensure two entities will not be completely stuck together
 	float recoil1 = (resistance2 / totalResistance + 0.01f);
 	float recoil2 = (resistance1 / totalResistance + 0.01f);
 
-	float centerX1 = hitbox.offsetX + hitbox.width / 2.0f;
-	float centerY1 = hitbox.offsetY + hitbox.height / 2.0f;
+	Position& pos = registry.get<Position>(e1);
+	Position& otherPos = registry.get<Position>(e2);
 
-	float centerX2 = otherHitbox.offsetX + otherHitbox.width / 2.0f;
-	float centerY2 = otherHitbox.offsetY + otherHitbox.height / 2.0f;
+	float centerX1 = pos.x + hitbox.offsetX + hitbox.width / 2.0f;
+	float centerY1 = pos.y + hitbox.offsetY + hitbox.height / 2.0f;
+
+	float centerX2 = otherPos.x + otherHitbox.offsetX + otherHitbox.width / 2.0f;
+	float centerY2 = otherPos.y + otherHitbox.offsetY + otherHitbox.height / 2.0f;
 
 	float deltaX = centerX2 - centerX1;
 	float deltaY = centerY2 - centerY1;
@@ -160,7 +173,7 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 		return; // No overlap to resolve
 	}
 
-	else if (overlapX < overlapY)
+	if (overlapX < overlapY)
 	{
 		// Resolve along X axis
 		float moveAmount1 = recoil1 * overlapX;
@@ -168,13 +181,13 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 
 		if (deltaX > 0)
 		{
-			hitbox.offsetX -= moveAmount1; // Move e1 left
-			otherHitbox.offsetX += moveAmount2; // Move e2 right
+			pos.x -= moveAmount1; // Move e1 left
+			otherPos.x += moveAmount2; // Move e2 right
 		}
 		else
 		{
-			hitbox.offsetX += moveAmount1; // Move e1 right
-			otherHitbox.offsetX -= moveAmount2; // Move e2 left
+			pos.x += moveAmount1; // Move e1 right
+			otherPos.x -= moveAmount2; // Move e2 left
 		}
 	}
 	else
@@ -185,13 +198,13 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 
 		if (deltaY > 0)
 		{
-			hitbox.offsetY -= moveAmount1; // Move e1 up
-			otherHitbox.offsetY += moveAmount2; // Move e2 down
+			pos.y -= moveAmount1; // Move e1 up
+			otherPos.y += moveAmount2; // Move e2 down
 		}
 		else
 		{
-			hitbox.offsetY += moveAmount1; // Move e1 down
-			otherHitbox.offsetY -= moveAmount2; // Move e2 up
+			pos.y += moveAmount1; // Move e1 down
+			otherPos.y -= moveAmount2; // Move e2 up
 		}
 	}
 

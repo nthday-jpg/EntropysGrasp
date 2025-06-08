@@ -132,6 +132,8 @@
     <ClInclude Include="src\behaviors\EntityBehavior.h" />
     <ClInclude Include="src\behaviors\PlayerMovementSystem.h" />
     <ClInclude Include="src\components\Behavior.h" />
+    <ClInclude Include="src\components\CollisionEvent.h" />
+    <ClInclude Include="src\components\CollisionType.h" />
     <ClInclude Include="src\components\EffectTags.h" />
     <ClInclude Include="src\components\Enemy.h" />
     <ClInclude Include="src\components\EnemySpawnInfo.h" />

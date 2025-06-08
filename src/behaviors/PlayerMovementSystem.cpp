@@ -12,6 +12,7 @@ void PlayerMovementSystem::calculateVelo(entt::registry& registry)
 	{
 		auto speed = calculatedSpeed(registry, playerEntity);
 		auto movementDirection = registry.get<MovementDirection>(playerEntity);
+
 		Velocity velocity = { movementDirection.x * speed, movementDirection.y * speed };
 		registry.emplace_or_replace<Velocity>(playerEntity, velocity);
 	}
@@ -19,11 +20,17 @@ void PlayerMovementSystem::calculateVelo(entt::registry& registry)
 
 float PlayerMovementSystem::calculatedSpeed(entt::registry& registry, entt::entity playerEntity)
 {
+	if (!registry.all_of<MovementDirection, LookingDirection, Speed>(playerEntity))
+	{
+		throw std::runtime_error("Player entity does not have all required components for speed calculation.");
+	}
+
 	//movement and looking is normalized vectors length 1
 	LookingDirection looking = registry.get<LookingDirection>(playerEntity);
 	MovementDirection movement = registry.get<MovementDirection>(playerEntity);
 	float speed = registry.get<Speed>(playerEntity).value;
 
+	
 	// Using dot product to scale speed 
 	// based on how much the movement direction and looking direction align
 	speed = speed * (0.8 + 0.2 * (looking.x * movement.x + looking.y * movement.y));
