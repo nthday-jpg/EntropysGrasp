@@ -98,25 +98,20 @@ int main() {
 		}
 		normalize(moveDir);
 
-
 		LookingDirection& lookDir = registry.get<LookingDirection>(player);
 		Position& playerPos = registry.get<Position>(player);
 		lookDir = { 10,10 };
 		normalize(lookDir);
 
+		behaviorSystem.initializeBehaviorMap();
+		behaviorSystem.updateBehavior(registry, 1.0f / 60.0f, spellLibrary, enemyLibrary);
+
+		spellSystem.update(registry, 1.0f / 60.0f, spellLibrary);
 
 		PlayerMovementSystem::calculateVelo(registry);
 		movementSystem.update(registry, 1.0f / 60.0f);
 		Hitbox& playerHitbox = registry.get<Hitbox>(player);
 		playerShape.setPosition({ playerPos.x ,playerPos.y });
-
-
-		behaviorSystem.initializeBehaviorMap();
-
-		behaviorSystem.updateBehavior(registry, 1.0f / 60.0f, spellLibrary, enemyLibrary);
-
-		spellSystem.update(registry, 1.0f / 60.0f, spellLibrary);
-
 
 		auto view = registry.view<Position, SpellTag>();
 		for (auto [entity, position] : view.each())
