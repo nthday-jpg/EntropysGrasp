@@ -15,8 +15,8 @@ bool EnemyLibrary::loadFromFile(const std::string& filename) {
 }
 
 const EnemyData& EnemyLibrary::getEnemyData(EnemyType type) const {
-	auto it = enemyDataMap.find(type);
-	if (it != enemyDataMap.end()) 
+	auto it = enemyDatabase.find(type);
+	if (it != enemyDatabase.end()) 
 	{
 		return it->second;
 	}

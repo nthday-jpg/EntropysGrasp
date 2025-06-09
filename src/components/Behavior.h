@@ -3,6 +3,7 @@
 
 enum class BehaviorType {
     Straight,
-    Homing,
-    Orbit
+    HomingEnemy,
+    Orbit,
+	HomingPlayer,
 };

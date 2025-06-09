@@ -15,7 +15,6 @@ entt::entity createSpell(entt::registry& registry, entt::entity caster, SpellID 
 	registry.emplace<Position>(spellEntity, position);
 	registry.emplace<Attack>(spellEntity, spellData.damage);
 	registry.emplace<Mana>(spellEntity, spellData.manaCost);
-	registry.emplace<Velocity>(spellEntity, direction.x * spellData.speed, direction.y * spellData.speed);
 	registry.emplace<Speed>(spellEntity, spellData.speed);
 	registry.emplace<Size>(spellEntity, spellData.size);
 	registry.emplace<Radius>(spellEntity, spellData.radius);

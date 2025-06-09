@@ -10,7 +10,7 @@ public:
     const EnemyData& getEnemyData(EnemyType type) const;
 
 private:
-    std::unordered_map<EnemyType, EnemyData> enemyDataMap;
+    std::unordered_map<EnemyType, EnemyData> enemyDatabase;
 
     // Helper to convert string to EnemyType
     EnemyType stringToEnemyType(const std::string& str);
