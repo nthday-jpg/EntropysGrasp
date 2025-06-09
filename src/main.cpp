@@ -39,7 +39,6 @@ int main() {
 
 	BehaviorSystem behaviorSystem;
 	SpellSystem spellSystem;
-	behaviorSystem.initializeBehaviorMap();
 
 
 	Hitbox pHitbox(50.0f, 50.0f, 0.0f, 0.0f);
@@ -76,6 +75,7 @@ int main() {
 		MovementDirection& moveDir = registry.get<MovementDirection>(player);
 		moveDir = { 0.0f, 0.0f };
 
+
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::A))
 		{
 			moveDir.x = -1.0f;
@@ -98,27 +98,33 @@ int main() {
 		}
 		normalize(moveDir);
 
+
 		LookingDirection& lookDir = registry.get<LookingDirection>(player);
 		Position& playerPos = registry.get<Position>(player);
 		lookDir = { 10,10 };
 		normalize(lookDir);
+
 
 		PlayerMovementSystem::calculateVelo(registry);
 		movementSystem.update(registry, 1.0f / 60.0f);
 		Hitbox& playerHitbox = registry.get<Hitbox>(player);
 		playerShape.setPosition({ playerPos.x ,playerPos.y });
 
+
+		behaviorSystem.initializeBehaviorMap();
+
 		behaviorSystem.updateBehavior(registry, 1.0f / 60.0f, spellLibrary, enemyLibrary);
+
 		spellSystem.update(registry, 1.0f / 60.0f, spellLibrary);
+
 
 		auto view = registry.view<Position, SpellTag>();
 		for (auto [entity, position] : view.each())
 		{
-			
+			cout << "Spell Position: " << position.x << ", " << position.y << endl;
 			spellShape.setPosition({ position.x, position.y });
 
 		}
-
 
 		window.clear(Color::Black);
 		window.draw(spellShape);
