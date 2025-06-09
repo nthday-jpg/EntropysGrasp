@@ -97,7 +97,7 @@ int main() {
 		normalize(moveDir);
 
 		behaviorSystem.initializeBehaviorMap();
-		behaviorSystem.updateBehavior(registry, 1.0f / 60.0f, spellLibrary/*, enemyLibrary*/);
+		behaviorSystem.updateBehavior(registry, 1.0f / 60.0f, spellLibrary, enemyLibrary);
 
 		spellSystem.update(registry, 1.0f / 60.0f, spellLibrary);
 
