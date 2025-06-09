@@ -9,7 +9,8 @@
 #include "components/statComponent.h"
 #include "components/hitbox.h"
 #include "behaviors/PlayerMovementSystem.h"
-#include "resources/SpellLibrary.h"
+#include "resources/SpellLibrary.h"4
+#include "resources/EnemyLibrary.h"
 #include "components/Spell.h"
 #include "systems/BehaviorSystem.h"
 #include "systems/SpellSystem.h"
@@ -26,7 +27,7 @@ void normalize(Vector2f& vec) {
 }
 
 int main() {
-	RenderWindow window(VideoMode({ 800, 600 }), "Game Test");
+	RenderWindow window(VideoMode({ 800, 600 }), "ECS Example");
 
 	entt::registry registry;
 	CollisionSystem collisionSystem(registry);
@@ -34,12 +35,11 @@ int main() {
 	
 	EnemyLibrary enemyLibrary;
 	SpellLibrary spellLibrary;
-	SpellData spellData = { 1, 1, 1, 1, 50, 1, 3, 1, SpellEffect::Burn, BehaviorType::Straight };
-	spellLibrary.spellDatabase[SpellID::Fireball] =  spellData;
+	SpellData spellData = { 1, 1, 1, 1, 50, 1, 5, 1, SpellEffect::Burn, BehaviorType::Straight };
+	spellLibrary.spellDatabase[SpellID::Fireball] = spellData;
 
 	BehaviorSystem behaviorSystem;
 	SpellSystem spellSystem;
-
 
 	Hitbox pHitbox(50.0f, 50.0f, 0.0f, 0.0f);
 
@@ -71,10 +71,8 @@ int main() {
 			}
 		}
 
-
 		MovementDirection& moveDir = registry.get<MovementDirection>(player);
 		moveDir = { 0.0f, 0.0f };
-
 
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::A))
 		{
@@ -98,28 +96,30 @@ int main() {
 		}
 		normalize(moveDir);
 
+		behaviorSystem.initializeBehaviorMap();
+		behaviorSystem.updateBehavior(registry, 1.0f / 60.0f, spellLibrary/*, enemyLibrary*/);
+
+		spellSystem.update(registry, 1.0f / 60.0f, spellLibrary);
+
+
 		LookingDirection& lookDir = registry.get<LookingDirection>(player);
 		Position& playerPos = registry.get<Position>(player);
 		lookDir = { 10,10 };
 		normalize(lookDir);
 
-		behaviorSystem.initializeBehaviorMap();
-		behaviorSystem.updateBehavior(registry, 1.0f / 60.0f, spellLibrary, enemyLibrary);
-
-		spellSystem.update(registry, 1.0f / 60.0f, spellLibrary);
 
 		PlayerMovementSystem::calculateVelo(registry);
 		movementSystem.update(registry, 1.0f / 60.0f);
 		Hitbox& playerHitbox = registry.get<Hitbox>(player);
 		playerShape.setPosition({ playerPos.x ,playerPos.y });
 
+
 		auto view = registry.view<Position, SpellTag>();
 		for (auto [entity, position] : view.each())
 		{
-			cout << "Spell Position: " << position.x << ", " << position.y << endl;
 			spellShape.setPosition({ position.x, position.y });
-
 		}
+
 
 		window.clear(Color::Black);
 		window.draw(spellShape);
