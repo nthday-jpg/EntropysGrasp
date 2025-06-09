@@ -35,7 +35,7 @@ int main() {
 	
 	EnemyLibrary enemyLibrary;
 	SpellLibrary spellLibrary;
-	SpellData spellData = { 1, 1, 1, 1, 50, 1, 5, 1, SpellEffect::Burn, BehaviorType::Straight };
+	SpellData spellData = { 1, 1, 1, 1, 50, 1, 5, 1, SpellEffect::Burn, BehaviorType::HomingPlayer };
 	spellLibrary.spellDatabase[SpellID::Fireball] = spellData;
 
 	BehaviorSystem behaviorSystem;
@@ -117,6 +117,7 @@ int main() {
 		auto view = registry.view<Position, SpellTag>();
 		for (auto [entity, position] : view.each())
 		{
+			cout << "Spell Position: (" << position.x << ", " << position.y << ")" << endl;
 			spellShape.setPosition({ position.x, position.y });
 		}
 

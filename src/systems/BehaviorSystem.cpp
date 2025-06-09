@@ -8,10 +8,10 @@
 
 void BehaviorSystem::initializeBehaviorMap() {
 	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity /*unused*/, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
-		//SpellID spellID = registry.get<SpellID>(entity);
-		//SpellData spellData = spellLibrary.getSpell(spellID);
-		//auto direction = registry.get<LookingDirection>(entity);
-		//registry.emplace_or_replace<Velocity>(entity, direction.x * spellData.speed, direction.y * spellData.speed);
+		SpellID spellID = registry.get<SpellID>(entity);
+		SpellData spellData = spellLibrary.getSpell(spellID);
+		auto direction = registry.get<LookingDirection>(entity);
+		registry.emplace_or_replace<Velocity>(entity, direction.x * spellData.speed, direction.y * spellData.speed);
 	};
 	behaviorMap[BehaviorType::HomingEnemy] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
 		auto& position = registry.get<Position>(entity);
@@ -30,7 +30,7 @@ void BehaviorSystem::initializeBehaviorMap() {
 			velo.y = direction.y * spellData.speed;
 		}
 
-		velo = registry.emplace_or_replace<Velocity>(entity, velo);
+		velo = registry.replace<Velocity>(entity, velo);
 	};
 	behaviorMap[BehaviorType::Orbit] = [](entt::entity entity, entt::entity center, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
 		auto& position = registry.get<Position>(entity);
@@ -79,11 +79,14 @@ void BehaviorSystem::updateBehavior(entt::registry& registry, float dt, const Sp
 					it->second(entity, entity, registry, dt, spellLibrary, enemyLibrary);
 				}
 				else if (spell.behaviorType == BehaviorType::HomingEnemy) {
-					//it->second(entity, registry, dt, spellLibrary);
+					auto view = registry.view<PlayerTag>();
+					for (auto player : view) {
+						it->second(entity, player, registry, dt, spellLibrary, enemyLibrary);
+					}
 				}
 				else if (spell.behaviorType == BehaviorType::Orbit) {
 					auto view = registry.view<PlayerTag>();
-					for (auto player : view) {
+					for (auto& player : view) {
 						it->second(entity, player, registry, dt, spellLibrary, enemyLibrary);
 					}
 				}
