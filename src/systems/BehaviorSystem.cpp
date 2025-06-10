@@ -13,7 +13,7 @@ void BehaviorSystem::initializeBehaviorMap() {
 		SpellID spellID = registry.get<SpellID>(entity);
 		SpellData spellData = spellLibrary.getSpell(spellID);
 		auto direction = registry.get<LookingDirection>(caster);
-		registry.replace<Velocity>(entity, direction.x * spellData.speed, direction.y * spellData.speed);
+		registry.emplace_or_replace<Velocity>(entity, direction.x * spellData.speed, direction.y * spellData.speed);
 	};
 	behaviorMap[BehaviorType::HomingEnemy] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
 		auto& position = registry.get<Position>(entity);
@@ -32,7 +32,7 @@ void BehaviorSystem::initializeBehaviorMap() {
 			velo.y = direction.y * spellData.speed;
 		}
 
-		velo = registry.replace<Velocity>(entity, velo);
+		velo = registry.emplace_or_replace<Velocity>(entity, velo);
 	};
 	behaviorMap[BehaviorType::Orbit] = [](entt::entity entity, entt::entity center, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
 		auto& position = registry.get<Position>(entity);

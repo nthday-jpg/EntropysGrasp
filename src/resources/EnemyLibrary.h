@@ -8,9 +8,9 @@ public:
 	//not implemented yet
     bool loadFromFile(const std::string& filename);
     const EnemyData& getEnemyData(EnemyType type) const;
+    std::unordered_map<EnemyType, EnemyData> enemyDatabase;
 
 private:
-    std::unordered_map<EnemyType, EnemyData> enemyDatabase;
 
     // Helper to convert string to EnemyType
     EnemyType stringToEnemyType(const std::string& str);

@@ -58,14 +58,17 @@ int main() {
 	playerShape.setFillColor(Color::Green);
 	playerShape.setPosition({ 0.0f, 0.0f });
 
+	EnemyData enemyData = { 100, 100, 100, 100, 100, 0.3f, BehaviorType::HomingPlayer };
+	enemyLibrary.enemyDatabase[EnemyType::Dragon] = enemyData;
+
 	auto enemy = registry.create();
 	registry.emplace<EnemyTag>(enemy);
+	registry.emplace<EnemyType>(enemy, EnemyType::Dragon);
 	registry.emplace<Position>(enemy, 100.0f, 100.0f);
-	registry.emplace<Speed>(enemy, 20.0f);
+	registry.emplace<Speed>(enemy, enemyData.speed.value);
 	registry.emplace<Hitbox>(enemy, Hitbox(50.0f, 50.0f, 0.0f, 0.0f));
-	registry.emplace<MovementDirection>(enemy, 0.0f, 0.0f);
-	registry.emplace<LookingDirection>(enemy, 0.0f, 0.0f);
-	registry.emplace<Resistance>(enemy, 0.3f);
+	registry.emplace<Resistance>(enemy, enemyData.resistance.value);
+	registry.emplace<BehaviorType>(enemy, enemyData.behaviorType);
 
 	RectangleShape enemyShape(Vector2f(50.0f, 50.0f));
 	enemyShape.setFillColor(Color::Red);
