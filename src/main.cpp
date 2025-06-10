@@ -35,7 +35,7 @@ int main() {
 	
 	EnemyLibrary enemyLibrary;
 	SpellLibrary spellLibrary;
-	SpellData spellData = { 1, 1, 1, 1, 50, 1, 50, 1, SpellEffect::Burn, BehaviorType::HomingEnemy };
+	SpellData spellData = { 1, 1, 1, 1, 100, 1, 50, 40, SpellEffect::Burn, BehaviorType::HomingEnemy };
 	spellLibrary.spellDatabase[SpellID::Fireball] = spellData;
 
 	BehaviorSystem behaviorSystem;
@@ -53,12 +53,11 @@ int main() {
 	registry.emplace<Mana>(player, 100.0f);
 	registry.emplace<Resistance>(player, 0.5f);
 
-
 	RectangleShape playerShape(Vector2f(50.0f, 50.0f));
 	playerShape.setFillColor(Color::Green);
 	playerShape.setPosition({ 0.0f, 0.0f });
 
-	EnemyData enemyData = { 100, 100, 100, 100, 100, 0.3f, BehaviorType::HomingPlayer };
+	EnemyData enemyData = { 100, 100, 100, 0, 100, 0.3f, BehaviorType::HomingPlayer };
 	enemyLibrary.enemyDatabase[EnemyType::Dragon] = enemyData;
 
 	auto enemy = registry.create();
@@ -67,6 +66,7 @@ int main() {
 	registry.emplace<Position>(enemy, 100.0f, 100.0f);
 	registry.emplace<Speed>(enemy, enemyData.speed.value);
 	registry.emplace<Hitbox>(enemy, Hitbox(50.0f, 50.0f, 0.0f, 0.0f));
+	registry.emplace<MovementDirection>(enemy, 0.0f, 0.0f);
 	registry.emplace<Resistance>(enemy, enemyData.resistance.value);
 	registry.emplace<BehaviorType>(enemy, enemyData.behaviorType);
 
@@ -76,6 +76,8 @@ int main() {
 
 	RectangleShape spellShape(Vector2f(15.0f, 15.0f));
 	spellShape.setFillColor(Color::Red);
+	
+	behaviorSystem.initializeBehaviorMap();
 
 	spellSystem.castTimes[SpellID::Fireball] = 0.5f;
 	window.setFramerateLimit(60);
@@ -120,9 +122,8 @@ int main() {
 
 		if (cast) 
 		{
-		behaviorSystem.initializeBehaviorMap();
-		behaviorSystem.updateBehavior(registry, 1.0f / 60.0f, spellLibrary, enemyLibrary);
-		spellSystem.update(registry, 1.0f / 60.0f, spellLibrary);
+			behaviorSystem.updateBehavior(registry, 1.0f / 60.0f, spellLibrary, enemyLibrary);
+			spellSystem.update(registry, 1.0f / 60.0f, spellLibrary);
 		}
 
 

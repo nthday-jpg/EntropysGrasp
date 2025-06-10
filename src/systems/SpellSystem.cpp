@@ -5,6 +5,9 @@
 #include "BehaviorSystem.h"
 #include "SpellSystem.h"
 #include <iostream>
+#include <vector>
+
+using namespace std;
 
 void SpellSystem::updateCastingSystem(entt::registry& registry, float dt, const SpellLibrary& spellLibrary) {
     auto view = registry.view<PlayerTag>();
@@ -27,9 +30,18 @@ void SpellSystem::updateCastingSystem(entt::registry& registry, float dt, const 
                 if (it->second <= 0.0f)
                 {
                     // Cast the spell
-                    entt::entity spell = createSpell(registry, player, it->first, spellLibrary);
+					int count = 1; // Default to 1, can be modified based on spellData
+					cout << "ok1" << endl;
+                    vector<entt::entity> spell = createSpell(registry, player, it->first, spellLibrary, count);
+					cout << "ok2" << endl;
+                    for (int i = 0; i < spell.size(); ++i)
+                    {
+						cout << "ok3" << endl;
+                        durations[spell[i]] = spellData.duration; // Set the duration for the spell
+					}
+					cout << "ok4" << endl;
                     cooldowns[it->first] = spellData.cooldowns; // Set the cooldown for the spell
-                    durations[spell] = spellData.duration; // Set the duration for the spell
+					cout << "ok5" << endl;
                     it = castTimes.erase(it);
                 }
                 else {

@@ -123,6 +123,9 @@
     <ClInclude Include="src\resources\EnemyLibrary.h">
       <Filter>Header Files\resources</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utils\VectorMath.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\systems\CollisionSystem.cpp">
