@@ -37,7 +37,6 @@ private:
 	// const MapManager to query spawn information
 	const std::vector<EnemySpawnInfo> spawnInfos;
 
-
 	// Handle spawning of enemies based on spawn information and time delta
 	// Check the conditions for spawning enemies
 	// Call spawnEnemy for each position in the spawn info
@@ -52,5 +51,8 @@ private:
 	entt::entity spawnEnemy(EnemyType type, Position position);
 
 	// Return whether the position is in load chunk
-	bool isInLoadChunk(Position);
+	bool isInLoadChunk(const Position&) const;
+			  
+	// Method to spawn enemy randomly beyond the view
+	Position randomizeOffScreenPosition(const Position& pos) const;
 };

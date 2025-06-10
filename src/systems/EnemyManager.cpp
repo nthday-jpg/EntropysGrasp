@@ -3,6 +3,7 @@
 #include "../components/EntityTags.h"
 #include "../components/Enemy.h"
 #include "../components/MovementComponents.h"
+#include <random>
 
 entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position) 
 {
@@ -15,19 +16,13 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
     auto view = registry.view<InactiveEnemyTag>();
     for (auto entity : view) 
     {
-		EnemyType existingType = registry.get<EnemyType>(entity);
-		if (existingType != type) 
-        {
-			continue; 
-		}
-
         registry.remove<InactiveEnemyTag>(entity);
+		registry.emplace_or_replace<EnemyType>(entity, type);
 		registry.replace<Position>(entity, position.x, position.y);
 		registry.replace<Health>(entity, health, health); 
 		registry.replace<Speed>(entity, speed);
 		registry.replace<Attack>(entity, attack);
 		return entity; 
-
     }
 
     entt::entity entity = registry.create();
@@ -53,7 +48,8 @@ void EnemyManager::spawning(const std::vector<EnemySpawnInfo>& spawnInfos, float
             {
                 if (isInLoadChunk(position)) 
                 {
-                    spawnEnemy(info.type, position);
+                    Position randomPosition = randomizeOffScreenPosition(position);
+                    spawnEnemy(info.type, randomPosition);
                 }
             }
             timer = 0.0f; // Reset timer after spawning all positions for this type
@@ -84,7 +80,7 @@ void EnemyManager::removing()
     }
 }
 
-bool EnemyManager::isInLoadChunk(Position position)
+bool EnemyManager::isInLoadChunk(const Position& position) const
 {
 	if (position.x < view.getCenter().x - view.getSize().x ||
 		position.x > view.getCenter().x + view.getSize().x ||
@@ -110,3 +106,50 @@ EnemyManager::EnemyManager(entt::registry registry, EnemyLibrary& enemyLibrary,
     : registry(registry), enemyLibrary(enemyLibrary), view(view), gameClock(gameClock) 
 {
 };
+
+Position EnemyManager::randomizeOffScreenPosition(const Position& position) const
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<> dist(0, 199);
+    static std::uniform_real_distribution<float> angleDist(0.0f, 2.0f * 3.14159f);
+
+    Position randomPosition = position;
+
+    // If position is inside the view/load chunk, spawn outside the screen at a random angle
+    if (isInLoadChunk(position)) {
+        float angle = angleDist(gen);
+        float offsetX = std::cos(angle) * (view.getSize().x * 0.55f); // Slightly beyond screen edge
+        float offsetY = std::sin(angle) * (view.getSize().y * 0.55f);
+
+        // Position relative to screen center
+        randomPosition.x = view.getCenter().x + offsetX;
+        randomPosition.y = view.getCenter().y + offsetY;
+
+        // Add some randomness to prevent enemies from spawning in a perfect circle
+        randomPosition.x += dist(gen) * 0.5f - 50.0f;
+        randomPosition.y += dist(gen) * 0.5f - 50.0f;
+
+        return randomPosition;
+    }
+
+    // Original logic for positions already outside the view
+    if (position.x < view.getCenter().x - view.getSize().x)
+    {
+        randomPosition.x = position.x - 100.0f - static_cast<float>(dist(gen));
+    }
+    else if (position.x > view.getCenter().x + view.getSize().x)
+    {
+        randomPosition.x = position.x + 100.0f + static_cast<float>(dist(gen));
+    }
+    if (position.y < view.getCenter().y - view.getSize().y)
+    {
+        randomPosition.y = position.y - 100.0f - static_cast<float>(dist(gen));
+    }
+    else if (position.y > view.getCenter().y + view.getSize().y)
+    {
+        randomPosition.y = position.y + 100.0f + static_cast<float>(dist(gen));
+    }
+
+    return randomPosition;
+}
