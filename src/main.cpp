@@ -35,7 +35,7 @@ int main() {
 	
 	EnemyLibrary enemyLibrary;
 	SpellLibrary spellLibrary;
-	SpellData spellData = { 1, 1, 1, 1, 50, 1, 5, 1, SpellEffect::Burn, BehaviorType::HomingPlayer };
+	SpellData spellData = { 1, 1, 1, 1, 50, 1, 50, 1, SpellEffect::Burn, BehaviorType::HomingEnemy };
 	spellLibrary.spellDatabase[SpellID::Fireball] = spellData;
 
 	BehaviorSystem behaviorSystem;
@@ -46,21 +46,37 @@ int main() {
 	auto player = registry.create();
 	registry.emplace<PlayerTag>(player);
 	registry.emplace<Position>(player, 0.0f, 0.0f);
-	registry.emplace<Speed>(player, 20.0f);
+	registry.emplace<Speed>(player, 200.0f);
 	registry.emplace<Hitbox>(player, pHitbox);
 	registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
 	registry.emplace<LookingDirection>(player, 0.0f, 0.0f);
 	registry.emplace<Mana>(player, 100.0f);
+	registry.emplace<Resistance>(player, 0.5f);
+
 
 	RectangleShape playerShape(Vector2f(50.0f, 50.0f));
 	playerShape.setFillColor(Color::Green);
 	playerShape.setPosition({ 0.0f, 0.0f });
+
+	auto enemy = registry.create();
+	registry.emplace<EnemyTag>(enemy);
+	registry.emplace<Position>(enemy, 100.0f, 100.0f);
+	registry.emplace<Speed>(enemy, 20.0f);
+	registry.emplace<Hitbox>(enemy, Hitbox(50.0f, 50.0f, 0.0f, 0.0f));
+	registry.emplace<MovementDirection>(enemy, 0.0f, 0.0f);
+	registry.emplace<LookingDirection>(enemy, 0.0f, 0.0f);
+	registry.emplace<Resistance>(enemy, 0.3f);
+
+	RectangleShape enemyShape(Vector2f(50.0f, 50.0f));
+	enemyShape.setFillColor(Color::Red);
+
 
 	RectangleShape spellShape(Vector2f(15.0f, 15.0f));
 	spellShape.setFillColor(Color::Red);
 
 	spellSystem.castTimes[SpellID::Fireball] = 0.5f;
 	window.setFramerateLimit(60);
+	bool cast = false;
 	while (window.isOpen())
 	{
 		while (const optional event = window.pollEvent())
@@ -76,43 +92,57 @@ int main() {
 
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::A))
 		{
-			moveDir.x = -1.0f;
+			moveDir.x += -1.0f;
 			cout << "Moving Left" << endl;
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::D))
 		{
-			moveDir.x = 1.0f;
+			moveDir.x += 1.0f;
 			cout << "Moving Right" << endl;
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::W))
 		{
-			moveDir.y = -1.0f;
+			moveDir.y += -1.0f;
 			cout << "Moving Up" << endl;
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::S))
 		{
-			moveDir.y = 1.0f;
+			moveDir.y += 1.0f;
 			cout << "Moving Down" << endl;
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Scancode::F)) {
+			cast = true;
 		}
 		normalize(moveDir);
 
+		if (cast) 
+		{
 		behaviorSystem.initializeBehaviorMap();
 		behaviorSystem.updateBehavior(registry, 1.0f / 60.0f, spellLibrary, enemyLibrary);
-
 		spellSystem.update(registry, 1.0f / 60.0f, spellLibrary);
+		}
+
 
 
 		LookingDirection& lookDir = registry.get<LookingDirection>(player);
+		Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 		Position& playerPos = registry.get<Position>(player);
-		lookDir = { 10,10 };
+		lookDir = { mousePos.x - playerPos.x, mousePos.y - playerPos.y };
 		normalize(lookDir);
-
 
 		PlayerMovementSystem::calculateVelo(registry);
 		movementSystem.update(registry, 1.0f / 60.0f);
-		Hitbox& playerHitbox = registry.get<Hitbox>(player);
 		playerShape.setPosition({ playerPos.x ,playerPos.y });
 
+		Position& enemyPos = registry.get<Position>(enemy);
+		enemyShape.setPosition({ enemyPos.x, enemyPos.y });
+
+
+		collisionSystem.detectCollisions();
+		for (const auto& event : collisionSystem.getCollisionEvents())
+		{
+			collisionSystem.resolvePhysicalOverlap(event.entity1, event.entity2);
+		}
 
 		auto view = registry.view<Position, SpellTag>();
 		for (auto [entity, position] : view.each())
@@ -124,6 +154,7 @@ int main() {
 
 		window.clear(Color::Black);
 		window.draw(spellShape);
+		window.draw(enemyShape);
 		window.draw(playerShape);
 		window.display();
 	}

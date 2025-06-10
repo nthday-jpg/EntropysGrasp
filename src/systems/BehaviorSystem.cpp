@@ -5,13 +5,15 @@
 #include "../components/EntityTags.h"
 #include "../components/statComponent.h"
 #include "../resources/EnemyLibrary.h"
+#include <iostream>
+
 
 void BehaviorSystem::initializeBehaviorMap() {
-	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity /*unused*/, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
+	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity caster, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
 		SpellID spellID = registry.get<SpellID>(entity);
 		SpellData spellData = spellLibrary.getSpell(spellID);
-		auto direction = registry.get<LookingDirection>(entity);
-		registry.emplace_or_replace<Velocity>(entity, direction.x * spellData.speed, direction.y * spellData.speed);
+		auto direction = registry.get<LookingDirection>(caster);
+		registry.replace<Velocity>(entity, direction.x * spellData.speed, direction.y * spellData.speed);
 	};
 	behaviorMap[BehaviorType::HomingEnemy] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
 		auto& position = registry.get<Position>(entity);
@@ -76,7 +78,10 @@ void BehaviorSystem::updateBehavior(entt::registry& registry, float dt, const Sp
 			auto it = behaviorMap.find(spell.behaviorType);
 			if (it != behaviorMap.end()) {
 				if (spell.behaviorType == BehaviorType::Straight) {
-					it->second(entity, entity, registry, dt, spellLibrary, enemyLibrary);
+					auto view = registry.view<PlayerTag>();
+					for (auto player : view) {
+						it->second(entity, player, registry, dt, spellLibrary, enemyLibrary);
+					}
 				}
 				else if (spell.behaviorType == BehaviorType::HomingEnemy) {
 					auto view = registry.view<PlayerTag>();
