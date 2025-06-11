@@ -126,6 +126,12 @@
     <ClInclude Include="src\Utils\VectorMath.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\components\CollisionType.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\CollisionEvent.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\systems\CollisionSystem.cpp">
@@ -169,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="src\resources\SpellLibrary.cpp">
       <Filter>Source Files\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\VectorMath.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

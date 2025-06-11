@@ -132,6 +132,8 @@
     <ClInclude Include="src\behaviors\EntityBehavior.h" />
     <ClInclude Include="src\behaviors\PlayerMovementSystem.h" />
     <ClInclude Include="src\components\Behavior.h" />
+    <ClInclude Include="src\components\CollisionEvent.h" />
+    <ClInclude Include="src\components\CollisionType.h" />
     <ClInclude Include="src\components\EffectTags.h" />
     <ClInclude Include="src\components\Enemy.h" />
     <ClInclude Include="src\components\EnemySpawnInfo.h" />
@@ -170,6 +172,7 @@
     <ClCompile Include="src\systems\MovementSystem.cpp" />
     <ClCompile Include="src\systems\SpellSystem.cpp" />
     <ClCompile Include="src\Utils\SpatialHash.cpp" />
+    <ClCompile Include="src\Utils\VectorMath.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

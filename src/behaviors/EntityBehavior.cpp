@@ -1,6 +1,7 @@
 #include "../components/movementComponents.h"
 #include "../components/EntityTags.h"
 #include "../components/statComponent.h"
+#include "../components/hitbox.h"
 #include "EntityBehavior.h"
 #include <vector>
 
@@ -33,6 +34,8 @@ vector<entt::entity> createSpell(entt::registry& registry, entt::entity caster, 
         registry.emplace<Radius>(spellEntity, spellData.radius);
         registry.emplace<BehaviorType>(spellEntity, spellData.behaviorType);
         registry.emplace<SpellEffect>(spellEntity, spellData.effect);
+        registry.emplace<Hitbox>(spellEntity, Hitbox(15.0f, 15.0f, 0.0f, 0.0f));
+		registry.emplace<Resistance>(spellEntity, 0.5f); // Example resistance value
 
         spellEntities.push_back(spellEntity);
     }

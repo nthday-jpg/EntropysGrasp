@@ -9,22 +9,15 @@
 #include "components/statComponent.h"
 #include "components/hitbox.h"
 #include "behaviors/PlayerMovementSystem.h"
-#include "resources/SpellLibrary.h"4
+#include "resources/SpellLibrary.h"
 #include "resources/EnemyLibrary.h"
 #include "components/Spell.h"
 #include "systems/BehaviorSystem.h"
 #include "systems/SpellSystem.h"
+#include "Utils/VectorMath.h"
 
 using namespace std;
 using namespace sf;
-
-void normalize(Vector2f& vec) {
-	float length = sqrt(vec.x * vec.x + vec.y * vec.y);
-	if (length > 0) {
-		vec.x /= length;
-		vec.y /= length;
-	}
-}
 
 int main() {
 	RenderWindow window(VideoMode({ 800, 600 }), "ECS Example");
@@ -35,7 +28,7 @@ int main() {
 	
 	EnemyLibrary enemyLibrary;
 	SpellLibrary spellLibrary;
-	SpellData spellData = { 1, 1, 1, 1, 100, 1, 50, 40, SpellEffect::Burn, BehaviorType::HomingEnemy };
+	SpellData spellData = { 1, 1, 1, 1, 1000, 1, 1000, 1, SpellEffect::Burn, BehaviorType::Orbit };
 	spellLibrary.spellDatabase[SpellID::Fireball] = spellData;
 
 	BehaviorSystem behaviorSystem;
@@ -46,7 +39,7 @@ int main() {
 	auto player = registry.create();
 	registry.emplace<PlayerTag>(player);
 	registry.emplace<Position>(player, 0.0f, 0.0f);
-	registry.emplace<Speed>(player, 200.0f);
+	registry.emplace<Speed>(player, 800.0f);
 	registry.emplace<Hitbox>(player, pHitbox);
 	registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
 	registry.emplace<LookingDirection>(player, 0.0f, 0.0f);
@@ -57,7 +50,7 @@ int main() {
 	playerShape.setFillColor(Color::Green);
 	playerShape.setPosition({ 0.0f, 0.0f });
 
-	EnemyData enemyData = { 100, 100, 100, 0, 100, 0.3f, BehaviorType::HomingPlayer };
+	EnemyData enemyData = { 100, 100, 100, 100, 100, 0.3f, BehaviorType::HomingPlayer };
 	enemyLibrary.enemyDatabase[EnemyType::Dragon] = enemyData;
 
 	auto enemy = registry.create();
@@ -98,22 +91,18 @@ int main() {
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::A))
 		{
 			moveDir.x += -1.0f;
-			cout << "Moving Left" << endl;
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::D))
 		{
 			moveDir.x += 1.0f;
-			cout << "Moving Right" << endl;
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::W))
 		{
 			moveDir.y += -1.0f;
-			cout << "Moving Up" << endl;
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::S))
 		{
 			moveDir.y += 1.0f;
-			cout << "Moving Down" << endl;
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Scancode::F)) {
 			cast = true;
@@ -151,7 +140,6 @@ int main() {
 		auto view = registry.view<Position, SpellTag>();
 		for (auto [entity, position] : view.each())
 		{
-			cout << "Spell Position: (" << position.x << ", " << position.y << ")" << endl;
 			spellShape.setPosition({ position.x, position.y });
 		}
 

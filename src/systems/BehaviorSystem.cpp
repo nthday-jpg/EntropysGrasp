@@ -10,7 +10,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 
-
 void BehaviorSystem::initializeBehaviorMap() {
 	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity caster, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
 		SpellID spellID = registry.get<SpellID>(entity);
@@ -61,11 +60,11 @@ void BehaviorSystem::initializeBehaviorMap() {
 
 		float devitate = magnitude(distance) - radius; 
 
-		sf::Vector2f norm = normalize(distance);
-		sf::Vector2f movementDir(-norm.y, norm.x); 
+		normalize(distance);
+		sf::Vector2f movementDir(-distance.y, distance.x);
 
-		velocity.x = movementDir.x * speed + velocityCenter.x - devitate * norm.x; 
-		velocity.y = movementDir.y * speed + velocityCenter.y - devitate * norm.y;
+		velocity.x = movementDir.x * speed + velocityCenter.x - devitate * distance.x;
+		velocity.y = movementDir.y * speed + velocityCenter.y - devitate * distance.y;
 
 		registry.emplace_or_replace<Velocity>(entity, velocity);
 	};
@@ -86,6 +85,7 @@ void BehaviorSystem::initializeBehaviorMap() {
 		if (magnitude(movementDirection) > 0) {
 			velo.x = movementDirection.x * enemyData.speed.value;
 			velo.y = movementDirection.y * enemyData.speed.value;
+			std::cout << enemyData.speed.value << std::endl << magnitude(movementDirection) << std::endl;
 		}
 
 		velo = registry.emplace_or_replace<Velocity>(entity, velo);
