@@ -16,6 +16,9 @@
 
 
 class CollisionSystem {
+    std::vector<CollisionEvent> collisionEvents;
+    entt::registry& registry;
+
 public:
     CollisionSystem(entt::registry& registry) : registry(registry)
     {
@@ -33,9 +36,6 @@ public:
 private:
     bool isIntersect(entt::entity e1, entt::entity e2) const;
     CollisionType getCollisionType(entt::entity e) const;
-
-    std::vector<CollisionEvent> collisionEvents;
-    entt::registry& registry;
 
     void resolveRR(entt::entity e1, entt::entity e2);
     void resolveCC(entt::entity e1, entt::entity e2);
