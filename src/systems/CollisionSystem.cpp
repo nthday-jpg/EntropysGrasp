@@ -4,6 +4,7 @@
 #include "../components/statComponent.h"
 #include "../components/hitbox.h"
 #include "../components/movementComponents.h"
+#include "../Utils/VectorMath.h"
 
 using namespace std;  
 
@@ -135,16 +136,42 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 		throw std::runtime_error("Both entities must have Hitbox, Position, and Resistance components to resolve overlap.");
 	}
 
+	Hitbox& hitbox1 = registry.get<Hitbox>(e1);
+	Hitbox& hitbox2 = registry.get<Hitbox>(e2);
+
+	if (hitbox1.type == hitbox2.type)
+	{
+		if (hitbox1.type == HitboxType::Rectangle)
+		{
+			resolveRR(e1, e2);
+		}
+		else if (hitbox1.type == HitboxType::Circle)
+		{
+			resolveCC(e1, e2);
+		}
+		else
+		{
+			cerr << "Unsupported hitbox type for resolving overlap." << endl;
+		}
+	}
+	else
+	{
+		cerr << "Cannot resolve overlap between different hitbox types." << endl;
+	}
+}
+
+void CollisionSystem::resolveRR(entt::entity e1, entt::entity e2)
+{
 	Hitbox& hitbox = registry.get<Hitbox>(e1);
 	Hitbox& otherHitbox = registry.get<Hitbox>(e2);
 
 	if (hitbox.type != HitboxType::Rectangle || otherHitbox.type != HitboxType::Rectangle)
 	{
 		cerr << "Currently only rectangle hitboxes are supported for resolving overlap." << endl;
-		return; 
+		return;
 	};
 
-	float resistance1 = registry.get<Resistance>(e1).value; 
+	float resistance1 = registry.get<Resistance>(e1).value;
 	float resistance2 = registry.get<Resistance>(e2).value;
 	float totalResistance = resistance1 + resistance2;
 
@@ -207,7 +234,53 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 			otherPos.y -= moveAmount2; // Move e2 up
 		}
 	}
+}
 
+void CollisionSystem::resolveCC(entt::entity e1, entt::entity e2)
+{
+	Hitbox& hitbox = registry.get<Hitbox>(e1);
+	Hitbox& otherHitbox = registry.get<Hitbox>(e2);
+
+	Position& pos = registry.get<Position>(e1);
+	Position& otherPos = registry.get<Position>(e2);
+
+	float centerX1 = pos.x + hitbox.offsetX + hitbox.radius;
+	float centerY1 = pos.y + hitbox.offsetY + hitbox.radius;
+
+	float centerX2 = otherPos.x + otherHitbox.offsetX + otherHitbox.radius;
+	float centerY2 = otherPos.y + otherHitbox.offsetY + otherHitbox.radius;
+
+	float deltaX = centerX2 - centerX1;
+	float deltaY = centerY2 - centerY1;
+
+	float distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
+	if (distance < hitbox.radius + otherHitbox.radius)
+	{
+		float overlap = hitbox.radius + otherHitbox.radius - distance;
+
+		float resistance1 = registry.get<Resistance>(e1).value;
+		float resistance2 = registry.get<Resistance>(e2).value;
+		float totalResistance = resistance1 + resistance2;
+
+		float moveAmount1 = (resistance2 / totalResistance + 0.01f) * overlap;
+		float moveAmount2 = (resistance1 / totalResistance + 0.01f) * overlap;
+		
+		if (distance > 0)
+		{
+			pos.x -= moveAmount1 * (deltaX / distance);
+			pos.y -= moveAmount1 * (deltaY / distance);
+			otherPos.x += moveAmount2 * (deltaX / distance);
+			otherPos.y += moveAmount2 * (deltaY / distance);
+		}
+		else
+		{
+			cerr << "Entities are at the same position, cannot resolve." << endl;
+		}
+	}
+	else
+	{
+		cerr << "No overlap detected, cannot resolve." << endl;
+	}
 }
 
 const std::vector<CollisionEvent>& CollisionSystem::getCollisionEvents() const

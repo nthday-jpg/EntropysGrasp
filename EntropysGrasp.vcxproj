@@ -144,7 +144,10 @@
     <ClInclude Include="src\components\Spell.h" />
     <ClInclude Include="src\components\statComponent.h" />
     <ClInclude Include="src\control\command.h" />
+    <ClInclude Include="src\control\commandManager.h" />
+    <ClInclude Include="src\control\commands\playerControl.h" />
     <ClInclude Include="src\core\Game.h" />
+    <ClInclude Include="src\resources\EnemyLibrary.h" />
     <ClInclude Include="src\resources\SpellLibrary.h" />
     <ClInclude Include="src\systems\BehaviorSystem.h" />
     <ClInclude Include="src\systems\CollisionSystem.h" />
@@ -154,10 +157,13 @@
     <ClInclude Include="src\systems\MovementSystem.h" />
     <ClInclude Include="src\systems\SpellSystem.h" />
     <ClInclude Include="src\Utils\SpatialHash.h" />
+    <ClInclude Include="src\Utils\VectorMath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\behaviors\EntityBehavior.cpp" />
     <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp" />
+    <ClCompile Include="src\control\command.cpp" />
+    <ClCompile Include="src\control\commandManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\systems\BehaviorSystem.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -169,6 +175,9 @@
     <ClCompile Include="src\systems\MovementSystem.cpp" />
     <ClCompile Include="src\systems\SpellSystem.cpp" />
     <ClCompile Include="src\Utils\SpatialHash.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\assets\enemies.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

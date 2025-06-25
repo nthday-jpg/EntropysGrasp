@@ -4,14 +4,16 @@
 #include <string>
 
 class EnemyLibrary {
+    std::unordered_map<EnemyType, EnemyData> enemyDataMap;
+    std::string path = "../src/assets/enemy.json";
+
 public:
-	//not implemented yet
-    bool loadFromFile(const std::string& filename);
+    EnemyLibrary();
+
     const EnemyData& getEnemyData(EnemyType type) const;
 
 private:
-    std::unordered_map<EnemyType, EnemyData> enemyDataMap;
+	// not implemented
+    bool loadFromFile();
 
-    // Helper to convert string to EnemyType
-    EnemyType stringToEnemyType(const std::string& str);
 };

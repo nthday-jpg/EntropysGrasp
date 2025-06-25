@@ -51,8 +51,8 @@ private:
 	entt::entity spawnEnemy(EnemyType type, Position position);
 
 	// Return whether the position is in load chunk
-	bool isInLoadChunk(const Position&) const;
+	bool isInLoadChunk(const Position& position) const;
 			  
 	// Method to spawn enemy randomly beyond the view
-	Position randomizeOffScreenPosition(const Position& pos) const;
+	Position randomizeOffScreenPosition(const Position& position) const;
 };

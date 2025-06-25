@@ -49,6 +49,15 @@
     <Filter Include="Header Files\control">
       <UniqueIdentifier>{d10722b6-961a-42e4-91d6-be58559bb032}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets">
+      <UniqueIdentifier>{50dac3c4-b7d2-43ff-9568-b3476cb5adcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\control">
+      <UniqueIdentifier>{29d36527-8e78-4dec-bf97-cd4bb241f101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\control\commands">
+      <UniqueIdentifier>{81dd3f29-e045-4257-8504-c495cc973ebb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\EffectTags.h">
@@ -120,6 +129,24 @@
     <ClInclude Include="src\behaviors\EntityBehavior.h">
       <Filter>Header Files\behaviors</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utils\VectorMath.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\CollisionEvent.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\CollisionType.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\control\commandManager.h">
+      <Filter>Header Files\control</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\EnemyLibrary.h">
+      <Filter>Header Files\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\control\commands\playerControl.h">
+      <Filter>Header Files\control\commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\systems\CollisionSystem.cpp">
@@ -161,5 +188,16 @@
     <ClCompile Include="src\behaviors\EntityBehavior.cpp">
       <Filter>Source Files\behaviors</Filter>
     </ClCompile>
+    <ClCompile Include="src\control\command.cpp">
+      <Filter>Source Files\control</Filter>
+    </ClCompile>
+    <ClCompile Include="src\control\commandManager.cpp">
+      <Filter>Source Files\control</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\assets\enemies.json">
+      <Filter>Resource Files\assets</Filter>
+    </None>
   </ItemGroup>
 </Project>

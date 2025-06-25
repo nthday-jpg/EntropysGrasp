@@ -1,9 +1,9 @@
 #include <SFML/System/Time.hpp>
+#include <random>           
 #include "../systems/EnemyManager.h"
 #include "../components/EntityTags.h"
 #include "../components/Enemy.h"
 #include "../components/MovementComponents.h"
-#include <random>
 
 entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position) 
 {

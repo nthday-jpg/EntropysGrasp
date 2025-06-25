@@ -1,0 +1,30 @@
+{
+  "Goblin": {
+    "stats": {
+      "health": 30,
+      "mana": 10,
+      "attack": 5,
+      "defense": 2,
+      "speed": 3,
+      "resistance": 1
+    },
+    "appearance": {
+      "color": "green",
+      "size": "small"
+    }
+  },
+  "Orc": {
+    "stats": {
+      "health": 50,
+      "mana": 5,
+      "attack": 10,
+      "defense": 5,
+      "speed": 2,
+      "resistance": 3
+    },
+    "appearance": {
+      "color": "dark green",
+      "size": "medium"
+    }
+  }
+}
