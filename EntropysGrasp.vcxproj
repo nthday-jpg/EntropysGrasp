@@ -146,6 +146,7 @@
     <ClInclude Include="src\control\command.h" />
     <ClInclude Include="src\control\commandManager.h" />
     <ClInclude Include="src\control\commands\playerControl.h" />
+    <ClInclude Include="src\control\inputHandler.h" />
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\resources\EnemyLibrary.h" />
     <ClInclude Include="src\resources\SpellLibrary.h" />
@@ -164,6 +165,8 @@
     <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp" />
     <ClCompile Include="src\control\command.cpp" />
     <ClCompile Include="src\control\commandManager.cpp" />
+    <ClCompile Include="src\control\commands\playerControl.cpp" />
+    <ClCompile Include="src\control\inputHandler.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\systems\BehaviorSystem.cpp" />
     <ClCompile Include="src\main.cpp" />
