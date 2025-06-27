@@ -12,35 +12,23 @@ const MovementDirection right = MovementDirection(1, 0);
 
 void MoveDown::execute(entt::registry& registry)
 {
-	if (!registry.all_of<MovementDirection, PlayerTag>(playerEntity))
-	{
-		std::cerr << "Player entity does not have MovementDirection or PlayerTag component." << std::endl;
-		return;
-	}
+
+}
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += down;
 }
 
 void MoveUp::execute(entt::registry& registry)
 {
-	if (!registry.all_of<MovementDirection, PlayerTag>(playerEntity))
-	{
-		std::cerr << "Player entity does not have MovementDirection or PlayerTag component." << std::endl;
-		return;
-	}
+
+}
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += up;
 }
 
 void MoveLeft::execute(entt::registry& registry)
 {
-	if (!registry.all_of<MovementDirection, PlayerTag>(playerEntity))
-	{
-		std::cerr << "Player entity does not have MovementDirection or PlayerTag component." << std::endl;
-		return;
-	}
-	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
-	direction += left;
+
 }
 
 void MoveRight::execute(entt::registry& registry)

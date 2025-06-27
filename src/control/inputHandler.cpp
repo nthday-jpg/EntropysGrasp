@@ -48,10 +48,10 @@ void InputHandler::handleMouse()
 
 void InputHandler::handleInput()
 {
-	Command* resetCmd = new ResetTempComponents(playerEntity);
+    Command* resetCmd = new ResetTempComponents(playerEntity);
     if (commandManager) {
         commandManager->queueCommand(resetCmd);
-	}
+    }
 
     handleKeyBoard();
     handleMouse();

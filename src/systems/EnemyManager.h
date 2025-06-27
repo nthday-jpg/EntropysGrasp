@@ -29,7 +29,7 @@ private:
 	const EnemyLibrary& enemyLibrary;
 	const sf::View& view;
 	const sf::Clock& gameClock;
-	
+
 
 	// spawn timers keep track of time since last spawn for each enemy type
 	std::unordered_map<EnemyType, float> spawnTimer;
@@ -52,7 +52,7 @@ private:
 
 	// Return whether the position is in load chunk
 	bool isInLoadChunk(const Position& position) const;
-			  
+
 	// Method to spawn enemy randomly beyond the view
 	Position randomizeOffScreenPosition(const Position& position) const;
 };

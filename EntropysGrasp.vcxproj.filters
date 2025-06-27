@@ -132,26 +132,17 @@
     <ClInclude Include="src\behaviors\EntityBehavior.h">
       <Filter>Header Files\behaviors</Filter>
     </ClInclude>
+    <ClInclude Include="src\resources\EnemyLibrary.h">
+      <Filter>Header Files\resources</Filter>
+    </ClInclude>
     <ClInclude Include="src\Utils\VectorMath.h">
       <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\CollisionEvent.h">
-      <Filter>Header Files\components</Filter>
     </ClInclude>
     <ClInclude Include="src\components\CollisionType.h">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\control\commandManager.h">
-      <Filter>Header Files\control</Filter>
-    </ClInclude>
-    <ClInclude Include="src\resources\EnemyLibrary.h">
-      <Filter>Header Files\resources</Filter>
-    </ClInclude>
-    <ClInclude Include="src\control\commands\playerControl.h">
-      <Filter>Header Files\control\commands</Filter>
-    </ClInclude>
-    <ClInclude Include="src\control\inputHandler.h">
-      <Filter>Header Files\control</Filter>
+    <ClInclude Include="src\components\CollisionEvent.h">
+      <Filter>Header Files\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,22 +185,11 @@
     <ClCompile Include="src\behaviors\EntityBehavior.cpp">
       <Filter>Source Files\behaviors</Filter>
     </ClCompile>
-    <ClCompile Include="src\control\command.cpp">
-      <Filter>Source Files\control</Filter>
+    <ClCompile Include="src\resources\SpellLibrary.cpp">
+      <Filter>Source Files\resources</Filter>
     </ClCompile>
-    <ClCompile Include="src\control\commandManager.cpp">
-      <Filter>Source Files\control</Filter>
+    <ClCompile Include="src\Utils\VectorMath.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\control\inputHandler.cpp">
-      <Filter>Source Files\control</Filter>
-    </ClCompile>
-    <ClCompile Include="src\control\commands\playerControl.cpp">
-      <Filter>Source Files\control\commands</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\assets\enemies.json">
-      <Filter>Resource Files\assets</Filter>
-    </None>
   </ItemGroup>
 </Project>

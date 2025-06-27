@@ -168,6 +168,7 @@
     <ClCompile Include="src\control\commands\playerControl.cpp" />
     <ClCompile Include="src\control\inputHandler.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
+    <ClCompile Include="src\resources\SpellLibrary.cpp" />
     <ClCompile Include="src\systems\BehaviorSystem.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\resources\EnemyLibrary.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="src\systems\MovementSystem.cpp" />
     <ClCompile Include="src\systems\SpellSystem.cpp" />
     <ClCompile Include="src\Utils\SpatialHash.cpp" />
+    <ClCompile Include="src\Utils\VectorMath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assets\enemies.json" />

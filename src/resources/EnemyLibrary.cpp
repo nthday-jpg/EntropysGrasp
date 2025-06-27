@@ -30,9 +30,10 @@ bool EnemyLibrary::loadFromFile() {
 			data.speed.value = stat.value("weakness", 2.0f);
 
 			enemyDataMap[type] = data;
- 			// load animation data
+			// load animation data
 		}
-	} catch (const std::exception& e) {
+	}
+	catch (const std::exception& e) {
 		cerr << "Error parsing enemy.json: " << e.what() << std::endl;
 		return false;
 	}
@@ -49,7 +50,7 @@ EnemyLibrary::EnemyLibrary()
 
 const EnemyData& EnemyLibrary::getEnemyData(EnemyType type) const {
 	auto it = enemyDataMap.find(type);
-	if (it != enemyDataMap.end()) 
+	if (it != enemyDataMap.end())
 	{
 		return it->second;
 	}
@@ -58,4 +59,3 @@ const EnemyData& EnemyLibrary::getEnemyData(EnemyType type) const {
 		throw std::runtime_error("EnemyType not found: " + std::to_string(static_cast<int>(type)));
 	}
 }
-

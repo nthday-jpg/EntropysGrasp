@@ -10,6 +10,6 @@ void CommandManager::executeCommands() {
 		Command* command = commandQueue.front();
 		commandQueue.pop();
 		command->execute(registry);
-		delete command; 
+		delete command;
 	}
 }

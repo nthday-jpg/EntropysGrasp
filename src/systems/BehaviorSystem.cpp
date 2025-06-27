@@ -15,12 +15,11 @@ void BehaviorSystem::initializeBehaviorMap() {
 		SpellID spellID = registry.get<SpellID>(entity);
 		SpellData spellData = spellLibrary.getSpell(spellID);
 		auto direction = registry.get<MovementDirection>(entity);
-		if (!registry.all_of<Velocity>(entity))
-		{
+		if (!registry.all_of<Velocity>(entity)) 
+		{	
 			registry.emplace<Velocity>(entity, direction.x * spellData.speed, direction.y * spellData.speed);
 		}
 	};
-
 	behaviorMap[BehaviorType::HomingEnemy] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
 		auto& position = registry.get<Position>(entity);
 		Velocity velo;
@@ -42,7 +41,6 @@ void BehaviorSystem::initializeBehaviorMap() {
 
 		velo = registry.emplace_or_replace<Velocity>(entity, velo);
 	};
-
 	behaviorMap[BehaviorType::Orbit] = [](entt::entity entity, entt::entity center, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
 		Position position = registry.get<Position>(entity); //spell entity
 		Position centerPosition = registry.get<Position>(center);
@@ -52,7 +50,7 @@ void BehaviorSystem::initializeBehaviorMap() {
 
 		Velocity velocity;
 		Velocity velocityCenter = registry.get<Velocity>(center); // center entity
-
+		
 		SpellID spellID = registry.get<SpellID>(entity);
 		SpellData spellData = spellLibrary.getSpell(spellID);
 		float speed = spellData.speed;
@@ -60,15 +58,37 @@ void BehaviorSystem::initializeBehaviorMap() {
 
 		sf::Vector2f distance = position - centerPosition;
 
-		float devitate = magnitude(distance) - radius;
+		float devitate = magnitude(distance) - radius; 
 
-		sf::Vector2f norm = normalize(distance);
-		sf::Vector2f movementDir(-norm.y, norm.x);
+		normalize(distance);
+		sf::Vector2f movementDir(-distance.y, distance.x);
 
-		velocity.x = movementDir.x * speed + velocityCenter.x - devitate * norm.x;
-		velocity.y = movementDir.y * speed + velocityCenter.y - devitate * norm.y;
+		velocity.x = movementDir.x * speed + velocityCenter.x - devitate * distance.x;
+		velocity.y = movementDir.y * speed + velocityCenter.y - devitate * distance.y;
 
 		registry.emplace_or_replace<Velocity>(entity, velocity);
+	};
+	behaviorMap[BehaviorType::HomingPlayer] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
+		auto& position = registry.get<Position>(entity);
+		Velocity velo;
+		EnemyType enemyID = registry.get<EnemyType>(entity);
+		EnemyData enemyData = enemyLibrary.getEnemyData(enemyID);
+		auto& enemyPosition = registry.get<Position>(target);
+
+		// Calculate direction towards the target
+		auto direction = enemyPosition - position;
+		MovementDirection& movementDirection = registry.get<MovementDirection>(entity);
+		movementDirection.x = direction.x;
+		movementDirection.y = direction.y;
+		normalize(movementDirection);
+
+		if (magnitude(movementDirection) > 0) {
+			velo.x = movementDirection.x * enemyData.speed.value;
+			velo.y = movementDirection.y * enemyData.speed.value;
+			std::cout << enemyData.speed.value << std::endl << magnitude(movementDirection) << std::endl;
+		}
+
+		velo = registry.emplace_or_replace<Velocity>(entity, velo);
 	};
 
 	behaviorMap[BehaviorType::HomingPlayer] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
@@ -90,6 +110,44 @@ void BehaviorSystem::initializeBehaviorMap() {
 			velo.y = movementDirection.y * enemyData.speed.value;
 		}
 
-		velo = registry.emplace_or_replace<Velocity>(entity, velo);
-	};
+void BehaviorSystem::updateBehavior(entt::registry& registry, float dt, const SpellLibrary& spellLibrary, const EnemyLibrary& enemyLibrary) {
+	auto view = registry.view<BehaviorType>();
+	for (auto [entity, behaviorType] : view.each()) {
+		if (registry.all_of<SpellTag>(entity)) {
+			SpellID spellName = registry.get<SpellID>(entity);
+			SpellData spell = spellLibrary.getSpell(spellName);
+			auto it = behaviorMap.find(spell.behaviorType);
+			if (it != behaviorMap.end()) {
+				if (spell.behaviorType == BehaviorType::Straight) {
+					auto view = registry.view<PlayerTag>();
+					for (auto player : view) {
+						it->second(entity, player, registry, dt, spellLibrary, enemyLibrary);
+					}
+				}
+				else if (spell.behaviorType == BehaviorType::HomingEnemy) {
+					auto view = registry.view<PlayerTag>();
+					for (auto player : view) {
+						it->second(entity, player, registry, dt, spellLibrary, enemyLibrary);
+					}
+				}
+				else if (spell.behaviorType == BehaviorType::Orbit) {
+					auto view = registry.view<PlayerTag>();
+					for (auto& player : view) {
+						it->second(entity, player, registry, dt, spellLibrary, enemyLibrary);
+					}
+				}
+			}
+		}
+		else if (registry.all_of<EnemyTag>(entity)) {
+			EnemyType enemyID = registry.get<EnemyType>(entity);
+			EnemyData enemy = enemyLibrary.getEnemyData(enemyID);
+			auto view = registry.view<PlayerTag>();
+			for (auto player : view) {
+				auto it = behaviorMap.find(enemy.behaviorType);
+				if (it != behaviorMap.end()) {
+					it->second(entity, player, registry, dt, spellLibrary, enemyLibrary);
+				}
+			}
+		}
+	}
 }

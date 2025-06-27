@@ -14,15 +14,16 @@ class InputHandler {
 
 	//remove this later, just for testing
 	std::map<sf::Keyboard::Scancode, std::string> keyBindings;
-	
+
 	std::map<std::string, std::function<Command* ()>> commandFactory;
 	void initCommandFactory();
-	
+
 public:
 	InputHandler(entt::entity playerEntity, CommandManager* commandManager)
-		: playerEntity(playerEntity), commandManager(commandManager) {}
+		: playerEntity(playerEntity), commandManager(commandManager) {
+	}
 	~InputHandler() = default;
-	
+
 
 	void handleInput();
 	void handleKeyBoard();

@@ -13,7 +13,7 @@ public:
     const EnemyData& getEnemyData(EnemyType type) const;
 
 private:
-	// not implemented
+    // not implemented
     bool loadFromFile();
 
 };

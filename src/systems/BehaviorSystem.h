@@ -2,7 +2,6 @@
 #include <entt/entt.hpp>
 #include <unordered_map>
 #include "../behaviors/EntityBehavior.h"
-#include "../resources/SpellLibrary.h"
 #include "../resources/EnemyLibrary.h"
 
 using BehaviorFunction = std::function<void(entt::entity, entt::entity, entt::registry&, float, const SpellLibrary&, const EnemyLibrary&)>;

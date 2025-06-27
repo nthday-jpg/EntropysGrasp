@@ -7,5 +7,3 @@ public:
 	virtual ~Command() {}
 	virtual void execute(entt::registry& registry) = 0;
 };
-
-

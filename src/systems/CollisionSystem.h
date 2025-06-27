@@ -37,6 +37,6 @@ private:
     bool isIntersect(entt::entity e1, entt::entity e2) const;
     CollisionType getCollisionType(entt::entity e) const;
 
-	void resolveRR(entt::entity e1, entt::entity e2);
-	void resolveCC(entt::entity e1, entt::entity e2);
+    void resolveRR(entt::entity e1, entt::entity e2);
+    void resolveCC(entt::entity e1, entt::entity e2);
 };

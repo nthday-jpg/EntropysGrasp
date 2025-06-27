@@ -9,8 +9,8 @@
 // -entt : Provides the ECS registry and entity management functionality.
 // - movementComponents.h : Defines components related to movement, such as Position and Velocity.
 
-struct MovementSystem  
-{  
+struct MovementSystem
+{
 	// Updates the positions of entities based on their velocities and the elapsed time.
-   static void update(entt::registry& registry, float deltaTime);  
+	static void update(entt::registry& registry, float deltaTime);
 };

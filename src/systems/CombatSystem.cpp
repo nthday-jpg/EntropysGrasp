@@ -114,7 +114,6 @@ void CombatSystem::handleCollision(std::vector<CollisionEvent>& collisionEvents)
 
 }
 
-
 void CombatSystem::applyDamage(float dmg, entt::entity) {
 	// Apply damage to entities based on collision and spell effects
 }

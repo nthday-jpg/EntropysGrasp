@@ -1,3 +1,4 @@
+#pragma once
 #include "command.h"
 #include <map>
 #include <queue>
@@ -10,6 +11,6 @@ public:
 	~CommandManager() = default;
 
 	void executeCommands();
-	
+
 	void queueCommand(Command* command);
 };
