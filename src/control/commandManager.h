@@ -6,9 +6,10 @@
 class CommandManager {
 	std::queue<Command*> commandQueue;
 	entt::registry& registry;
+
 public:
-	CommandManager(entt::registry registry) : registry(registry) {}
-	~CommandManager() = default;
+	CommandManager(entt::registry& registry) : registry(registry) {}
+	~CommandManager();
 
 	void executeCommands();
 

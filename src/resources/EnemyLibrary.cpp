@@ -8,10 +8,12 @@ using namespace std;
 using json = nlohmann::json;
 
 bool EnemyLibrary::loadFromFile() {
+
+	cout << "Loading enemy data from: " << path << std::endl;
 	ifstream file(path);
 
 	if (!file.is_open()) {
-		cerr << "Failed to open enemy.json" << std::endl;
+		cerr << "Failed to open enemies.json" << std::endl;
 		return false;
 	}
 
@@ -21,6 +23,12 @@ bool EnemyLibrary::loadFromFile() {
 	try {
 		for (const auto& [name, stat] : enemies.items()) {
 			EnemyType type = stringToEnemyType(name);
+
+			if (type == EnemyType::Unknown) {
+				cerr << "Unknown enemy type: " << name << std::endl;
+				continue; // Skip unknown types
+			}
+
 			EnemyData data;
 			data.health.max = data.health.current = stat.value("health", 100.0f);
 			data.attack.value = stat.value("attack", 10.0f);

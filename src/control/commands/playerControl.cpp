@@ -25,6 +25,8 @@ void MoveDown::execute(entt::registry& registry)
 	}
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += down;
+
+	std::cout << "Moving down: " << std::endl;
 }
 
 void MoveUp::execute(entt::registry& registry)
@@ -36,6 +38,8 @@ void MoveUp::execute(entt::registry& registry)
 	}
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += up;
+
+	std::cout << "Moving up: " << std::endl;
 }
 
 void MoveLeft::execute(entt::registry& registry)
@@ -47,6 +51,8 @@ void MoveLeft::execute(entt::registry& registry)
 	}
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += left;
+
+	std::cout << "Moving left: " << std::endl;
 }
 
 void MoveRight::execute(entt::registry& registry)
@@ -58,6 +64,8 @@ void MoveRight::execute(entt::registry& registry)
 	}
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += right;
+	
+	std::cout << "Moving right: " << std::endl;
 }
 
 void CastSpell::execute(entt::registry& registry)
@@ -89,7 +97,7 @@ void ResetTempComponents::execute(entt::registry& registry)
 
 	if (!registry.all_of<LookingDirection>(playerEntity))
 	{
-		registry.emplace<LookingDirection>(playerEntity, 0.0f);
+		registry.emplace<LookingDirection>(playerEntity, LookingDirection{ 0.0f,0.0f });
 	}
 	else
 	{
@@ -100,19 +108,18 @@ void ResetTempComponents::execute(entt::registry& registry)
 
 void LookAtMouse::execute(entt::registry& registry)
 {
-	if (!registry.all_of<LookingDirection, PlayerTag>(playerEntity))
+	if (!registry.all_of<LookingDirection, PlayerTag, Position>(playerEntity))
 	{
-		std::cerr << "Player entity does not have LookingDirection or PlayerTag component." << std::endl;
+		std::cerr << "Player entity does not have LookingDirection or PlayerTag or Position component." << std::endl;
 		return;
 	}
 	Position& playerPosition = registry.get<Position>(playerEntity);
 	sf::Vector2i mousePosition = sf::Mouse::getPosition();
 
 	LookingDirection& lookingDirection = registry.get<LookingDirection>(playerEntity);
-	lookingDirection = LookingDirection(
+	lookingDirection = LookingDirection{
 		static_cast<float>(mousePosition.x - playerPosition.x),
-		static_cast<float>(mousePosition.y - playerPosition.y)
-	);
+		static_cast<float>(mousePosition.y - playerPosition.y) };
 	
 	normalize(lookingDirection);
 }

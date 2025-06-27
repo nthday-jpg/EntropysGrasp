@@ -8,7 +8,8 @@ enum class EnemyType
 	Goblin,
 	Troll,
 	Dragon,
-	Skeleton
+	Skeleton,
+	Unknown,
 };
 
 struct EnemyData
@@ -36,5 +37,5 @@ inline EnemyType stringToEnemyType(const std::string& str) {
 	auto it = stringToEnemyTypeMap.find(str);
 	if (it != stringToEnemyTypeMap.end())
 		return it->second;
-	throw std::runtime_error("Unknown EnemyType: " + str);
+	return EnemyType::Unknown; // Default case if not found
 }

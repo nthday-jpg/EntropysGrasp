@@ -18,15 +18,15 @@ class InputHandler {
 	std::map<std::string, std::function<Command* ()>> commandFactory;
 	void initCommandFactory();
 
+	void handleKeyBoard();
+	void handleMouse();
+
+	Command* createCommand(const std::string& action);
+
 public:
 	InputHandler(entt::entity playerEntity, CommandManager* commandManager);
 	~InputHandler();
 
 
 	void handleInput();
-	void handleKeyBoard();
-	void handleMouse();
-
-	Command* createCommand(const std::string& action);
-
 };
