@@ -22,7 +22,6 @@ bool EnemyLibrary::loadFromFile() {
 		for (const auto& [name, stat] : enemies.items()) {
 			EnemyType type = stringToEnemyType(name);
 			EnemyData data;
-			string enemyName = stat.value("name", "null");
 			data.health.max = data.health.current = stat.value("health", 100.0f);
 			data.attack.value = stat.value("attack", 10.0f);
 			data.mana.value = stat.value("mana", 50.0f);

@@ -19,10 +19,8 @@ class InputHandler {
 	void initCommandFactory();
 
 public:
-	InputHandler(entt::entity playerEntity, CommandManager* commandManager)
-		: playerEntity(playerEntity), commandManager(commandManager) {
-	}
-	~InputHandler() = default;
+	InputHandler(entt::entity playerEntity, CommandManager* commandManager);
+	~InputHandler();
 
 
 	void handleInput();

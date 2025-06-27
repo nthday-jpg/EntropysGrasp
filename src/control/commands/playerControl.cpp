@@ -1,9 +1,15 @@
 #include "playerControl.h"
+
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <iostream>
+
 #include "../../components/movementComponents.h"
 #include "../../components/lookingDirection.h"
 #include "../../components/EntityTags.h"
 
-#include <iostream>
+#include "../../Utils/VectorMath.h"
+
 
 const MovementDirection down = MovementDirection(0, 1);
 const MovementDirection up = MovementDirection(0, -1);
@@ -12,23 +18,35 @@ const MovementDirection right = MovementDirection(1, 0);
 
 void MoveDown::execute(entt::registry& registry)
 {
-
-}
+	if (!registry.all_of<MovementDirection, PlayerTag>(playerEntity))
+	{
+		std::cerr << "Player entity does not have MovementDirection or PlayerTag component." << std::endl;
+		return;
+	}
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += down;
 }
 
 void MoveUp::execute(entt::registry& registry)
 {
-
-}
+	if (!registry.all_of<MovementDirection, PlayerTag>(playerEntity))
+	{
+		std::cerr << "Player entity does not have MovementDirection or PlayerTag component." << std::endl;
+		return;
+	}
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += up;
 }
 
 void MoveLeft::execute(entt::registry& registry)
 {
-
+	if (!registry.all_of<MovementDirection, PlayerTag>(playerEntity))
+	{
+		std::cerr << "Player entity does not have MovementDirection or PlayerTag component." << std::endl;
+		return;
+	}
+	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
+	direction += left;
 }
 
 void MoveRight::execute(entt::registry& registry)
@@ -78,4 +96,23 @@ void ResetTempComponents::execute(entt::registry& registry)
 		registry.get<LookingDirection>(playerEntity) = LookingDirection(0.0f, 0.0f);
 	}
 
+}
+
+void LookAtMouse::execute(entt::registry& registry)
+{
+	if (!registry.all_of<LookingDirection, PlayerTag>(playerEntity))
+	{
+		std::cerr << "Player entity does not have LookingDirection or PlayerTag component." << std::endl;
+		return;
+	}
+	Position& playerPosition = registry.get<Position>(playerEntity);
+	sf::Vector2i mousePosition = sf::Mouse::getPosition();
+
+	LookingDirection& lookingDirection = registry.get<LookingDirection>(playerEntity);
+	lookingDirection = LookingDirection(
+		static_cast<float>(mousePosition.x - playerPosition.x),
+		static_cast<float>(mousePosition.y - playerPosition.y)
+	);
+	
+	normalize(lookingDirection);
 }

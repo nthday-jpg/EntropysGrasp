@@ -1,6 +1,7 @@
 #include "inputHandler.h"
 #include "commands/playerControl.h"
 #include "../components/movementComponents.h"
+#include "../components/lookingDirection.h"
 
 using namespace sf;
 using namespace std;
@@ -43,7 +44,11 @@ void InputHandler::handleKeyBoard()
 
 void InputHandler::handleMouse()
 {
-
+	Command* look = new LookAtMouse(playerEntity);
+    if (commandManager)
+    {
+		commandManager->queueCommand(look);
+    }
 }
 
 void InputHandler::handleInput()
@@ -55,4 +60,29 @@ void InputHandler::handleInput()
 
     handleKeyBoard();
     handleMouse();
+}
+
+InputHandler::InputHandler(entt::entity playerEntity, CommandManager* commandManager)
+    : playerEntity(playerEntity), commandManager(commandManager)
+{
+    initCommandFactory();
+	
+    // Initialize keybindings from gameConfig if needed
+    // keyBindings = gameConfig->getKeyBindings(); // Assuming gameConfig is accessible
+    // For now, we can initialize keyBindings with some default values or leave it empty
+    keyBindings = {
+		{Keyboard::Scancode::A, "moveLeft"},
+		{Keyboard::Scancode::D, "moveRight"},
+		{Keyboard::Scancode::W, "moveUp"},
+		{Keyboard::Scancode::S, "moveDown"},
+	};
+
+}
+
+InputHandler::~InputHandler()
+{
+    for(auto& pair : commandFactory) {
+		Command* cmd = pair.second();
+		delete cmd; 
+	}
 }

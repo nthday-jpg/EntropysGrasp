@@ -50,6 +50,14 @@ public:
 	void execute(entt::registry& registry) override;
 };
 
+class LookAtMouse: public Command
+{
+	entt::entity playerEntity;
+public:
+	LookAtMouse(entt::entity player) : playerEntity(player) {}
+	void execute(entt::registry& registry) override;
+};
+
 //this command is used to reset movement direction, look direction
 class ResetTempComponents : public Command
 {
