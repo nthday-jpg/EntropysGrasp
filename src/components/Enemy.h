@@ -1,6 +1,7 @@
 #pragma once
 #include "../components/statComponent.h"
 #include "../components/behavior.h"
+
 //include behavior here too
 
 enum class EnemyType

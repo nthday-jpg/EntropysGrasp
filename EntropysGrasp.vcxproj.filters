@@ -49,9 +49,6 @@
     <Filter Include="Header Files\control">
       <UniqueIdentifier>{d10722b6-961a-42e4-91d6-be58559bb032}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\assets">
-      <UniqueIdentifier>{50dac3c4-b7d2-43ff-9568-b3476cb5adcd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\control">
       <UniqueIdentifier>{29d36527-8e78-4dec-bf97-cd4bb241f101}</UniqueIdentifier>
     </Filter>
@@ -93,7 +90,7 @@
     <ClInclude Include="src\systems\CombatSystem.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\systems\MovementSystem.h">
+    <ClInclude Include="src\systems\PositionIntegrator.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
     <ClInclude Include="src\components\Enemy.h">
@@ -105,7 +102,7 @@
     <ClInclude Include="src\systems\EnemyManager.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\behaviors\PlayerMovementSystem.h">
+    <ClInclude Include="src\behaviors\PlayerVelocityController.h">
       <Filter>Header Files\behaviors</Filter>
     </ClInclude>
     <ClInclude Include="src\resources\SpellLibrary.h">
@@ -153,6 +150,12 @@
     <ClInclude Include="src\control\commands\playerControl.h">
       <Filter>Header Files\control\commands</Filter>
     </ClInclude>
+    <ClInclude Include="src\systems\MovementPipeline.h">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\WindowManager.h">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\systems\CollisionSystem.cpp">
@@ -161,7 +164,7 @@
     <ClCompile Include="src\systems\CombatSystem.cpp">
       <Filter>Source Files\systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\systems\MovementSystem.cpp">
+    <ClCompile Include="src\systems\PositionIntegrator.cpp">
       <Filter>Source Files\systems</Filter>
     </ClCompile>
     <ClCompile Include="src\core\Game.cpp">
@@ -212,9 +215,15 @@
     <ClCompile Include="src\control\commands\playerControl.cpp">
       <Filter>Source Files\control\commands</Filter>
     </ClCompile>
+    <ClCompile Include="src\systems\MovementPipeline.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\systems\WindowManager.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\assets\enemies.json">
+    <None Include="src\resources\enemy.json">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

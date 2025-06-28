@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "../Utils/SpatialHash.h"
 //Include thêm các hệ thống khác ở đây
-#include "../systems/MovementSystem.h"
+#include "../systems/PositionIntegrator.h"
 #include "../systems/CollisionSystem.h"
 
 //Hằng số

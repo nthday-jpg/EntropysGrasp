@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include <iostream>
 
+#include "../../systems/WindowManager.h"
 #include "../../components/movementComponents.h"
 #include "../../components/lookingDirection.h"
 #include "../../components/EntityTags.h"
@@ -113,8 +114,16 @@ void LookAtMouse::execute(entt::registry& registry)
 		std::cerr << "Player entity does not have LookingDirection or PlayerTag or Position component." << std::endl;
 		return;
 	}
+
+	WindowManager& windowManager = WindowManager::getInstance();
+	if (!windowManager.hasWindow() || !windowManager.isOpen())
+	{
+		std::cerr << "Window is not open or does not exist." << std::endl;
+		return;
+	}
+
 	Position& playerPosition = registry.get<Position>(playerEntity);
-	sf::Vector2i mousePosition = sf::Mouse::getPosition();
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(windowManager.getWindow());
 
 	LookingDirection& lookingDirection = registry.get<LookingDirection>(playerEntity);
 	lookingDirection = LookingDirection{

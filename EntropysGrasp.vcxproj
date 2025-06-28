@@ -130,7 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\behaviors\EntityBehavior.h" />
-    <ClInclude Include="src\behaviors\PlayerMovementSystem.h" />
+    <ClInclude Include="src\behaviors\PlayerVelocityController.h" />
     <ClInclude Include="src\components\Behavior.h" />
     <ClInclude Include="src\components\CollisionEvent.h" />
     <ClInclude Include="src\components\CollisionType.h" />
@@ -155,8 +155,10 @@
     <ClInclude Include="src\systems\CombatSystem.h" />
     <ClInclude Include="src\systems\EffectSystem.h" />
     <ClInclude Include="src\systems\EnemyManager.h" />
-    <ClInclude Include="src\systems\MovementSystem.h" />
+    <ClInclude Include="src\systems\MovementPipeline.h" />
+    <ClInclude Include="src\systems\PositionIntegrator.h" />
     <ClInclude Include="src\systems\SpellSystem.h" />
+    <ClInclude Include="src\systems\WindowManager.h" />
     <ClInclude Include="src\Utils\SpatialHash.h" />
     <ClInclude Include="src\Utils\VectorMath.h" />
   </ItemGroup>
@@ -176,13 +178,15 @@
     <ClCompile Include="src\systems\CombatSystem.cpp" />
     <ClCompile Include="src\systems\EnemyManager.cpp" />
     <ClCompile Include="src\systems\EffectSystem.cpp" />
-    <ClCompile Include="src\systems\MovementSystem.cpp" />
+    <ClCompile Include="src\systems\MovementPipeline.cpp" />
+    <ClCompile Include="src\systems\PositionIntegrator.cpp" />
     <ClCompile Include="src\systems\SpellSystem.cpp" />
+    <ClCompile Include="src\systems\WindowManager.cpp" />
     <ClCompile Include="src\Utils\SpatialHash.cpp" />
     <ClCompile Include="src\Utils\VectorMath.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\assets\enemies.json" />
+    <None Include="src\resources\enemy.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
