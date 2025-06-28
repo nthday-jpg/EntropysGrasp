@@ -2,8 +2,7 @@
 
 #include <entt/entt.hpp>
 
-// PlayerMovementSystem.h  
-// This header file defines the PlayerMovementSystem structure,
+// This header file defines the PlayerVelocityControllerstructure,
 // which is responsible for handling player movement logic in the game.  
 // It includes methods to calculate the player's velocity based on movement direction and speed,
 // as well as a method to compute the player's speed.  
@@ -12,7 +11,7 @@
 // so this system only calculate the velocity and speed of the player.
 
 
-struct PlayerMovementSystem
+struct PlayerVelocityController
 {
 
 	// Calculate the velocity of the player based on movement direction and speed.
