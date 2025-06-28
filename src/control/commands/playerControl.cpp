@@ -123,12 +123,13 @@ void LookAtMouse::execute(entt::registry& registry)
 	}
 
 	Position& playerPosition = registry.get<Position>(playerEntity);
-	sf::Vector2i mousePosition = sf::Mouse::getPosition(windowManager.getWindow());
+	sf::Vector2i mousePosWindow = sf::Mouse::getPosition(windowManager.getWindow());
+	sf::Vector2f mousePos = windowManager.getWindow().mapPixelToCoords(mousePosWindow);
 
 	LookingDirection& lookingDirection = registry.get<LookingDirection>(playerEntity);
 	lookingDirection = LookingDirection{
-		static_cast<float>(mousePosition.x - playerPosition.x),
-		static_cast<float>(mousePosition.y - playerPosition.y) };
+		static_cast<float>(mousePos.x - playerPosition.x),
+		static_cast<float>(mousePos.y - playerPosition.y) };
 	
 	normalize(lookingDirection);
 }
