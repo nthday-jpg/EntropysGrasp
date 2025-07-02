@@ -4,12 +4,13 @@
 #include <entt/entity/entity.hpp>
 #include <map>
 #include <functional>
+#include <string>
 #include "command.h"
-#include "commandManager.h"
+#include "gameplayCommandManager.h"
 
-class InputHandler {
+class GameplayInputHandler {
 	entt::entity playerEntity;
-	CommandManager* commandManager;
+	GameplayCommandManager* commandManager;
 	//GameConfig* gameConfig;
 
 	//remove this later, just for testing
@@ -24,8 +25,8 @@ class InputHandler {
 	Command* createCommand(const std::string& action);
 
 public:
-	InputHandler(entt::entity playerEntity, CommandManager* commandManager);
-	~InputHandler();
+	GameplayInputHandler(entt::entity playerEntity, GameplayCommandManager* commandManager);
+	~GameplayInputHandler();
 
 
 	void handleInput();

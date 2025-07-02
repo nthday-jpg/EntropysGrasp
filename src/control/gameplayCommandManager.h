@@ -3,13 +3,13 @@
 #include <map>
 #include <queue>
 
-class CommandManager {
+class GameplayCommandManager {
 	std::queue<Command*> commandQueue;
 	entt::registry& registry;
 
 public:
-	CommandManager(entt::registry& registry) : registry(registry) {}
-	~CommandManager();
+	GameplayCommandManager(entt::registry& registry) : registry(registry) {}
+	~GameplayCommandManager();
 
 	void executeCommands();
 

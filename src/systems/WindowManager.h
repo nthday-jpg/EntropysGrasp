@@ -43,6 +43,8 @@ public:
     // Check if window exists
     bool hasWindow() const;
 
+	sf::Vector2f mapPixelToCoords(const sf::Vector2i& coords) const;
+
     // Common window operations
     void setFramerateLimit(unsigned int limit);
 

@@ -1,4 +1,4 @@
-#include "inputHandler.h"
+#include "gameplayInputHandler.h"
 #include "commands/playerControl.h"
 #include "../components/movementComponents.h"
 #include "../components/lookingDirection.h"
@@ -6,7 +6,7 @@
 using namespace sf;
 using namespace std;
 
-void InputHandler::initCommandFactory()
+void GameplayInputHandler::initCommandFactory()
 {
     // Map action strings to command creation functions
     commandFactory["moveLeft"] = [this]() { return new MoveLeft(playerEntity); };
@@ -18,7 +18,7 @@ void InputHandler::initCommandFactory()
     // Add more commands as needed
 }
 
-Command* InputHandler::createCommand(const std::string& action)
+Command* GameplayInputHandler::createCommand(const std::string& action)
 {
     auto it = commandFactory.find(action);
     if (it != commandFactory.end()) {
@@ -27,7 +27,7 @@ Command* InputHandler::createCommand(const std::string& action)
     return nullptr; // Unknown action
 }
 
-void InputHandler::handleKeyBoard()
+void GameplayInputHandler::handleKeyBoard()
 {
     // Use gameConfig's keybindings directly
     //const auto& keyBindings = gameConfig->getKeyBindings();
@@ -42,7 +42,7 @@ void InputHandler::handleKeyBoard()
     }
 }
 
-void InputHandler::handleMouse()
+void GameplayInputHandler::handleMouse()
 {
 	Command* look = new LookAtMouse(playerEntity);
     if (commandManager)
@@ -51,7 +51,7 @@ void InputHandler::handleMouse()
     }
 }
 
-void InputHandler::handleInput()
+void GameplayInputHandler::handleInput()
 {
     Command* resetCmd = new ResetTempComponents(playerEntity);
     if (commandManager) {
@@ -62,7 +62,7 @@ void InputHandler::handleInput()
     handleMouse();
 }
 
-InputHandler::InputHandler(entt::entity playerEntity, CommandManager* commandManager)
+GameplayInputHandler::GameplayInputHandler(entt::entity playerEntity, GameplayCommandManager* commandManager)
     : playerEntity(playerEntity), commandManager(commandManager)
 {
     initCommandFactory();
@@ -79,7 +79,7 @@ InputHandler::InputHandler(entt::entity playerEntity, CommandManager* commandMan
 
 }
 
-InputHandler::~InputHandler()
+GameplayInputHandler::~GameplayInputHandler()
 {
     for(auto& pair : commandFactory) {
 		Command* cmd = pair.second();

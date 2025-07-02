@@ -141,10 +141,10 @@
     <ClInclude Include="src\components\CollisionEvent.h">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\control\commandManager.h">
+    <ClInclude Include="src\control\gameplayCommandManager.h">
       <Filter>Header Files\control</Filter>
     </ClInclude>
-    <ClInclude Include="src\control\inputHandler.h">
+    <ClInclude Include="src\control\gameplayInputHandler.h">
       <Filter>Header Files\control</Filter>
     </ClInclude>
     <ClInclude Include="src\control\commands\playerControl.h">
@@ -155,6 +155,27 @@
     </ClInclude>
     <ClInclude Include="src\systems\WindowManager.h">
       <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\UIManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\UIELement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\control\commands\gameControl.h">
+      <Filter>Header Files\control\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="src\control\UICommandManager.h">
+      <Filter>Header Files\control</Filter>
+    </ClInclude>
+    <ClInclude Include="src\control\UICommand.h">
+      <Filter>Header Files\control</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -200,16 +221,10 @@
     <ClCompile Include="src\Utils\VectorMath.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\control\command.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\control\commandManager.cpp">
+    <ClCompile Include="src\control\gameCommandManager.cpp">
       <Filter>Source Files\control</Filter>
     </ClCompile>
-    <ClCompile Include="src\control\inputHandler.cpp">
-      <Filter>Source Files\control</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
+    <ClCompile Include="src\control\gameplayInputHandler.cpp">
       <Filter>Source Files\control</Filter>
     </ClCompile>
     <ClCompile Include="src\control\commands\playerControl.cpp">
@@ -220,6 +235,18 @@
     </ClCompile>
     <ClCompile Include="src\systems\WindowManager.cpp">
       <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\control\commands\gameControl.cpp">
+      <Filter>Source Files\control\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="src\control\UICommandManager.cpp">
+      <Filter>Source Files\control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

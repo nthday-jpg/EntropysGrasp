@@ -1,20 +1,23 @@
-#include "commandManager.h"
+#include "gameplayCommandManager.h"
 #include <entt/entity/registry.hpp>
 
-void CommandManager::queueCommand(Command* command) {
-	commandQueue.push(command);
+void GameplayCommandManager::queueCommand(Command* command) {
+	if (command)
+	{
+		commandQueue.push(command);
+	}
 }
 
-CommandManager::~CommandManager()
+GameplayCommandManager::~GameplayCommandManager()
 {
 	while (!commandQueue.empty()) {
 		Command* command = commandQueue.front();
 		commandQueue.pop();
-		delete command; // Clean up remaining commands
+		delete command;
 	}
 }
 
-void CommandManager::executeCommands() {
+void GameplayCommandManager::executeCommands() {
 	while (!commandQueue.empty()) {
 		Command* command = commandQueue.front();
 		commandQueue.pop();

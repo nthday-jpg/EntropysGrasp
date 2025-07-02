@@ -144,12 +144,16 @@
     <ClInclude Include="src\components\Spell.h" />
     <ClInclude Include="src\components\statComponent.h" />
     <ClInclude Include="src\control\command.h" />
-    <ClInclude Include="src\control\commandManager.h" />
+    <ClInclude Include="src\control\gameplayCommandManager.h" />
+    <ClInclude Include="src\control\commands\gameControl.h" />
     <ClInclude Include="src\control\commands\playerControl.h" />
-    <ClInclude Include="src\control\inputHandler.h" />
+    <ClInclude Include="src\control\gameplayInputHandler.h" />
+    <ClInclude Include="src\control\UICommand.h" />
+    <ClInclude Include="src\control\UICommandManager.h" />
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\resources\EnemyLibrary.h" />
     <ClInclude Include="src\resources\SpellLibrary.h" />
+    <ClInclude Include="src\scenes\Scene.h" />
     <ClInclude Include="src\systems\BehaviorSystem.h" />
     <ClInclude Include="src\systems\CollisionSystem.h" />
     <ClInclude Include="src\systems\CombatSystem.h" />
@@ -159,16 +163,20 @@
     <ClInclude Include="src\systems\PositionIntegrator.h" />
     <ClInclude Include="src\systems\SpellSystem.h" />
     <ClInclude Include="src\systems\WindowManager.h" />
+    <ClInclude Include="src\ui\Button.h" />
+    <ClInclude Include="src\ui\UIELement.h" />
+    <ClInclude Include="src\ui\UIManager.h" />
     <ClInclude Include="src\Utils\SpatialHash.h" />
     <ClInclude Include="src\Utils\VectorMath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\behaviors\EntityBehavior.cpp" />
     <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp" />
-    <ClCompile Include="src\control\command.cpp" />
-    <ClCompile Include="src\control\commandManager.cpp" />
+    <ClCompile Include="src\control\commands\gameControl.cpp" />
+    <ClCompile Include="src\control\gameCommandManager.cpp" />
     <ClCompile Include="src\control\commands\playerControl.cpp" />
-    <ClCompile Include="src\control\inputHandler.cpp" />
+    <ClCompile Include="src\control\gameplayInputHandler.cpp" />
+    <ClCompile Include="src\control\UICommandManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\resources\SpellLibrary.cpp" />
     <ClCompile Include="src\systems\BehaviorSystem.cpp" />
@@ -182,6 +190,7 @@
     <ClCompile Include="src\systems\PositionIntegrator.cpp" />
     <ClCompile Include="src\systems\SpellSystem.cpp" />
     <ClCompile Include="src\systems\WindowManager.cpp" />
+    <ClCompile Include="src\ui\Button.cpp" />
     <ClCompile Include="src\Utils\SpatialHash.cpp" />
     <ClCompile Include="src\Utils\VectorMath.cpp" />
   </ItemGroup>

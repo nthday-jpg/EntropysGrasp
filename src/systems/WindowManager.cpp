@@ -22,6 +22,14 @@ bool WindowManager::hasWindow() const {
     return window != nullptr;
 }
 
+sf::Vector2f WindowManager::mapPixelToCoords(const sf::Vector2i& coords) const
+{
+	if (!window) {
+        throw std::runtime_error("Window has not been created yet");
+	}
+	return window->mapPixelToCoords(coords);
+}
+
 void WindowManager::setFramerateLimit(unsigned int limit) {
     if (window) window->setFramerateLimit(limit);
 }
