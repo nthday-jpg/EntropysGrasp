@@ -35,7 +35,7 @@ float PlayerVelocityController::calculatedSpeed(entt::registry& registry, entt::
 	
 	// Using dot product to scale speed 
 	// based on how much the movement direction and looking direction align
-	speed = speed * (0.6 + 0.4 * (looking.x * movement.x + looking.y * movement.y));
+	speed = speed * (0.8 + 0.2 * (looking.x * movement.x + looking.y * movement.y));
 
 	return speed;
 }
