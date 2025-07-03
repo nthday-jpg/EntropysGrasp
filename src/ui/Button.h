@@ -22,6 +22,9 @@ class Button : public UIElement
 	sf::Font* font;
 	sf::Text text;
 
+	// Position of the button in the window
+	sf::Vector2f position;
+
 	bool visible = true;
 	bool enabled = true;
 	bool pressed = false;
@@ -29,13 +32,13 @@ class Button : public UIElement
 	std::function<UICommand* ()> commandFactory;
 
 public:
-
+	//No background by default
 	Button(
 		std::string command,
-		sf::Font* font,
 		std::string text,
+		sf::Font* font,
 		sf::Vector2f position = { 0.f, 0.f },
-		sf::Vector2f size = { 100.f, 30.f }
+		int characterSize = 30
 	);
 
 	void draw
@@ -44,12 +47,21 @@ public:
 		sf::RenderStates states = sf::RenderStates::Default
 	) const override;
 
+	// update the position button and text in world coordinates
+	void update(sf::Vector2f drawPos);
+
 	void setVisible(bool visible) override;
 
 	bool isVisible() const override;
 
+	void setBackgroundColor(sf::Color color);
+
+	void setTextColor(sf::Color color);
+
+	// Set the position of the button relative to the window
 	void setPosition(sf::Vector2f position) override;
 
+	// Get the position of the button relative to the window
 	sf::Vector2f getPosition() const override;
 
 	void setSize(sf::Vector2f size) override;

@@ -7,22 +7,28 @@
 
 Button::Button(
 	std::string command,
-	sf::Font* font,
 	std::string text,
+	sf::Font* font,
 	sf::Vector2f position,
-	sf::Vector2f size
+	int characterSize
 ):	font(font),
-	text(*font)
+	text(*font),
+	position(position)
 {
-	//need to reposition the text
-	this->text.setString(text);
-	this->text.setCharacterSize(static_cast<unsigned int>(size.y * 0.5f)); // Adjust text size based on button height
-	this->text.setPosition(position);
-	this->text.setFillColor(sf::Color::Black);
-	this->shape.setSize(size);
-	this->shape.setPosition(position);
-	this->shape.setFillColor(sf::Color::White);
+	
+	sf::View view = WindowManager::getInstance().getWindow().getView();
+	sf::Vector2f viewPosition = view.getCenter() - view.getSize() / 2.f;
+	sf::Vector2f drawPos = position + viewPosition;
 
+	this->text.setString(text);
+	this->text.setFillColor(sf::Color::Red);
+	this->text.setCharacterSize(characterSize);
+	this->text.setPosition(drawPos);
+
+	sf::FloatRect textBounds = this->text.getLocalBounds();
+	this->shape.setSize(textBounds.size);
+	this->shape.setPosition(drawPos + textBounds.position);
+	this->shape.setFillColor(sf::Color::Transparent);
 
 	if (commandFactories.find(command) != commandFactories.end())
 	{
@@ -34,22 +40,26 @@ Button::Button(
 	}
 }
 
+void Button::update(sf::Vector2f drawPos)
+{
+	this->text.setPosition(drawPos);
+	this->shape.setPosition(drawPos + this->text.getLocalBounds().position);
+}
 void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	if (!this->visible) return;
 	target.draw(this->shape, states);
 	target.draw(this->text, states);
-	
 }
 
 void Button::setPosition(sf::Vector2f position)
 {
-	this->shape.setPosition(position);
-	this->text.setPosition(position);
+	this->position = position;
 }
 
 sf::Vector2f Button::getPosition() const
 {
-	return this->shape.getPosition();
+	return this->position;
 }
 
 void Button::setSize(sf::Vector2f size)
@@ -80,6 +90,16 @@ bool Button::contains(sf::Vector2i point) const
 sf::Vector2f Button::getSize() const
 {
 	return this->shape.getSize();
+}
+
+void Button::setTextColor(sf::Color color)
+{
+	this->text.setFillColor(color);
+}
+
+void Button::setBackgroundColor(sf::Color color)
+{
+	this->shape.setFillColor(color);
 }
 
 bool Button::handleEvent(const std::optional<sf::Event>& event)
