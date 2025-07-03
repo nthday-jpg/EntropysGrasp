@@ -248,6 +248,9 @@
     <ClCompile Include="src\control\UICommandManager.cpp">
       <Filter>Source Files\control</Filter>
     </ClCompile>
+    <ClCompile Include="src\ui\UIManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\resources\enemy.json">

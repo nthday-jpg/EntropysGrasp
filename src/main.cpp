@@ -3,6 +3,7 @@
 #include <string>
 #include <filesystem>
 
+#include "ui/UIManager.h"
 #include "systems/WindowManager.h"
 #include "ui/Button.h"
 
@@ -17,14 +18,18 @@ int main() {
 	sf::RenderWindow& window = windowManager.getWindow();
 
 	sf::Font font("src/resources/test.ttf");
-	
-	Button button(
-		"pause",
-		&font,
-		"Pause Game",
-		sf::Vector2f(100, 100),
-		sf::Vector2f(200, 50)
+	UIManager uiManager;
+	uiManager.addButton(
+		new Button(
+			"pause",
+			"Pause",
+			&font,
+			sf::Vector2f(100, 100),
+			30
+		)
 	);
+
+
 	while (window.isOpen())
 	{
 		window.clear(sf::Color::Black);
@@ -34,10 +39,10 @@ int main() {
 			{
 				WindowManager::getInstance().close();
 			}
-			button.handleEvent(*event);
+			uiManager.handleEvent(*event);
 		}
 		uiCommandManager.executeCommands();
-		button.draw(window);
+		uiManager.draw(window);
 		window.display();
 	}
 

@@ -191,6 +191,7 @@
     <ClCompile Include="src\systems\SpellSystem.cpp" />
     <ClCompile Include="src\systems\WindowManager.cpp" />
     <ClCompile Include="src\ui\Button.cpp" />
+    <ClCompile Include="src\ui\UIManager.cpp" />
     <ClCompile Include="src\Utils\SpatialHash.cpp" />
     <ClCompile Include="src\Utils\VectorMath.cpp" />
   </ItemGroup>
