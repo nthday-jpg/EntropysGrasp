@@ -115,8 +115,7 @@ bool Button::handleEvent(const std::optional<sf::Event>& event)
 				UICommandManager::getInstance().queueCommand(command);
 				return true; 
 			}
-			return false;
 		}
 	}
-	return true;
+	return false;
 }

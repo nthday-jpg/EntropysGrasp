@@ -22,8 +22,8 @@ public:
 	~UIManager();
 	void setBackground(sf::Texture* texture);
 	void draw(sf::RenderTarget& target) const;
-	void handleEvent(const sf::Event& event);
-	void update();
 	void addButton(Button* button);
 	void addText(sf::Text* text);
+	void update();
+	bool handleEvent(const sf::Event& event);
 };

@@ -70,10 +70,14 @@ void UIManager::addText(sf::Text* text)
 	texts.push_back(text);
 }
 
-void UIManager::handleEvent(const sf::Event& event)
+bool UIManager::handleEvent(const sf::Event& event)
 {
 	for (auto& button : buttons)
 	{
-		button->handleEvent(event);
+		if (button->handleEvent(event) == true)
+		{
+			return true;
+		}
 	}
+	return false;
 }

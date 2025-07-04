@@ -12,38 +12,53 @@ const int FPS = 60;
 using namespace std;
 
 int main() {
-	WindowManager& windowManager = WindowManager::getInstance();
-	windowManager.createWindow(800,600, "Test UI");
-	UICommandManager& uiCommandManager = UICommandManager::getInstance();
-	sf::RenderWindow& window = windowManager.getWindow();
+	try {
+		WindowManager& windowManager = WindowManager::getInstance();
+		windowManager.createWindow(800, 600, "Test UI");
+		UICommandManager& uiCommandManager = UICommandManager::getInstance();
+		sf::RenderWindow& window = windowManager.getWindow();
 
-	sf::Font font("src/resources/test.ttf");
-	UIManager uiManager;
-	uiManager.addButton(
-		new Button(
-			"pause",
-			"Pause",
-			&font,
-			sf::Vector2f(100, 100),
-			30
-		)
-	);
+		sf::Font font("src/resources/test.ttf");
+		UIManager uiManager;
+		uiManager.addButton(
+			new Button(
+				"pause",
+				"Pause",
+				&font,
+				sf::Vector2f(100, 100),
+				30
+			)
+		);
+		uiManager.addButton(
+			new Button(
+				"exit",
+				"Exit",
+				&font,
+				sf::Vector2f(100, 200),
+				30
+			)
+		);
 
 
-	while (window.isOpen())
-	{
-		window.clear(sf::Color::Black);
-		while (const optional event = WindowManager::getInstance().pollEvent())
+		while (window.isOpen())
 		{
-			if (event->is<sf::Event::Closed>())
+			window.clear(sf::Color::Black);
+			while (const optional event = WindowManager::getInstance().pollEvent())
 			{
-				WindowManager::getInstance().close();
+				if (event->is<sf::Event::Closed>())
+				{
+					WindowManager::getInstance().close();
+				}
+				uiManager.handleEvent(*event);
 			}
-			uiManager.handleEvent(*event);
+			uiCommandManager.executeCommands();
+			uiManager.draw(window);
+			window.display();
 		}
-		uiCommandManager.executeCommands();
-		uiManager.draw(window);
-		window.display();
 	}
-
+	catch (const std::exception& e) {
+		std::cerr << "An error occurred: " << e.what() << std::endl;
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
 }
