@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Window/Event.hpp>
+#include <optional>
 
 class UIElement;
 
@@ -28,5 +29,5 @@ public:
 
 	void syncUIWithViewport();
 
-	bool handleEvent(const sf::Event& event);
+	bool handleEvent(const std::optional<sf::Event>& event);
 };

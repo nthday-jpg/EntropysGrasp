@@ -57,7 +57,7 @@ void UIManager::addElement(UIElement* element)
 	}
 }
 
-bool UIManager::handleEvent(const sf::Event& event)
+bool UIManager::handleEvent(const std::optional<sf::Event>& event)
 {
 	for (auto& element : elements)
 	{

@@ -10,10 +10,10 @@
 
 inline std::unordered_map<std::string, std::function<UICommand* ()>> commandFactories
 {
-	{"exit", []() { return new Exit(&UICommandManager::getInstance()); }},
-	{"pause", []() { return new Pause(&UICommandManager::getInstance()); }},
-	{"resume", []() { return new Resume(&UICommandManager::getInstance()); }},
-	{"restart", []() { return new Restart(&UICommandManager::getInstance()); }}
+	{"EXIT", []() { return new Exit(&UICommandManager::getInstance()); }},
+	{"PAUSE", []() { return new Pause(&UICommandManager::getInstance()); }},
+	{"RESUME", []() { return new Resume(&UICommandManager::getInstance()); }},
+	{"RESTART", []() { return new Restart(&UICommandManager::getInstance()); }}
 };
 
 class Button : public UIElement
@@ -55,6 +55,9 @@ public:
 	bool isVisible() const override;
 
 	void setBackgroundColor(sf::Color color);
+
+	// Set the background texture of the button
+	void setBackground(sf::Texture* texture);
 
 	void setTextColor(sf::Color color);
 

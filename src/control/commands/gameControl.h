@@ -2,6 +2,9 @@
 #include "../UICommand.h"
 #include "../UICommandManager.h"
 
+// Control commands for game control actions
+// The bindings of these commands are defined in Button.h
+
 class Pause : public UICommand
 {
 	UICommandManager* commandManager;

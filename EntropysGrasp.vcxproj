@@ -153,6 +153,7 @@
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\resources\EnemyLibrary.h" />
     <ClInclude Include="src\resources\SpellLibrary.h" />
+    <ClInclude Include="src\scenes\MainMenu\MainMenu.h" />
     <ClInclude Include="src\scenes\Scene.h" />
     <ClInclude Include="src\systems\BehaviorSystem.h" />
     <ClInclude Include="src\systems\CollisionSystem.h" />
@@ -181,6 +182,8 @@
     <ClCompile Include="src\control\UICommandManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\resources\SpellLibrary.cpp" />
+    <ClCompile Include="src\scenes\MainMenu\MainMenu.cpp" />
+    <ClCompile Include="src\scenes\Scene.cpp" />
     <ClCompile Include="src\systems\BehaviorSystem.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\resources\EnemyLibrary.cpp" />

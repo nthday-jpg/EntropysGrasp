@@ -102,6 +102,15 @@ void Button::setBackgroundColor(sf::Color color)
 	this->shape.setFillColor(color);
 }
 
+void Button::setBackground(sf::Texture* texture)
+{
+	if (texture) {
+		this->shape.setTexture(texture);
+	} else {
+		this->shape.setTexture(nullptr);
+	}
+}
+
 bool Button::handleEvent(const std::optional<sf::Event>& event)
 {
 	if (const auto mousePressed = event->getIf<sf::Event::MouseButtonPressed>())

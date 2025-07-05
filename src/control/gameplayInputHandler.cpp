@@ -9,12 +9,12 @@ using namespace std;
 void GameplayInputHandler::initCommandFactory()
 {
     // Map action strings to command creation functions
-    commandFactory["moveLeft"] = [this]() { return new MoveLeft(playerEntity); };
-    commandFactory["moveRight"] = [this]() { return new MoveRight(playerEntity); };
-    commandFactory["moveUp"] = [this]() { return new MoveUp(playerEntity); };
-    commandFactory["moveDown"] = [this]() { return new MoveDown(playerEntity); };
-    commandFactory["castSpell"] = [this]() { return new CastSpell(playerEntity); };
-    commandFactory["dash"] = [this]() { return new Dash(playerEntity); };
+    commandFactory["MOVELEFT"] = [this]() { return new MoveLeft(playerEntity); };
+    commandFactory["MOVERIGHT"] = [this]() { return new MoveRight(playerEntity); };
+    commandFactory["MOVEUP"] = [this]() { return new MoveUp(playerEntity); };
+    commandFactory["MOVEDOWN"] = [this]() { return new MoveDown(playerEntity); };
+    commandFactory["CAST"] = [this]() { return new CastSpell(playerEntity); };
+    commandFactory["DASH"] = [this]() { return new Dash(playerEntity); };
     // Add more commands as needed
 }
 

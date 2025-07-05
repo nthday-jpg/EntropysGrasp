@@ -8,8 +8,9 @@
 #include "ui/Button.h"
 #include "ui/Text.h"
 #include "ui/Panel.h"
+#include "scenes/MainMenu/MainMenu.h"
 
-const int FPS = 60;
+const int FPS = 10;
 
 using namespace std;
 
@@ -17,34 +18,49 @@ int main() {
 	try {
 		WindowManager& windowManager = WindowManager::getInstance();
 		windowManager.createWindow(800, 600, "Test UI");
+
 		UICommandManager& uiCommandManager = UICommandManager::getInstance();
 		sf::RenderWindow& window = windowManager.getWindow();
+		sf::View view(sf::FloatRect({ 0.0f, 0.0f }, { 800.0f, 600.0f }));
+		window.setView(view);
+		window.setFramerateLimit(FPS);
 
-		sf::Font font("src/resources/test.ttf");
-		UIManager uiManager;
+		MainMenu mainMenu(window);
 		
-		Panel* panel = new Panel({ 50.f, 50.f }, { 100.f, 100.f });
-		Button* exitButton = new Button("exit", "Exit", &font, { 10.f, 10.f }, 30);
-		exitButton->setBackgroundColor(sf::Color::White);
-		panel->addElement(exitButton);
-		panel->setDraggable(true);
-
-		uiManager.addElement(panel);
+		sf::RectangleShape shape(sf::Vector2f(200.f, 50.f));
+		shape.setPosition({ 300.f, 200.f });
 
 		while (window.isOpen())
 		{
 			window.clear(sf::Color::Black);
-			while (const optional event = WindowManager::getInstance().pollEvent())
+			
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W))
 			{
-				if (event->is<sf::Event::Closed>())
-				{
-					WindowManager::getInstance().close();
-				}
-				uiManager.handleEvent(*event);
+				view.move({ 0.f, -5.f });
+				cout << "Moving up" << endl;
 			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A))
+			{
+				view.move({ -5.f, 0.f });
+				cout << "Moving left" << endl;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S))
+			{
+				view.move({ 0.f, 5.f });
+				cout << "Moving down" << endl;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D))
+			{
+				view.move({ 5.f, 0.f });
+				cout << "Moving right" << endl;
+			}
+
+			window.setView(view);
+			mainMenu.update(1.0f / FPS);
 			uiCommandManager.executeCommands();
-			uiManager.syncUIWithViewport();
-			uiManager.draw(window);
+			window.draw(shape);
+			//uiManager.draw(window);
 			window.display();
 		}
 	}

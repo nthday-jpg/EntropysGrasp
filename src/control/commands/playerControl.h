@@ -2,6 +2,9 @@
 #include "../command.h"
 #include <entt/entt.hpp>
 
+// The bindings of string with these commands are defined in gameplayInputHandler.h
+// and bindings of string with the keyboard keys are defined in gameConfig.h
+
 class MoveLeft : public Command
 {
 	entt::entity playerEntity;
