@@ -164,6 +164,7 @@
     <ClInclude Include="src\systems\SpellSystem.h" />
     <ClInclude Include="src\systems\WindowManager.h" />
     <ClInclude Include="src\ui\Button.h" />
+    <ClInclude Include="src\ui\Panel.h" />
     <ClInclude Include="src\ui\Text.h" />
     <ClInclude Include="src\ui\UIELement.h" />
     <ClInclude Include="src\ui\UIManager.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="src\systems\SpellSystem.cpp" />
     <ClCompile Include="src\systems\WindowManager.cpp" />
     <ClCompile Include="src\ui\Button.cpp" />
+    <ClCompile Include="src\ui\Panel.cpp" />
     <ClCompile Include="src\ui\Text.cpp" />
     <ClCompile Include="src\ui\UIManager.cpp" />
     <ClCompile Include="src\Utils\SpatialHash.cpp" />

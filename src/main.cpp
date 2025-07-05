@@ -7,6 +7,7 @@
 #include "systems/WindowManager.h"
 #include "ui/Button.h"
 #include "ui/Text.h"
+#include "ui/Panel.h"
 
 const int FPS = 60;
 
@@ -21,24 +22,14 @@ int main() {
 
 		sf::Font font("src/resources/test.ttf");
 		UIManager uiManager;
-		uiManager.addElement(
-			new Button(
-				"pause",
-				"Pause",
-				&font,
-				sf::Vector2f(100, 100),
-				30
-			)
-		);
-		uiManager.addElement(
-			new Text(
-				font,
-				"Hello, World!",
-				sf::Vector2f(200, 200),
-				30
-			)
-		);
+		
+		Panel* panel = new Panel({ 50.f, 50.f }, { 100.f, 100.f });
+		Button* exitButton = new Button("exit", "Exit", &font, { 10.f, 10.f }, 30);
+		exitButton->setBackgroundColor(sf::Color::White);
+		panel->addElement(exitButton);
+		panel->setDraggable(true);
 
+		uiManager.addElement(panel);
 
 		while (window.isOpen())
 		{
@@ -52,6 +43,7 @@ int main() {
 				uiManager.handleEvent(*event);
 			}
 			uiCommandManager.executeCommands();
+			uiManager.syncUIWithViewport();
 			uiManager.draw(window);
 			window.display();
 		}

@@ -13,7 +13,7 @@ public:
 	// Set position in window coordinates
     virtual void setPosition(sf::Vector2f position) = 0;
 
-	// Get position of the element in world coordinates
+	// Get position of the element in window coordinates
     virtual sf::Vector2f getPosition() const = 0;
 
 	// set the position of the element in world coordinates
