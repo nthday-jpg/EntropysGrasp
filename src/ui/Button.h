@@ -48,7 +48,7 @@ public:
 	) const override;
 
 	// update the position button and text in world coordinates
-	void update(sf::Vector2f drawPos);
+	void setDrawPosition(sf::Vector2f drawPos);
 
 	void setVisible(bool visible) override;
 
@@ -64,9 +64,9 @@ public:
 	// Get the position of the button relative to the window
 	sf::Vector2f getPosition() const override;
 
-	void setSize(sf::Vector2f size) override;
+	void setSize(sf::Vector2f size);
 
-	sf::Vector2f getSize() const override;
+	sf::Vector2f getSize() const;
 
 	bool contains(sf::Vector2i point) const override;
 

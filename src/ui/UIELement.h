@@ -10,17 +10,14 @@ class UIElement : public sf::Drawable {
 public:
     virtual ~UIElement() = default;
 
-    // Set position
+	// Set position in window coordinates
     virtual void setPosition(sf::Vector2f position) = 0;
 
-    // Get position
+	// Get position of the element in world coordinates
     virtual sf::Vector2f getPosition() const = 0;
 
-    // Set size
-    virtual void setSize(sf::Vector2f size) = 0;
-
-    // Get size
-    virtual sf::Vector2f getSize() const = 0;
+	// set the position of the element in world coordinates
+	virtual void setDrawPosition(sf::Vector2f drawPos) = 0;
 
     // Check if point is inside element
 	// The point is in window coordinates
@@ -32,4 +29,6 @@ public:
 	virtual void setVisible(bool visible) = 0;
 
 	virtual bool isVisible() const = 0;
+
+	//draw is pure virtual inherited from sf::Drawable
 };

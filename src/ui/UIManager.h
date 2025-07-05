@@ -7,23 +7,26 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Window/Event.hpp>
 
-class Button;
+class UIElement;
 
 class UIManager
 {
 	sf::Sprite* background;
 	sf::Texture* backgroundTexture;
 
-	std::vector<Button*> buttons;
-	std::vector<sf::Text*> texts;
+	std::vector<UIElement*> elements;
 
 public:
 	UIManager() = default;
 	~UIManager();
+
 	void setBackground(sf::Texture* texture);
+
 	void draw(sf::RenderTarget& target) const;
-	void addButton(Button* button);
-	void addText(sf::Text* text);
-	void update();
+
+	void addElement(UIElement* element);
+
+	void syncUIWithViewport();
+
 	bool handleEvent(const sf::Event& event);
 };

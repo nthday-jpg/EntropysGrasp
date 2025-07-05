@@ -40,7 +40,7 @@ Button::Button(
 	}
 }
 
-void Button::update(sf::Vector2f drawPos)
+void Button::setDrawPosition(sf::Vector2f drawPos)
 {
 	this->text.setPosition(drawPos);
 	this->shape.setPosition(drawPos + this->text.getLocalBounds().position);
@@ -80,8 +80,8 @@ bool Button::isVisible() const
 
 bool Button::contains(sf::Vector2i point) const
 {
-	sf::Vector2f checkPoint = WindowManager::getInstance().mapPixelToCoords(point);
-	if(shape.getGlobalBounds().contains(checkPoint)) {
+	sf::Vector2f worldPoint = WindowManager::getInstance().mapPixelToCoords(point);
+	if(shape.getGlobalBounds().contains(worldPoint)) {
 		return true;
 	}
 	return false;

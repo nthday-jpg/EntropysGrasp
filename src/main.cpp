@@ -6,6 +6,7 @@
 #include "ui/UIManager.h"
 #include "systems/WindowManager.h"
 #include "ui/Button.h"
+#include "ui/Text.h"
 
 const int FPS = 60;
 
@@ -20,7 +21,7 @@ int main() {
 
 		sf::Font font("src/resources/test.ttf");
 		UIManager uiManager;
-		uiManager.addButton(
+		uiManager.addElement(
 			new Button(
 				"pause",
 				"Pause",
@@ -29,12 +30,11 @@ int main() {
 				30
 			)
 		);
-		uiManager.addButton(
-			new Button(
-				"exit",
-				"Exit",
-				&font,
-				sf::Vector2f(100, 200),
+		uiManager.addElement(
+			new Text(
+				font,
+				"Hello, World!",
+				sf::Vector2f(200, 200),
 				30
 			)
 		);

@@ -6,17 +6,10 @@
 
 UIManager::~UIManager()
 {
-	for (auto& button : buttons)
+	for (auto& element : elements)
 	{
-		delete button;
+		delete element; 
 	}
-	buttons.clear();
-
-	for (auto& text : texts)
-	{
-		delete text;
-	}
-	texts.clear();
 }
 
 void UIManager::setBackground(sf::Texture* texture)
@@ -25,21 +18,14 @@ void UIManager::setBackground(sf::Texture* texture)
 	this->background = new sf::Sprite(*texture);
 }
 
-void UIManager::update()
+void UIManager::syncUIWithViewport()
 {
 	sf::View view = WindowManager::getInstance().getWindow().getView();
 	sf::Vector2f viewPosition = view.getCenter() - view.getSize() / 2.f;
 
-	for (auto& button : buttons)
+	for(auto& element : elements)
 	{
-		sf::Vector2f drawPos = button->getPosition() + viewPosition;
-		button->update(drawPos);
-	}
-
-	for (auto& text : texts)
-	{
-		sf::Vector2f drawPos = text->getPosition() + viewPosition;
-		text->setPosition(drawPos);
+		element->setDrawPosition(viewPosition + element->getPosition());
 	}
 }
 
@@ -50,33 +36,34 @@ void UIManager::draw(sf::RenderTarget& target) const
 	{
 		target.draw(*background, states);
 	}
-	for (const auto& button : buttons)
+	for (auto& element : elements)
 	{
-		target.draw(*button, states);
-	}
-	for (const auto& text : texts)
-	{
-		target.draw(*text, states);
+		if (element->isVisible())
+		{
+			target.draw(*element, states);
+		}
 	}
 }
 
-void UIManager::addButton(Button* button)
+void UIManager::addElement(UIElement* element)
 {
-	buttons.push_back(button);
-}
-
-void UIManager::addText(sf::Text* text)
-{
-	texts.push_back(text);
+	if (element)
+	{
+		elements.push_back(element);
+	}
+	else
+	{
+		throw std::runtime_error("Attempted to add a null UIElement to UIManager.");
+	}
 }
 
 bool UIManager::handleEvent(const sf::Event& event)
 {
-	for (auto& button : buttons)
+	for (auto& element : elements)
 	{
-		if (button->handleEvent(event) == true)
+		if (element->handleEvent(event))
 		{
-			return true;
+			return true; // Event was handled by an element
 		}
 	}
 	return false;

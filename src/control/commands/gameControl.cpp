@@ -16,4 +16,5 @@ void Restart::execute()
 
 void Exit::execute()
 {
+	std::cout << "Game exited." << std::endl;
 }
