@@ -1,8 +1,16 @@
 #include "WindowManager.h"
 
+WindowManager::WindowManager() : window(nullptr) 
+{
+	createWindow(800, 600, "Default Window");
+}
+
 void WindowManager::createWindow(unsigned int width, unsigned int height, const std::string& title) {
     // Clean up existing window if any
-    delete window;
+    if (window)
+    { 
+        delete window;
+    }
 
     window = new sf::RenderWindow(
         sf::VideoMode({ width, height }),
@@ -62,4 +70,18 @@ std::optional<sf::Event> WindowManager::pollEvent() {
         return event;
     }
     return std::nullopt;
+}
+
+bool WindowManager::handleEvent(const std::optional<sf::Event>& event) {
+    if (!window || !event.has_value()) return false;
+    if (event->is<sf::Event::Closed>()) 
+    {
+        close();
+		return true;
+    }
+    else if (event->is<sf::Event::Resized>())
+    {
+        // Handle window resize if needed
+    }
+    return false;
 }

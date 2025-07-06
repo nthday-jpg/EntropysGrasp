@@ -155,6 +155,7 @@
     <ClInclude Include="src\resources\SpellLibrary.h" />
     <ClInclude Include="src\scenes\MainMenu\MainMenu.h" />
     <ClInclude Include="src\scenes\Scene.h" />
+    <ClInclude Include="src\scenes\SceneManager.h" />
     <ClInclude Include="src\systems\BehaviorSystem.h" />
     <ClInclude Include="src\systems\CollisionSystem.h" />
     <ClInclude Include="src\systems\CombatSystem.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="src\resources\SpellLibrary.cpp" />
     <ClCompile Include="src\scenes\MainMenu\MainMenu.cpp" />
     <ClCompile Include="src\scenes\Scene.cpp" />
+    <ClCompile Include="src\scenes\SceneManager.cpp" />
     <ClCompile Include="src\systems\BehaviorSystem.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\resources\EnemyLibrary.cpp" />

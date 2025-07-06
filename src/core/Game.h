@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include <entt/entt.hpp>
 #include <SFML/Graphics.hpp>
-#include "../Utils/SpatialHash.h"
-//Include thêm các hệ thống khác ở đây
-#include "../systems/PositionIntegrator.h"
-#include "../systems/CollisionSystem.h"
+#include <entt/signal/dispatcher.hpp>
+#include "../scenes/SceneManager.h"
+#include "../systems/WindowManager.h"
+#include "../control/UICommandManager.h"
+
 
 //Hằng số
 const int windowHeight = 600;
@@ -13,29 +13,30 @@ const int FPS = 60;
 
 class Game {
 public:
-    Game();
-	~Game();
     void run();
 
-    entt::registry& getRegistry() { return registry; }
-    entt::dispatcher& getDispatcher() { return dispatcher; }
+	static Game& getInstance() 
+	{
+		static Game instance;
+		return instance;
+	}
 
 private:
-    void processInput();
-	void update(float dt);
+	Game();
+	Game(const Game&) = delete;
+	Game& operator=(const Game&) = delete;
+	~Game() = default;
+
+	WindowManager* windowManager;
+	UICommandManager* uiCommandManager;
+	SceneManager* sceneManager;
+
+	entt::dispatcher dispatcher; 
+
+	sf::Clock clock; 
+	float deltaTime = 0.0f; 
+
+	void processEvents();
+	void update(float deltaTime);
 	void render();
-
-    sf::RenderWindow window;
-	sf::View cameraView; 
-
-    entt::registry registry;
-    entt::dispatcher dispatcher;
-    
-	//Resource management
-    //Game state
-	//Map management
-
-	sf::Clock gameClock; 
-    float timestep = 1.0f / FPS;
-	float accumulator = 0.0f; 
 };

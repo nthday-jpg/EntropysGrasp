@@ -15,7 +15,11 @@ public:
 
 	MainMenu(sf::RenderWindow& window);
 
+	bool handleEvent(const std::optional<sf::Event>& event) override;
+
 	void update(float deltaTime) override;
 
 	void load() override;
+
+	void render() override;
 };

@@ -11,11 +11,15 @@
 class WindowManager {
 private:
     // Private constructor for singleton pattern
-    WindowManager() : window(nullptr) {}
+    WindowManager();
 
     // Destructor to clean up the window
     ~WindowManager() {
-        delete window;
+        if (window) {
+            window->close();
+            delete window;
+            window = nullptr;
+		}
     }
 
     // The main window instance owned by the manager
@@ -60,4 +64,7 @@ public:
 
     // Forward event polling to the window
     std::optional<sf::Event> pollEvent();
+
+	// Handle window specific events
+	bool handleEvent(const std::optional<sf::Event>& event);
 };

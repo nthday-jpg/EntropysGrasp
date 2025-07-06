@@ -9,16 +9,22 @@ MainMenu::MainMenu(sf::RenderWindow& window) : Scene(window) , font("src/resourc
 	isLoaded = false;
 }
 
+
 void MainMenu::update(float deltaTime) {
 	if (!isLoaded) {
-		load(); // Ensure resources are loaded before updating
+		load(); 
+		isLoaded = true; 
 	}
 	uiManager->syncUIWithViewport();
-	while(const std::optional event = window.pollEvent())
+}
+
+bool MainMenu::handleEvent(const std::optional<sf::Event>& event)
+{
+	if (!uiManager)
 	{
-		uiManager->handleEvent(event);
+		return false;
 	}
-	uiManager->draw(window);
+	uiManager->handleEvent(event);
 }
 
 void MainMenu::load()
@@ -26,6 +32,10 @@ void MainMenu::load()
 	if (!isLoaded) {
 		// Load resources, initialize variables, etc.
 		// This is called once when the scene is loaded
+		if (uiManager)
+		{
+			delete uiManager;
+		}
 
 		uiManager = new UIManager();
 		uiManager->addElement(
@@ -40,4 +50,9 @@ void MainMenu::load()
 
 		isLoaded = true;
 	}
+}
+
+void MainMenu::render()
+{
+	uiManager->draw(window);
 }
