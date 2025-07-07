@@ -24,7 +24,7 @@ bool MainMenu::handleEvent(const std::optional<sf::Event>& event)
 	{
 		return false;
 	}
-	uiManager->handleEvent(event);
+	return uiManager->handleEvent(event);
 }
 
 void MainMenu::load()

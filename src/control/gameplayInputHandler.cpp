@@ -62,21 +62,14 @@ void GameplayInputHandler::handleInput()
     handleMouse();
 }
 
-GameplayInputHandler::GameplayInputHandler(entt::entity playerEntity, GameplayCommandManager* commandManager)
-    : playerEntity(playerEntity), commandManager(commandManager)
+GameplayInputHandler::GameplayInputHandler(
+    entt::entity playerEntity, GameplayCommandManager* commandManager
+):  playerEntity(playerEntity), 
+    commandManager(commandManager),
+    gameConfig(&GameConfig::getInstance()),
+	keyBindings(gameConfig->getKeyBindings())
 {
     initCommandFactory();
-	
-    // Initialize keybindings from gameConfig if needed
-    // keyBindings = gameConfig->getKeyBindings(); // Assuming gameConfig is accessible
-    // For now, we can initialize keyBindings with some default values or leave it empty
-    keyBindings = {
-		{Keyboard::Scancode::A, "moveLeft"},
-		{Keyboard::Scancode::D, "moveRight"},
-		{Keyboard::Scancode::W, "moveUp"},
-		{Keyboard::Scancode::S, "moveDown"},
-	};
-
 }
 
 GameplayInputHandler::~GameplayInputHandler()

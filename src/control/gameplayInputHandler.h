@@ -7,14 +7,14 @@
 #include <string>
 #include "command.h"
 #include "gameplayCommandManager.h"
+#include "../core/gameConfig.h"
 
 class GameplayInputHandler {
 	entt::entity playerEntity;
 	GameplayCommandManager* commandManager;
-	//GameConfig* gameConfig;
+	GameConfig* gameConfig;
 
-	//remove this later, just for testing
-	std::map<sf::Keyboard::Scancode, std::string> keyBindings;
+	const std::map<sf::Keyboard::Scancode, std::string>& keyBindings;
 
 	std::map<std::string, std::function<Command* ()>> commandFactory;
 	void initCommandFactory();

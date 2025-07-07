@@ -151,6 +151,7 @@
     <ClInclude Include="src\control\UICommand.h" />
     <ClInclude Include="src\control\UICommandManager.h" />
     <ClInclude Include="src\core\Game.h" />
+    <ClInclude Include="src\core\gameConfig.h" />
     <ClInclude Include="src\resources\EnemyLibrary.h" />
     <ClInclude Include="src\resources\SpellLibrary.h" />
     <ClInclude Include="src\scenes\MainMenu\MainMenu.h" />
@@ -182,6 +183,7 @@
     <ClCompile Include="src\control\gameplayInputHandler.cpp" />
     <ClCompile Include="src\control\UICommandManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
+    <ClCompile Include="src\core\gameConfig.cpp" />
     <ClCompile Include="src\resources\SpellLibrary.cpp" />
     <ClCompile Include="src\scenes\MainMenu\MainMenu.cpp" />
     <ClCompile Include="src\scenes\Scene.cpp" />
