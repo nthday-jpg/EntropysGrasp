@@ -10,10 +10,12 @@
 
 inline std::unordered_map<std::string, std::function<UICommand* ()>> commandFactories
 {
-	{"EXIT", []() { return new Exit(&UICommandManager::getInstance()); }},
-	{"PAUSE", []() { return new Pause(&UICommandManager::getInstance()); }},
-	{"RESUME", []() { return new Resume(&UICommandManager::getInstance()); }},
-	{"RESTART", []() { return new Restart(&UICommandManager::getInstance()); }}
+	{"EXIT", []() { return new Exit(); }},
+	{"PAUSE", []() { return new Pause(); }},
+	{"RESUME", []() { return new Resume(); }},
+	{"RESTART", []() { return new Restart(); }},
+	{"MAINMENU", []() { return new ChangeScene("MainMenu"); }},
+	{ "GAMEPLAY", []() { return new ChangeScene("GamePlay"); }}
 };
 
 class Button : public UIElement

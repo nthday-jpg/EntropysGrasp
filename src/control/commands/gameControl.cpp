@@ -18,3 +18,8 @@ void Exit::execute()
 {
 	std::cout << "Game exited." << std::endl;
 }
+
+void ChangeScene::execute()
+{
+	sceneManager->navigateTo(targetScene);
+}
