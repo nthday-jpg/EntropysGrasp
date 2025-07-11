@@ -2,11 +2,12 @@
 #include "../../ui/Button.h"
 #include "../../ui/Text.h"
 #include "../../ui/Panel.h"
-#include <SFML/Graphics/Font.hpp>
+#include "../../manager/FontManager.h"
 
-MainMenu::MainMenu(sf::RenderWindow& window) : Scene(window) , font("assets/test.ttf")
+MainMenu::MainMenu(sf::RenderWindow& window) : Scene(window)
 {
 	isLoaded = false;
+	font = FontManager::getInstance().getFont("default");
 }
 
 
@@ -42,7 +43,7 @@ void MainMenu::load()
 			new Button(
 				"PAUSE",
 				"Pause",
-				&font,
+				font,
 				{ 100,100 },
 				30.0f
 			)
