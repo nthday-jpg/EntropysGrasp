@@ -1,7 +1,11 @@
 #include "SpatialHash.h"
-#include "../components/hitbox.h"
-#include "../components/movementComponents.h"
+#include "../gameplay/components/hitbox.h"
+#include "../gameplay/components/movementComponents.h"
 
+SpatialHashGrid::SpatialHashGrid(float cellSize) : cellSize(cellSize)
+{
+    grid.reserve(1000);
+}
 
 void SpatialHashGrid::insert(entt::entity entity, const sf::Vector2f& position) 
 {

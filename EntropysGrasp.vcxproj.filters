@@ -13,99 +13,327 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\systems">
-      <UniqueIdentifier>{ba3411b2-6b29-4ab6-8382-ef01504241e9}</UniqueIdentifier>
+    <Filter Include="Header Files\control">
+      <UniqueIdentifier>{1243d450-7f56-4aa4-bc5f-87f558310b8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\components">
-      <UniqueIdentifier>{302f51ff-7360-44cb-a988-e4498d61156d}</UniqueIdentifier>
+    <Filter Include="Header Files\ui">
+      <UniqueIdentifier>{dc046a0d-a7e4-4177-ba92-b58c2c6b2308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\manager">
+      <UniqueIdentifier>{69c42e7e-8264-4812-8361-539f1e1a5c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gameplay">
+      <UniqueIdentifier>{fe9d2416-7311-4b15-a623-8a4e3b8dafd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\scenes">
+      <UniqueIdentifier>{74fab23e-d7e6-4030-9b3b-b78c3a29463f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\utils">
-      <UniqueIdentifier>{e73805e0-1828-451c-bf3b-1cadb50a43a7}</UniqueIdentifier>
+      <UniqueIdentifier>{47b9d6f2-71d5-48f6-a8e3-190e80fa1477}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\core">
-      <UniqueIdentifier>{060dcf0e-1e18-401e-92ba-65f951b8cebc}</UniqueIdentifier>
+    <Filter Include="Source Files\control">
+      <UniqueIdentifier>{10e5cfc2-2e9e-43ad-bbff-ba4e5297908f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\systems">
-      <UniqueIdentifier>{a382a039-b2be-43ed-bcd7-1c728bda0a86}</UniqueIdentifier>
+    <Filter Include="Source Files\manager">
+      <UniqueIdentifier>{eeade74f-3ac0-4fc2-8f0c-e7e738fe70ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\behaviors">
-      <UniqueIdentifier>{c61460ab-b14b-44a8-afca-da4c91fba2df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\core">
-      <UniqueIdentifier>{cd868065-d2cb-4512-bfd3-9f50d83b8aa8}</UniqueIdentifier>
+    <Filter Include="Source Files\gameplay">
+      <UniqueIdentifier>{cbe8716a-2dfd-4358-9303-cdc4ee8445ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\utils">
-      <UniqueIdentifier>{22735f72-d030-4cc4-ba82-e6f027723744}</UniqueIdentifier>
+      <UniqueIdentifier>{d2d39aea-bf01-40f4-8b38-96357a030c3f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\behaviors">
-      <UniqueIdentifier>{2691ec35-abca-4ecc-a46a-cc3294cd5785}</UniqueIdentifier>
+    <Filter Include="Source Files\scenes">
+      <UniqueIdentifier>{c808d420-91d0-4e99-8cc8-7b338d758179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{b995bda2-3d2d-424a-8aad-5b4c0c1fcdde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\control\commands">
+      <UniqueIdentifier>{fabb1494-0589-4e1f-93f7-f9c679d1d1d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gameplay\components">
+      <UniqueIdentifier>{f1c09315-5e66-48c9-9aac-309605b3fb98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gameplay\manager">
+      <UniqueIdentifier>{e2590b24-2040-4cd4-9cdd-b7612b15afb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gameplay\systems">
+      <UniqueIdentifier>{0858eeb4-f60f-4c14-977a-008fd354095a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\scenes\MainMenu">
+      <UniqueIdentifier>{5eb03092-8c87-47a5-8263-c9850523f495}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\control\commands">
+      <UniqueIdentifier>{6110f19e-a1b9-4f5d-a543-a4e86e414bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gameplay\systems">
+      <UniqueIdentifier>{26b23a7e-d491-4bf3-95e8-f00aaa8e68c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gameplay\manager">
+      <UniqueIdentifier>{bec9f61e-9f92-45b6-86cf-fc001f606a7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scenes\MainMenu">
+      <UniqueIdentifier>{070cf6d2-64b0-432a-8ee7-b2c3b63a25dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\components\EffectTag.h">
-      <Filter>Header Files\components</Filter>
+    <ClInclude Include="src\control\Command.h">
+      <Filter>Header Files\control</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\EntityTag.h">
-      <Filter>Header Files\components</Filter>
+    <ClInclude Include="src\control\GameplayCommandManager.h">
+      <Filter>Header Files\control</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\hitbox.h">
-      <Filter>Header Files\components</Filter>
+    <ClInclude Include="src\control\GameplayInputHandler.h">
+      <Filter>Header Files\control</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\lookingDirection.h">
-      <Filter>Header Files\components</Filter>
+    <ClInclude Include="src\control\UICommand.h">
+      <Filter>Header Files\control</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\movementComponents.h">
-      <Filter>Header Files\components</Filter>
+    <ClInclude Include="src\control\UICommandManager.h">
+      <Filter>Header Files\control</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\statComponent.h">
-      <Filter>Header Files\components</Filter>
+    <ClInclude Include="src\control\commands\gameControl.h">
+      <Filter>Header Files\control\commands</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\Game.h">
-      <Filter>Header Files\core</Filter>
+    <ClInclude Include="src\control\commands\playerControl.h">
+      <Filter>Header Files\control\commands</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utils\SpatialHash.h">
+    <ClInclude Include="src\manager\EnemyLibrary.h">
+      <Filter>Header Files\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\manager\SpellLibrary.h">
+      <Filter>Header Files\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\manager\TextureManager.h">
+      <Filter>Header Files\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\manager\WindowManager.h">
+      <Filter>Header Files\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\Animation.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\Behavior.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\CollisionEvent.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\CollisionType.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\EffectTags.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\Enemy.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\EnemySpawnInfo.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\EntityTags.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\hitbox.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\lookingDirection.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\movementComponents.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\Spell.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\statComponent.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\tile.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\manager\map.h">
+      <Filter>Header Files\gameplay\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\manager\MapManager.h">
+      <Filter>Header Files\gameplay\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\manager\TileManager.h">
+      <Filter>Header Files\gameplay\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\AnimationSystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\BehaviorSystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\CollisionSystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\CombatSystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\EnemyManager.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\MovementPipeline.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\PlayerVelocitySystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\PositionIntegrator.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\RenderSystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\SpellManager.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\SpatialHash.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\systems\CollisionSystem.h">
-      <Filter>Header Files\systems</Filter>
+    <ClInclude Include="src\utils\VectorMath.h">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\systems\CombatSystem.h">
-      <Filter>Header Files\systems</Filter>
+    <ClInclude Include="src\scenes\Scene.h">
+      <Filter>Header Files\scenes</Filter>
     </ClInclude>
-    <ClInclude Include="src\systems\MovementSystem.h">
-      <Filter>Header Files\systems</Filter>
+    <ClInclude Include="src\scenes\SceneManager.h">
+      <Filter>Header Files\scenes</Filter>
     </ClInclude>
-    <ClInclude Include="src\behaviors\EffectSystem.h">
-      <Filter>Header Files\behaviors</Filter>
+    <ClInclude Include="src\scenes\MainMenu\MainMenu.h">
+      <Filter>Header Files\scenes\MainMenu</Filter>
     </ClInclude>
-    <ClInclude Include="src\behaviors\PlayerMovementSystem.h">
-      <Filter>Header Files\behaviors</Filter>
+    <ClInclude Include="src\ui\Button.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\Panel.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\Text.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\UIElement.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\UIManager.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameConfig.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\systems\CollisionSystem.cpp">
-      <Filter>Source Files\systems</Filter>
+    <ClCompile Include="src\control\GameplayCommandManager.cpp">
+      <Filter>Source Files\control</Filter>
     </ClCompile>
-    <ClCompile Include="src\systems\CombatSystem.cpp">
-      <Filter>Source Files\systems</Filter>
+    <ClCompile Include="src\control\GameplayInputHandler.cpp">
+      <Filter>Source Files\control</Filter>
     </ClCompile>
-    <ClCompile Include="src\systems\MovementSystem.cpp">
-      <Filter>Source Files\systems</Filter>
+    <ClCompile Include="src\control\UICommandManager.cpp">
+      <Filter>Source Files\control</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\Game.cpp">
-      <Filter>Source Files\core</Filter>
+    <ClCompile Include="src\manager\EnemyLibrary.cpp">
+      <Filter>Source Files\manager</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utils\SpatialHash.cpp">
+    <ClCompile Include="src\manager\SpellLibrary.cpp">
+      <Filter>Source Files\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\manager\TextureManager.cpp">
+      <Filter>Source Files\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\manager\WindowManager.cpp">
+      <Filter>Source Files\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\control\commands\GameControl.cpp">
+      <Filter>Source Files\control\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="src\control\commands\playerControl.cpp">
+      <Filter>Source Files\control\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\manager\map.cpp">
+      <Filter>Source Files\gameplay\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\manager\MapManager.cpp">
+      <Filter>Source Files\gameplay\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\manager\TileManager.cpp">
+      <Filter>Source Files\gameplay\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\AnimationSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\BehaviorSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\CollisionSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\CombatSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\EffectSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\EnemyManager.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\MovementPipeline.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\PlayerVelocitySystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\PositionIntegrator.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\RenderSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\SpellManager.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\Button.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\Panel.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\Text.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\UIManager.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Scene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\SceneManager.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\MainMenu\MainMenu.cpp">
+      <Filter>Source Files\scenes\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\SpatialHash.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\behaviors\EffectSystem.cpp">
-      <Filter>Source Files\behaviors</Filter>
+    <ClCompile Include="src\utils\VectorMath.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\behaviors\PlayerMovementSystem.cpp">
-      <Filter>Source Files\behaviors</Filter>
+    <ClCompile Include="src\Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameConfig.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
