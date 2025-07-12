@@ -6,10 +6,11 @@
 
 class GameplayScene : public Scene {
 private:
-    entt::registry registry;
-    entt::entity playerEntity;
+	//Mapmanager* mapManager;
     GameplayCommandManager* gameplayCommandManager;
     GameplayInputHandler* inputHandler;
+    
+	bool isPaused = false;
     
 public:
     GameplayScene(sf::RenderWindow& window);
@@ -19,7 +20,12 @@ public:
     bool handleEvent(const std::optional<sf::Event>& event) override;
     void update(float deltaTime) override;
     void render() override;
+
+	void pause();
+    void resume();
+	void restart();
+	void exit();
     
 private:
-    void createPlayer();
+
 };

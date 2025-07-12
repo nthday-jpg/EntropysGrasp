@@ -20,8 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\control\Command.h" />
-    <ClInclude Include="src\control\commands\gameControl.h" />
-    <ClInclude Include="src\control\commands\playerControl.h" />
+    <ClInclude Include="src\control\commands\GameControl.h" />
+    <ClInclude Include="src\control\commands\PlayerControl.h" />
     <ClInclude Include="src\control\GameplayCommandManager.h" />
     <ClInclude Include="src\control\GameplayInputHandler.h" />
     <ClInclude Include="src\control\UICommand.h" />
@@ -57,13 +57,13 @@
     <ClInclude Include="src\gameplay\systems\SpellManager.h" />
     <ClInclude Include="src\manager\EnemyLibrary.h" />
     <ClInclude Include="src\manager\FontManager.h" />
+    <ClInclude Include="src\manager\SceneManager.h" />
     <ClInclude Include="src\manager\SpellLibrary.h" />
     <ClInclude Include="src\manager\TextureManager.h" />
     <ClInclude Include="src\manager\WindowManager.h" />
     <ClInclude Include="src\scenes\Gameplay\GameplayScene.h" />
     <ClInclude Include="src\scenes\MainMenu\MainMenu.h" />
     <ClInclude Include="src\scenes\Scene.h" />
-    <ClInclude Include="src\scenes\SceneManager.h" />
     <ClInclude Include="src\ui\Button.h" />
     <ClInclude Include="src\ui\Panel.h" />
     <ClInclude Include="src\ui\Text.h" />
@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\control\commands\GameControl.cpp" />
-    <ClCompile Include="src\control\commands\playerControl.cpp" />
+    <ClCompile Include="src\control\commands\PlayerControl.cpp" />
     <ClCompile Include="src\control\GameplayCommandManager.cpp" />
     <ClCompile Include="src\control\GameplayInputHandler.cpp" />
     <ClCompile Include="src\control\UICommandManager.cpp" />
@@ -97,13 +97,13 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\manager\EnemyLibrary.cpp" />
     <ClCompile Include="src\manager\FontManager.cpp" />
+    <ClCompile Include="src\manager\SceneManager.cpp" />
     <ClCompile Include="src\manager\SpellLibrary.cpp" />
     <ClCompile Include="src\manager\TextureManager.cpp" />
     <ClCompile Include="src\manager\WindowManager.cpp" />
     <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp" />
     <ClCompile Include="src\scenes\MainMenu\MainMenu.cpp" />
     <ClCompile Include="src\scenes\Scene.cpp" />
-    <ClCompile Include="src\scenes\SceneManager.cpp" />
     <ClCompile Include="src\ui\Button.cpp" />
     <ClCompile Include="src\ui\Panel.cpp" />
     <ClCompile Include="src\ui\Text.cpp" />

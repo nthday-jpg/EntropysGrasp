@@ -8,7 +8,7 @@ MovementPipeline::MovementPipeline(const SpellLibrary& spellLib, const EnemyLibr
 
 void MovementPipeline::update(entt::registry& registry, float dt)
 {
-    PlayerVelocityController::calculateVelo(registry);
+    PlayerVelocityController::calculateVelocity(registry);
 
     behaviorSystem.updateBehavior(registry, dt);
 

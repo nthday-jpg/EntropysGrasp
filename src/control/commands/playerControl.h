@@ -4,6 +4,7 @@
 
 // The bindings of string with these commands are defined in gameplayInputHandler.h
 // and bindings of string with the keyboard keys are defined in gameConfig.h
+// The movement direction will be normalized to length 1 in playerVelocitySystem
 
 class MoveLeft : public Command
 {

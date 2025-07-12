@@ -93,10 +93,10 @@
     <ClInclude Include="src\control\UICommandManager.h">
       <Filter>Header Files\control</Filter>
     </ClInclude>
-    <ClInclude Include="src\control\commands\gameControl.h">
+    <ClInclude Include="src\control\commands\GameControl.h">
       <Filter>Header Files\control\commands</Filter>
     </ClInclude>
-    <ClInclude Include="src\control\commands\playerControl.h">
+    <ClInclude Include="src\control\commands\PlayerControl.h">
       <Filter>Header Files\control\commands</Filter>
     </ClInclude>
     <ClInclude Include="src\manager\EnemyLibrary.h">
@@ -201,9 +201,6 @@
     <ClInclude Include="src\scenes\Scene.h">
       <Filter>Header Files\scenes</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\SceneManager.h">
-      <Filter>Header Files\scenes</Filter>
-    </ClInclude>
     <ClInclude Include="src\scenes\MainMenu\MainMenu.h">
       <Filter>Header Files\scenes\MainMenu</Filter>
     </ClInclude>
@@ -227,6 +224,15 @@
     </ClInclude>
     <ClInclude Include="src\GameConfig.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\manager\FontManager.h">
+      <Filter>Header Files\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Gameplay\GameplayScene.h">
+      <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\manager\SceneManager.h">
+      <Filter>Header Files\manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,7 +260,7 @@
     <ClCompile Include="src\control\commands\GameControl.cpp">
       <Filter>Source Files\control\commands</Filter>
     </ClCompile>
-    <ClCompile Include="src\control\commands\playerControl.cpp">
+    <ClCompile Include="src\control\commands\PlayerControl.cpp">
       <Filter>Source Files\control\commands</Filter>
     </ClCompile>
     <ClCompile Include="src\gameplay\manager\map.cpp">
@@ -314,9 +320,6 @@
     <ClCompile Include="src\scenes\Scene.cpp">
       <Filter>Source Files\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\SceneManager.cpp">
-      <Filter>Source Files\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="src\scenes\MainMenu\MainMenu.cpp">
       <Filter>Source Files\scenes\MainMenu</Filter>
     </ClCompile>
@@ -334,6 +337,15 @@
     </ClCompile>
     <ClCompile Include="src\GameConfig.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\manager\FontManager.cpp">
+      <Filter>Source Files\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\manager\SceneManager.cpp">
+      <Filter>Source Files\manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

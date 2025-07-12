@@ -7,12 +7,12 @@
 #include "../../utils/VectorMath.h"
 #include <stdexcept>
 
-void PlayerVelocityController::calculateVelo(entt::registry& registry)
+void PlayerVelocityController::calculateVelocity(entt::registry& registry)
 {
 	auto view = registry.view<PlayerTag>();
 	for (entt::entity playerEntity : view)
 	{
-		float speed = calculatedSpeed(registry, playerEntity);
+		float speed = calculateSpeed(registry, playerEntity);
 		MovementDirection movementDirection = registry.get<MovementDirection>(playerEntity);
 
 		normalize(static_cast<sf::Vector2f&>(movementDirection));
@@ -21,7 +21,7 @@ void PlayerVelocityController::calculateVelo(entt::registry& registry)
 	}
 }
 
-float PlayerVelocityController::calculatedSpeed(entt::registry& registry, entt::entity playerEntity)
+float PlayerVelocityController::calculateSpeed(entt::registry& registry, entt::entity playerEntity)
 {
 	if (!registry.all_of<MovementDirection, LookingDirection, Speed>(playerEntity))
 	{

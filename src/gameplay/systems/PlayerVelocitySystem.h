@@ -21,7 +21,7 @@ struct PlayerVelocityController
 	// - Speed
 	// The exception is thrown by `calculatedSpeed` 
 	// if the player entity does not have all required components.
-	static void calculateVelo(entt::registry& registry);
+	static void calculateVelocity(entt::registry& registry);
 
 	// Calculate the speed base on the player's movement direction and looking direction.
 	// The required components are:
@@ -29,5 +29,5 @@ struct PlayerVelocityController
 	// - LookingDirection
 	// - Speed
 	// If the player entity does not have all required components, an exception is thrown.
-	static float calculatedSpeed(entt::registry& registry, entt::entity playerEntity);
+	static float calculateSpeed(entt::registry& registry, entt::entity playerEntity);
 };

@@ -4,9 +4,10 @@
 #include "../../gameplay/components/EntityTags.h"
 #include "../../gameplay/components/statComponent.h"
 
-GameplayScene::GameplayScene(sf::RenderWindow& window) : Scene(window), playerEntity(entt::null) {
-    gameplayCommandManager = new GameplayCommandManager(registry);
+GameplayScene::GameplayScene(sf::RenderWindow& window) : Scene(window) {
     inputHandler = nullptr;
+	gameplayCommandManager = nullptr;
+
 }
 
 GameplayScene::~GameplayScene() {
@@ -19,38 +20,7 @@ GameplayScene::~GameplayScene() {
 }
 
 void GameplayScene::load() {
-    if (!isLoaded) {
-        // Create the player entity and components
-        createPlayer();
-        
-        // Initialize the input handler after creating the player
-        if (inputHandler) {
-            delete inputHandler;
-        }
-        inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
-        
-        isLoaded = true;
-    }
-}
 
-void GameplayScene::createPlayer() {
-    // Create player entity with necessary components
-    playerEntity = registry.create();
-    
-    // Add player tag
-    registry.emplace<PlayerTag>(playerEntity);
-    
-    // Add position component
-    registry.emplace<Position>(playerEntity, 400.0f, 300.0f); // Center of an 800x600 window
-    
-    // Add movement direction component (starts at zero)
-    registry.emplace<MovementDirection>(playerEntity, 0.0f, 0.0f);
-    
-    // Add looking direction component
-    registry.emplace<LookingDirection>(playerEntity, 0.0f, 0.0f);
-    
-    // Add health component
-    registry.emplace<Health>(playerEntity, 100.0f, 100.0f); // max health, current health
 }
 
 bool GameplayScene::handleEvent(const std::optional<sf::Event>& event) {
@@ -74,6 +44,10 @@ void GameplayScene::update(float deltaTime) {
         load();
         return;
     }
+
+    if (isPaused) {
+        return;
+	}
     
     // Handle continuous input (movement, looking, etc.)
     if (inputHandler) {
@@ -105,4 +79,25 @@ void GameplayScene::render() {
     if (uiManager) {
         uiManager->draw(window);
     }
+}
+
+void GameplayScene::pause()
+{
+	isPaused = true;
+}
+
+void GameplayScene::resume()
+{
+    isPaused = false;
+}
+
+void GameplayScene::restart()
+{
+    // Logic to restart the game, e.g., reset player position, score, etc.
+    // This could also involve reloading the scene or resetting components.
+}
+
+void GameplayScene::exit()
+{
+    // Logic to exit the game, e.g., navigate to main menu or quit application.
 }

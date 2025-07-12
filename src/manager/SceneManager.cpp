@@ -1,5 +1,5 @@
 #include "SceneManager.h"
-#include "MainMenu/MainMenu.h"
+#include "../scenes/MainMenu/MainMenu.h"
 #include "../manager/WindowManager.h"
 
 SceneManager::SceneManager()

@@ -1,7 +1,7 @@
 #pragma once
 #include "../UICommand.h"
 #include "../UICommandManager.h"
-#include "../../scenes/SceneManager.h"
+#include "../../manager/SceneManager.h"
 #include <string>
 
 // Control commands for game control actions

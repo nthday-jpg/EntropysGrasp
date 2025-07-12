@@ -1,5 +1,5 @@
 #pragma once
-#include "Scene.h"
+#include "../scenes/Scene.h"
 #include <unordered_map>
 #include <string>
 #include <optional>
@@ -33,6 +33,8 @@ public:
 	//load and unload scenes
 
 	void navigateTo(std::string name);
+
+	Scene* getCurrentScene() const { return currentScene; }
 
 	void update(float deltaTime);
 

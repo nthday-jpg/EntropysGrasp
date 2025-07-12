@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <SFML/Graphics.hpp>
 #include <entt/signal/dispatcher.hpp>
-#include "scenes/SceneManager.h"
+#include "manager/SceneManager.h"
 #include "manager/WindowManager.h"
 #include "control/UICommandManager.h"
 

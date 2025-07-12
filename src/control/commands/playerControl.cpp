@@ -1,4 +1,4 @@
-#include "playerControl.h"
+#include "PlayerControl.h"
 
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
