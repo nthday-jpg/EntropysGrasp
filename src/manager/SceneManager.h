@@ -4,6 +4,7 @@
 #include <string>
 #include <optional>
 #include <SFML/Window/Event.hpp>
+#include <entt/signal/dispatcher.hpp>  // Add this include
 
 class SceneManager
 {
@@ -12,6 +13,8 @@ class SceneManager
 
 	Scene* currentScene = nullptr;
 	Scene* nextScene = nullptr;
+
+	entt::dispatcher* dispatcher = nullptr;  // Add dispatcher pointer
 
 	//implement transition between scenes
 	SceneManager();
@@ -31,6 +34,9 @@ public:
 		scenes.clear();
 	}
 
+	// Add method to bind dispatcher
+	void bindDispatcher(entt::dispatcher* dispatcher);
+
 	void addScene(std::string name, Scene* scene);
 	//load and unload scenes
 
@@ -44,4 +50,7 @@ public:
 
 	// handle gameflow events
 	bool handleEvent(const std::optional<sf::Event>& event);
+	
+	// Add method to get dispatcher for scenes
+	entt::dispatcher* getDispatcher() const { return dispatcher; }
 };

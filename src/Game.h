@@ -4,6 +4,7 @@
 #include "manager/SceneManager.h"
 #include "manager/WindowManager.h"
 #include "control/UICommandManager.h"
+#include "manager/SoundManager.h"
 
 
 //Hằng số

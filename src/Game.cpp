@@ -13,6 +13,9 @@ Game::Game() :
 	sceneManager = &SceneManager::getInstance();
 	uiCommandManager = &UICommandManager::getInstance();
 
+	// Bind dispatcher to both managers
+	SoundManager::getInstance().bindDispatcher(&dispatcher);
+	sceneManager->bindDispatcher(&dispatcher);  // Add this line
 }
 
 void Game::run()
