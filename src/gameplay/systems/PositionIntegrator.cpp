@@ -1,5 +1,5 @@
 ﻿#include "PositionIntegrator.h"
-#include "../components/movementComponents.h"  
+#include "../components/MovementComponents.h"  
 
 
 void PositionIntegrator::update(entt::registry& registry, float dt)

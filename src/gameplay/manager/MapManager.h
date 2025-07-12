@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "map.h"
 #include "../components/tile.h"
-#include "../components/movementComponents.h"
+#include "../components/MovementComponents.h"
 #include <string>
 #include <vector>
 #include <unordered_map>

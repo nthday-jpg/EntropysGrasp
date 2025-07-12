@@ -31,7 +31,7 @@ struct Radius
 	float value;
 };
 
-struct Resistance
+struct RepelResistance
 {
 	float value;
 };

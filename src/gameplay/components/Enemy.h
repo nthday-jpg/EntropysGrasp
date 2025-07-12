@@ -20,7 +20,7 @@ struct EnemyData
 	Mana mana;
 	Speed speed;
 	Attack attack;
-	Resistance resistance;
+	RepelResistance resistance;
 	BehaviorType behaviorType = BehaviorType::HomingPlayer; // Assuming BehaviorType is an enum defined elsewhere
 	// Behavior behavior; // Placeholder for behavior component
 };

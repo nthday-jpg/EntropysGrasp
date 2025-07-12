@@ -1,6 +1,6 @@
 #include "SpatialHash.h"
-#include "../gameplay/components/hitbox.h"
-#include "../gameplay/components/movementComponents.h"
+#include "../gameplay/components/Hitbox.h"
+#include "../gameplay/components/MovementComponents.h"
 
 SpatialHashGrid::SpatialHashGrid(float cellSize) : cellSize(cellSize)
 {

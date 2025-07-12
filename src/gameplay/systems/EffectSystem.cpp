@@ -1,8 +1,8 @@
 #include "EffectSystem.h"
-#include "../components/statComponent.h"
+#include "../components/StatComponent.h"
 #include "../components/Entitytags.h"
 #include "../components/EffectTags.h"
-#include "../components/movementComponents.h"
+#include "../components/MovementComponents.h"
 
 void applyEffect(entt::entity entity, entt::registry& registry, EffectType effectType, float dt) {
 	switch (effectType) 
@@ -176,7 +176,7 @@ void ExpelEffect::apply(entt::registry& registry, float dt)
 		auto& tag = registry.get<ExpelTag>(entity);
 		tag.remainingTime -= dt;
 		Velocity& velocity = registry.get<Velocity>(entity);
-		float resistance = registry.get<Resistance>(entity).value;
+		float resistance = registry.get<RepelResistance>(entity).value;
 		velocity += tag.force / (1 + resistance) * (1 + tag.remainingTime);
 		if (tag.remainingTime <= 0.0f)
 		{

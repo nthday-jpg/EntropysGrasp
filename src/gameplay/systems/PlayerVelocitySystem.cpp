@@ -1,9 +1,9 @@
 #include "PlayerVelocitySystem.h"
 
 #include "../components/EntityTags.h"
-#include "../components/movementComponents.h"
-#include "../components/statComponent.h" 
-#include "../components/lookingDirection.h"
+#include "../components/MovementComponents.h"
+#include "../components/StatComponent.h" 
+#include "../components/LookingDirection.h"
 #include "../../utils/VectorMath.h"
 #include <stdexcept>
 

@@ -1,7 +1,7 @@
 #include "TileManager.h"
-#include "../components/statComponent.h"
+#include "../components/StatComponent.h"
 #include "../components/EntityTags.h"
-#include "../components/movementComponents.h"
+#include "../components/MovementComponents.h"
 #include "../../manager/TextureManager.h"
 
 constexpr float INF = 100000.0f;
@@ -15,10 +15,10 @@ entt::entity TileManager::createTile(entt::registry& registry, TileType tileType
 	registry.emplace<TileType>(tileEntity, tileType);
 	registry.emplace<sf::IntRect>(tileEntity, tileIntRect);
 	if (isCollidableTile(tileType)) {
-		registry.emplace<Resistance>(tileEntity, INF);
+		registry.emplace<RepelResistance>(tileEntity, INF);
 	}
 	else {
-		registry.emplace<Resistance>(tileEntity, 0.0f);
+		registry.emplace<RepelResistance>(tileEntity, 0.0f);
 	}
 	return tileEntity;
 }

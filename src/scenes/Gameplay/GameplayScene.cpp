@@ -1,8 +1,8 @@
 #include "GameplayScene.h"
-#include "../../gameplay/components/movementComponents.h"
-#include "../../gameplay/components/lookingDirection.h"
+#include "../../gameplay/components/MovementComponents.h"
+#include "../../gameplay/components/LookingDirection.h"
 #include "../../gameplay/components/EntityTags.h"
-#include "../../gameplay/components/statComponent.h"
+#include "../../gameplay/components/StatComponent.h"
 
 GameplayScene::GameplayScene(sf::RenderWindow& window) : Scene(window) {
     inputHandler = nullptr;

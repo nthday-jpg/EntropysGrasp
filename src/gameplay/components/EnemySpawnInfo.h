@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "../components/Enemy.h"
-#include "../components/movementComponents.h"
+#include "../components/MovementComponents.h"
 
 struct EnemySpawnInfo 
 {

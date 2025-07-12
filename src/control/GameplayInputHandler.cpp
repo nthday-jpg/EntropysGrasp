@@ -1,7 +1,7 @@
 #include "GameplayInputHandler.h"
 #include "commands/playerControl.h"
-#include "../gameplay/components/movementComponents.h"
-#include "../gameplay/components/lookingDirection.h"
+#include "../gameplay/components/MovementComponents.h"
+#include "../gameplay/components/LookingDirection.h"
 
 using namespace sf;
 using namespace std;

@@ -1,8 +1,8 @@
-#include "../components/statComponent.h"
+#include "../components/StatComponent.h"
 #include "../components/EntityTags.h"
 #include "../components/Spell.h"
-#include "../components/hitbox.h"
-#include "../components/movementComponents.h"
+#include "../components/Hitbox.h"
+#include "../components/MovementComponents.h"
 #include "BehaviorSystem.h"
 #include "SpellManager.h"
 #include <iostream>
@@ -40,7 +40,7 @@ vector<entt::entity> SpellSystem::createSpell(entt::registry& registry, entt::en
         registry.emplace<BehaviorType>(spellEntity, spellData.behaviorType);
         registry.emplace<SpellEffect>(spellEntity, spellData.effect);
         registry.emplace<Hitbox>(spellEntity, Hitbox(15.0f, 15.0f, 0.0f, 0.0f));
-        registry.emplace<Resistance>(spellEntity, 0.5f); // Example resistance value
+        registry.emplace<RepelResistance>(spellEntity, 0.5f); // Example resistance value
 
         spellEntities.push_back(spellEntity);
     }

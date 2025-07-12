@@ -1,11 +1,11 @@
 #include "BehaviorSystem.h"
 #include "../../manager/SpellLibrary.h"
 #include "../components/Spell.h"
-#include "../components/movementComponents.h"
+#include "../components/MovementComponents.h"
 #include "../components/EntityTags.h"
-#include "../components/statComponent.h"
+#include "../components/StatComponent.h"
 #include "../../manager/EnemyLibrary.h"
-#include "../components/hitbox.h"
+#include "../components/Hitbox.h"
 #include "../../utils/VectorMath.h"
 #include <SFML/System/Vector2.hpp>
 #include <iostream>

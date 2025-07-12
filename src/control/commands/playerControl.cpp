@@ -5,8 +5,8 @@
 #include <iostream>
 
 #include "../../manager/WindowManager.h"
-#include "../../gameplay/components/movementComponents.h"
-#include "../../gameplay/components/lookingDirection.h"
+#include "../../gameplay/components/MovementComponents.h"
+#include "../../gameplay/components/LookingDirection.h"
 #include "../../gameplay/components/EntityTags.h"
 
 #include "../../utils/VectorMath.h"

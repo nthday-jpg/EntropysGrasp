@@ -7,7 +7,9 @@
 
 class SceneManager
 {
+	// Use dynamic casting when use scene in scenes to ensure type safety
 	std::unordered_map<std::string, Scene*> scenes;
+
 	Scene* currentScene = nullptr;
 	Scene* nextScene = nullptr;
 

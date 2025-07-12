@@ -131,9 +131,9 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 		return; // Cannot resolve overlap if one of the entities has no collision type
 	}
 
-	if (!registry.all_of<Hitbox, Position, Resistance>(e1) || !registry.all_of<Hitbox, Position, Resistance>(e2))
+	if (!registry.all_of<Hitbox, Position, RepelResistance>(e1) || !registry.all_of<Hitbox, Position, RepelResistance>(e2))
 	{
-		throw std::runtime_error("Both entities must have Hitbox, Position, and Resistance components to resolve overlap.");
+		throw std::runtime_error("Both entities must have Hitbox, Position, and RepelResistance components to resolve overlap.");
 	}
 
 	Hitbox& hitbox1 = registry.get<Hitbox>(e1);
@@ -171,8 +171,8 @@ void CollisionSystem::resolveRR(entt::entity e1, entt::entity e2)
 		return;
 	};
 
-	float resistance1 = registry.get<Resistance>(e1).value;
-	float resistance2 = registry.get<Resistance>(e2).value;
+	float resistance1 = registry.get<RepelResistance>(e1).value;
+	float resistance2 = registry.get<RepelResistance>(e2).value;
 	float totalResistance = resistance1 + resistance2;
 
 	//0.01f is added to ensure two entities will not be completely stuck together
@@ -258,8 +258,8 @@ void CollisionSystem::resolveCC(entt::entity e1, entt::entity e2)
 	{
 		float overlap = hitbox.radius + otherHitbox.radius - distance;
 
-		float resistance1 = registry.get<Resistance>(e1).value;
-		float resistance2 = registry.get<Resistance>(e2).value;
+		float resistance1 = registry.get<RepelResistance>(e1).value;
+		float resistance2 = registry.get<RepelResistance>(e2).value;
 		float totalResistance = resistance1 + resistance2;
 
 		float moveAmount1 = (resistance2 / totalResistance + 0.01f) * overlap;

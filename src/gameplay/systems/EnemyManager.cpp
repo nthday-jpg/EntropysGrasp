@@ -31,7 +31,7 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
     registry.emplace<Health>(entity, health, health);
     registry.emplace<Speed>(entity, speed);
     registry.emplace<Attack>(entity, attack);
-    registry.emplace<Resistance>(entity, data.resistance);
+    registry.emplace<RepelResistance>(entity, data.resistance);
     registry.emplace<EnemyType>(entity, type);
     return entity;
 }
