@@ -168,25 +168,21 @@ void AggressiveEffect::deactivate(entt::registry& registry, entt::entity entity)
 	registry.replace<Attack>(entity, tag.originalAttack);
 }
 
-void ExpelEffect::apply(entt::registry& registry, float dt)
+void RepelEffect::apply(entt::registry& registry, float dt)
 {
-	auto view = registry.view<ExpelTag, EnemyTag>();
-	for (auto [entity, expelComponent] : view.each())
+	auto view = registry.view<RepelTag>();
+	for (auto [entity, repelTag] : view.each())
 	{
-		auto& tag = registry.get<ExpelTag>(entity);
-		tag.remainingTime -= dt;
-		Velocity& velocity = registry.get<Velocity>(entity);
-		float resistance = registry.get<RepelResistance>(entity).value;
-		velocity += tag.force / (1 + resistance) * (1 + tag.remainingTime);
-		if (tag.remainingTime <= 0.0f)
+		repelTag.remainingTime -= dt;
+		if (repelTag.remainingTime <= 0.0f)
 		{
-			registry.remove<ExpelTag>(entity);
+			registry.remove<RepelTag>(entity);
 		}
 	}
 }
 
-void ExpelEffect::deactivate(entt::registry& registry, entt::entity entity)
+void RepelEffect::deactivate(entt::registry& registry, entt::entity entity)
 {
-	// No specific deactivation logic needed for ExpelEffect
+	// No specific deactivation logic needed for RepelEffect
 	// The effect is applied continuously until the remaining time is zero
 }

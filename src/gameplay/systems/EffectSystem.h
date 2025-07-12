@@ -7,7 +7,7 @@ enum class EffectType
 	Burning,
 	Poisoned,
 	Aggressive,
-	Expel,
+	Repel,
 };
 
 class EffectSystem 
@@ -46,7 +46,7 @@ public:
 	void deactivate(entt::registry& registry, entt::entity entity) override;
 };
 
-class ExpelEffect : public EffectSystem 
+class RepelEffect : public EffectSystem 
 {
 public:
 	void apply(entt::registry& registry, float dt) override;

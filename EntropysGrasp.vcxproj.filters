@@ -234,6 +234,12 @@
     <ClInclude Include="src\manager\SceneManager.h">
       <Filter>Header Files\manager</Filter>
     </ClInclude>
+    <ClInclude Include="src\gameplay\systems\PhysicsSystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\EffectSystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\control\GameplayCommandManager.cpp">
@@ -346,6 +352,9 @@
     </ClCompile>
     <ClCompile Include="src\manager\SceneManager.cpp">
       <Filter>Source Files\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\PhysicsSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

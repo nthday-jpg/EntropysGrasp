@@ -11,6 +11,7 @@ class PhysicsSystem
 public:
 	PhysicsSystem(entt::registry& registry) : registry(registry) {}
 
-	void applyForce(entt::entity entity, const sf::Vector2f& force);
+	sf::Vector2f calculateAcceleration(entt::entity entity, const sf::Vector2f& force);
 	void updateVelocity(float dt);
+	void applyRepelForces(float dt);
 };

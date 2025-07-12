@@ -49,6 +49,7 @@
     <ClInclude Include="src\gameplay\systems\BehaviorSystem.h" />
     <ClInclude Include="src\gameplay\systems\CollisionSystem.h" />
     <ClInclude Include="src\gameplay\systems\CombatSystem.h" />
+    <ClInclude Include="src\gameplay\systems\EffectSystem.h" />
     <ClInclude Include="src\gameplay\systems\EnemyManager.h" />
     <ClInclude Include="src\gameplay\systems\MovementPipeline.h" />
     <ClInclude Include="src\gameplay\systems\PhysicsSystem.h" />

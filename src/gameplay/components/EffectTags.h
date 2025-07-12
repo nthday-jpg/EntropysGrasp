@@ -31,7 +31,7 @@ struct AggressiveTag
 	bool applied = false;
 };
 
-struct ExpelTag
+struct RepelTag
 {
 	float remainingTime;
 	sf::Vector2f force;
