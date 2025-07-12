@@ -60,6 +60,7 @@
     <ClInclude Include="src\manager\EnemyLibrary.h" />
     <ClInclude Include="src\manager\FontManager.h" />
     <ClInclude Include="src\manager\SceneManager.h" />
+    <ClInclude Include="src\manager\SoundManager.h" />
     <ClInclude Include="src\manager\SpellLibrary.h" />
     <ClInclude Include="src\manager\TextureManager.h" />
     <ClInclude Include="src\manager\WindowManager.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="src\manager\EnemyLibrary.cpp" />
     <ClCompile Include="src\manager\FontManager.cpp" />
     <ClCompile Include="src\manager\SceneManager.cpp" />
+    <ClCompile Include="src\manager\SoundManager.cpp" />
     <ClCompile Include="src\manager\SpellLibrary.cpp" />
     <ClCompile Include="src\manager\TextureManager.cpp" />
     <ClCompile Include="src\manager\WindowManager.cpp" />
