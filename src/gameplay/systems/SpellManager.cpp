@@ -13,8 +13,9 @@ using namespace std;
 
 const float PI = 3.14159265358979323846f;
 
-vector<entt::entity> SpellSystem::createSpell(entt::registry& registry, entt::entity caster, SpellID spellID, const SpellLibrary& spellLibrary)
+vector<entt::entity> SpellSystem::createSpell(entt::entity caster, SpellID spellID)
 {
+	const SpellLibrary& spellLibrary = SpellLibrary::getInstance(); // Assuming SpellLibrary is a singleton
     const SpellData& spellData = spellLibrary.getSpell(spellID);
     Position position = registry.get<Position>(caster);
     if (spellData.behaviorType == BehaviorType::Orbit)
@@ -23,7 +24,7 @@ vector<entt::entity> SpellSystem::createSpell(entt::registry& registry, entt::en
         position.y -= spellData.radius;
     }
     vector<entt::entity> spellEntities;
-    vector<MovementDirection> directions = putDirection(registry, spellID, spellLibrary, spellData.count, caster);
+    vector<MovementDirection> directions = putDirection(spellID, spellData.count, caster);
     for (int i = 0; i < spellData.count; ++i)
     {
         entt::entity spellEntity = registry.create();
@@ -47,8 +48,9 @@ vector<entt::entity> SpellSystem::createSpell(entt::registry& registry, entt::en
     return spellEntities;
 }
 
-vector<MovementDirection> SpellSystem::putDirection(entt::registry& registry, SpellID spellID, const SpellLibrary& spellLibrary, int count, entt::entity caster)
+vector<MovementDirection> SpellSystem::putDirection(SpellID spellID, int count, entt::entity caster)
 {
+	const SpellLibrary& spellLibrary = SpellLibrary::getInstance(); // Assuming SpellLibrary is a singleton
     const SpellData& spellData = spellLibrary.getSpell(spellID);
     LookingDirection direction = registry.get<LookingDirection>(caster);
     vector<MovementDirection> directions;
@@ -74,7 +76,7 @@ vector<MovementDirection> SpellSystem::putDirection(entt::registry& registry, Sp
     return directions;
 }
 
-void SpellSystem::updateCastingSystem(entt::registry& registry, float dt, const SpellLibrary& spellLibrary) 
+void SpellSystem::updateCastingSystem(float dt) 
 {
     auto view = registry.view<PlayerTag>();
     for (auto player : view) 
@@ -82,6 +84,7 @@ void SpellSystem::updateCastingSystem(entt::registry& registry, float dt, const 
         for (auto it = castTimes.begin(); it != castTimes.end();)
         {
             auto& mana = registry.get<Mana>(player);
+			const SpellLibrary& spellLibrary = SpellLibrary::getInstance(); // Assuming SpellLibrary is a singleton
             const SpellData& spellData = spellLibrary.getSpell(it->first);
             if (cooldowns.find(it->first) == cooldowns.end() || cooldowns[it->first] == 0.0f)
             {
@@ -97,7 +100,7 @@ void SpellSystem::updateCastingSystem(entt::registry& registry, float dt, const 
                 if (it->second <= 0.0f)
                 {
                     // Cast the spell
-                    vector<entt::entity> spell = createSpell(registry, player, it->first, spellLibrary);
+                    vector<entt::entity> spell = createSpell(player, it->first);
                     for (size_t i = 0; i < spell.size(); ++i)
                     {
                         durations[spell[i]] = spellData.duration; // Set the duration for the spell
@@ -114,7 +117,7 @@ void SpellSystem::updateCastingSystem(entt::registry& registry, float dt, const 
     }
 }
 
-void SpellSystem::updateCooldownSystem(entt::registry& registry, float dt) 
+void SpellSystem::updateCooldownSystem(float dt) 
 {
     for (auto it = cooldowns.begin(); it != cooldowns.end();)
     {
@@ -130,7 +133,7 @@ void SpellSystem::updateCooldownSystem(entt::registry& registry, float dt)
     }
 }
 
-void SpellSystem::updateDurationSystem(entt::registry& registry, float dt) 
+void SpellSystem::updateDurationSystem(float dt) 
 {
     for (auto it = durations.begin(); it != durations.end();)
     {
@@ -148,9 +151,9 @@ void SpellSystem::updateDurationSystem(entt::registry& registry, float dt)
     }
 }
 
-void SpellSystem::update(entt::registry& registry, float dt, const SpellLibrary& spellLibrary) 
+void SpellSystem::update(float dt) 
 {
-    updateCastingSystem(registry, dt, spellLibrary);
-    updateCooldownSystem(registry, dt);
-    updateDurationSystem(registry, dt);
+    updateCastingSystem(dt);
+    updateCooldownSystem(dt);
+    updateDurationSystem(dt);
 }

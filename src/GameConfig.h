@@ -39,7 +39,7 @@ public:
 	void setMuteAudio(bool value) { muteAudio = value; }*/
 	
 	// Key bindings access
-	const std::map<sf::Keyboard::Scancode, std::string>& getKeyBindings() const { return keyBindings; }
+	const std::map<sf::Keyboard::Scancode, std::string>* getKeyBindings() const { return &keyBindings; }
 	//void setKeyBinding(sf::Keyboard::Scancode key, const std::string& action) { keyBindings[key] = action; }
 
 private:

@@ -5,6 +5,8 @@
 #include "../components/Animation.h"
 
 class AnimationSystem {
+	entt::registry& registry;
+	entt::dispatcher* dispatcher;
 protected:
 	entt::entity entityType;
 	float frameDuration; // Duration for each frame

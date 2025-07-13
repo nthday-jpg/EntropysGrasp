@@ -10,9 +10,20 @@
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 
-void BehaviorSystem::initializeBehaviorMap() 
+BehaviorSystem& BehaviorSystem::getInstance() 
 {
-	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity caster, entt::registry& registry, float dt) 
+	static BehaviorSystem instance;
+	return instance;
+}
+
+BehaviorSystem::BehaviorSystem()
+{
+	initializeBehaviorMap();
+}
+
+void BehaviorSystem::initializeBehaviorMap()
+{
+	behaviorMap[BehaviorType::Straight] = [](entt::entity entity, entt::entity caster, entt::registry& registry, float dt)
 	{
 		SpellLibrary& spellLibrary = SpellLibrary::getInstance();
 		const SpellID& spellID = registry.get<SpellID>(entity);
@@ -47,7 +58,7 @@ void BehaviorSystem::initializeBehaviorMap()
 
 		velo = registry.emplace_or_replace<Velocity>(entity, velo);
 	};
-	behaviorMap[BehaviorType::Orbit] = [](entt::entity entity, entt::entity center, entt::registry& registry, float dt) 
+	behaviorMap[BehaviorType::Orbit] = [](entt::entity entity, entt::entity center, entt::registry& registry, float dt)
 	{
 		SpellLibrary& spellLibrary = SpellLibrary::getInstance();
 		Position position = registry.get<Position>(entity); //spell entity
@@ -76,7 +87,7 @@ void BehaviorSystem::initializeBehaviorMap()
 
 		registry.emplace_or_replace<Velocity>(entity, velocity);
 	};
-	behaviorMap[BehaviorType::HomingPlayer] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt) 
+	behaviorMap[BehaviorType::HomingPlayer] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt)
 	{
 		EnemyLibrary& enemyLibrary = EnemyLibrary::getInstance();
 		Position position = registry.get<Position>(entity);
@@ -102,7 +113,7 @@ void BehaviorSystem::initializeBehaviorMap()
 	};
 }
 
-void BehaviorSystem::updateBehavior(entt::registry& registry, float dt) 
+void BehaviorSystem::updateBehavior(entt::registry& registry, float dt)
 {
 	SpellLibrary& spellLibrary = SpellLibrary::getInstance();
 	EnemyLibrary& enemyLibrary = EnemyLibrary::getInstance();

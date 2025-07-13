@@ -1,16 +1,12 @@
 #include "MovementPipeline.h"
 
-MovementPipeline::MovementPipeline(const SpellLibrary& spellLib, const EnemyLibrary& enemyLib)
-    : spellLibrary(spellLib), enemyLibrary(enemyLib) 
-{
-    behaviorSystem.initializeBehaviorMap();
-}
+MovementPipeline::MovementPipeline(entt::registry& registry) : registry(registry) {}
 
-void MovementPipeline::update(entt::registry& registry, float dt)
+void MovementPipeline::update(float dt)
 {
     PlayerVelocityController::calculateVelocity(registry);
 
-    behaviorSystem.updateBehavior(registry, dt);
+    BehaviorSystem::getInstance().updateBehavior(registry, dt);
 
     PositionIntegrator::update(registry, dt);
 

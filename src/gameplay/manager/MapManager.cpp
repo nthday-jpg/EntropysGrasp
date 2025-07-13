@@ -1,4 +1,5 @@
 #include "MapManager.h"
+#include <tinyxml2.h>
 
 MapManager& MapManager::getInstance() {
 	static MapManager instance;

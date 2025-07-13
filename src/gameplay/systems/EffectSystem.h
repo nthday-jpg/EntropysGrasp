@@ -12,43 +12,58 @@ enum class EffectType
 
 class EffectSystem 
 {
+protected:
+	entt::registry& registry;
 public:
+	EffectSystem(entt::registry& registry) 
+		: registry(registry) {}	
 	virtual ~EffectSystem() {};
-	virtual void apply(entt::registry& registry, float dt) = 0;
-	virtual void deactivate(entt::registry& registry, entt::entity entity) = 0;
+	void applyEffect(entt::entity entity, EffectType effectType, float dt);
+	virtual void apply(float dt) = 0;
+	virtual void deactivate(entt::entity entity) = 0;
 };
 
 class FrozenEffect : public EffectSystem 
 {
 public:
-	void apply(entt::registry& registry, float dt) override;
-	void deactivate(entt::registry& registry, entt::entity entity) override;
+	FrozenEffect(entt::registry& registry)
+		: EffectSystem(registry) {}
+	void apply(float dt) override;
+	void deactivate(entt::entity entity) override;
 };
 
 class BurningEffect : public EffectSystem 
 {
 public:
-	void apply(entt::registry& registry, float dt) override;
-	void deactivate(entt::registry& registry, entt::entity entity) override;
+	BurningEffect(entt::registry& registry) 
+		: EffectSystem(registry) {}
+	void apply(float dt) override;
+	void deactivate(entt::entity entity) override;
 };
 
 class PoisonedEffect : public EffectSystem 
 {
 public:
-	void apply(entt::registry& registry, float dt) override;
-	void deactivate(entt::registry& registry, entt::entity entity) override;
+	PoisonedEffect(entt::registry& registry) 
+		: EffectSystem(registry) {}
+	void apply(float dt) override;
+	void deactivate(entt::entity entity) override;
 };
 
 class AggressiveEffect : public EffectSystem 
 {
 public:
-	void apply(entt::registry& registry, float dt) override;
-	void deactivate(entt::registry& registry, entt::entity entity) override;
+	AggressiveEffect(entt::registry& registry) 
+		: EffectSystem(registry) {}
+	void apply(float dt) override;
+	void deactivate(entt::entity entity) override;
 };
 
 class RepelEffect : public EffectSystem 
 {
 public:
-	void apply(entt::registry& registry, float dt) override;
-	void deactivate(entt::registry& registry, entt::entity entity) override;
+	RepelEffect(entt::registry& registry)
+		: EffectSystem(registry) {}
+	void apply(float dt) override;
+	void deactivate(entt::entity entity) override;
 };

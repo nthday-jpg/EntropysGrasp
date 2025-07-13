@@ -8,9 +8,11 @@
 class CombatSystem 
 {
 	entt::registry& registry;
-	entt::dispatcher& dispatcher;
+	entt::dispatcher* dispatcher;
 public:
+	CombatSystem(entt::registry& registry, entt::dispatcher* dispatcher)
+		: registry(registry), dispatcher(dispatcher) {}
 	void applyDamage(float dmg, entt::entity);
 	void handlePlayerEnemyCollision(entt::entity player, entt::entity enemy);
-	void handleEnemySpellCollision(entt::entity enemy, entt::entity spell, SpellLibrary spellLibrary);
+	void handleEnemySpellCollision(entt::entity enemy, entt::entity spell);
 };

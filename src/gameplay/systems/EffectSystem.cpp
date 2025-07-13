@@ -4,35 +4,36 @@
 #include "../components/EffectTags.h"
 #include "../components/MovementComponents.h"
 
-void applyEffect(entt::entity entity, entt::registry& registry, EffectType effectType, float dt) {
+
+void EffectSystem::applyEffect(entt::entity entity, EffectType effectType, float dt) {
 	switch (effectType) 
 	{
 		case EffectType::Frozen: 
 		{
 			registry.emplace_or_replace<FrozenTag>(entity);
-			FrozenEffect frozenEffect;
-			frozenEffect.apply(registry, dt);
+			FrozenEffect frozenEffect(registry);
+			frozenEffect.apply(dt);
 			break;
 		}
 		case EffectType::Burning: 
 		{
 			registry.emplace_or_replace<BurningTag>(entity);
-			BurningEffect burningEffect;
-			burningEffect.apply(registry, dt);
+			BurningEffect burningEffect(registry);
+			burningEffect.apply(dt);
 			break;
 		}
 		case EffectType::Poisoned:
 		{
 			registry.emplace_or_replace<PoisonedTag>(entity);
-			PoisonedEffect poisonedEffect;
-			poisonedEffect.apply(registry, dt);
+			PoisonedEffect poisonedEffect(registry);
+			poisonedEffect.apply(dt);
 			break;
 		}
 		case EffectType::Aggressive: 
 		{
 			registry.emplace_or_replace<AggressiveTag>(entity);
-			AggressiveEffect aggressiveEffect;
-			aggressiveEffect.apply(registry, dt);
+			AggressiveEffect aggressiveEffect(registry);
+			aggressiveEffect.apply(dt);
 			break;
 		}
 		default:
@@ -40,7 +41,7 @@ void applyEffect(entt::entity entity, entt::registry& registry, EffectType effec
 	}
 }
 
-void FrozenEffect::apply(entt::registry& registry, float dt)
+void FrozenEffect::apply(float dt)
 {
 	auto view = registry.view<FrozenTag, EnemyTag>();
 	for (auto [entity, frozenComponent] : view.each())
@@ -56,20 +57,20 @@ void FrozenEffect::apply(entt::registry& registry, float dt)
 		}
 		if (tag.remainingTime <= 0.0f)
 		{
-			deactivate(registry, entity);
+			deactivate(entity);
 			registry.remove<FrozenTag>(entity);
 		}
 	}
 }
 
-void FrozenEffect::deactivate(entt::registry& registry, entt::entity entity)
+void FrozenEffect::deactivate(entt::entity entity)
 {
 	auto& tag = registry.get<FrozenTag>(entity);
 	// Restore the original speed
 	registry.replace<Speed>(entity, tag.originalSpeed);
 }
 
-void BurningEffect::apply(entt::registry& registry, float dt)
+void BurningEffect::apply(float dt)
 {
 	auto view = registry.view<BurningTag, EnemyTag>();
 	for (auto [entity, burningComponent] : view.each())
@@ -84,19 +85,19 @@ void BurningEffect::apply(entt::registry& registry, float dt)
 		}
 		if (tag.remainingTime <= 0.0f)
 		{
-			deactivate(registry, entity);
+			deactivate(entity);
 			registry.remove<BurningTag>(entity);
 		}
 	}
 }
 
-void BurningEffect::deactivate(entt::registry& registry, entt::entity entity)
+void BurningEffect::deactivate(entt::entity entity)
 {
     // No need to restore anything since damage was one-time
     // But you could add a final effect here if needed
 }
 
-void PoisonedEffect::apply(entt::registry& registry, float dt)
+void PoisonedEffect::apply(float dt)
 {
     auto view = registry.view<PoisonedTag, EnemyTag>();
     for (auto [entity, poisonedComponent] : view.each()) 
@@ -117,13 +118,13 @@ void PoisonedEffect::apply(entt::registry& registry, float dt)
         }
         if (tag.remainingTime <= 0.0f)
 		{
-            deactivate(registry, entity);
+            deactivate(entity);
             registry.remove<PoisonedTag>(entity);
         }
     }
 }
 
-void PoisonedEffect::deactivate(entt::registry& registry, entt::entity entity)
+void PoisonedEffect::deactivate(entt::entity entity)
 {
     auto& tag = registry.get<PoisonedTag>(entity);
     // Restore original values
@@ -131,7 +132,7 @@ void PoisonedEffect::deactivate(entt::registry& registry, entt::entity entity)
     registry.replace<Attack>(entity, tag.originalAttack);
 }
 
-void AggressiveEffect::apply(entt::registry& registry, float dt)
+void AggressiveEffect::apply(float dt)
 {
 	auto check = registry.view<AggressiveTag, EnemyTag>();
 	for (auto [entity, aggressiveTag] : check.each()) 
@@ -154,13 +155,13 @@ void AggressiveEffect::apply(entt::registry& registry, float dt)
 		if (currentHealth <= 0) 
 		{
 			// If health is zero, deactivate the effect
-			deactivate(registry, entity);
+			deactivate(entity);
 			registry.remove<AggressiveTag>(entity);
 		}
 	}
 }
 
-void AggressiveEffect::deactivate(entt::registry& registry, entt::entity entity)
+void AggressiveEffect::deactivate(entt::entity entity)
 {
 	auto& tag = registry.get<PoisonedTag>(entity);
 	// Restore original values
@@ -168,7 +169,7 @@ void AggressiveEffect::deactivate(entt::registry& registry, entt::entity entity)
 	registry.replace<Attack>(entity, tag.originalAttack);
 }
 
-void RepelEffect::apply(entt::registry& registry, float dt)
+void RepelEffect::apply(float dt)
 {
 	auto view = registry.view<RepelTag>();
 	for (auto [entity, repelTag] : view.each())
@@ -181,7 +182,7 @@ void RepelEffect::apply(entt::registry& registry, float dt)
 	}
 }
 
-void RepelEffect::deactivate(entt::registry& registry, entt::entity entity)
+void RepelEffect::deactivate(entt::entity entity)
 {
 	// No specific deactivation logic needed for RepelEffect
 	// The effect is applied continuously until the remaining time is zero

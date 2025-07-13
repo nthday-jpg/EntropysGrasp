@@ -42,7 +42,7 @@ Command* GameplayInputHandler::createCommand(const std::string& action)
 void GameplayInputHandler::handleKeyBoard()
 {
     // Handle continuous input only (keys held down)
-    for (const auto& binding : keyBindings) {
+    for (const auto& binding : *keyBindings) {
         const std::string& action = binding.second;
         
         if (continuousActions.find(action) == continuousActions.end()) 
@@ -89,7 +89,7 @@ bool GameplayInputHandler::handleEvent(const std::optional<sf::Event>& event)
     // Handle discrete key press events
     if (const auto keyPressed = event->getIf<sf::Event::KeyPressed>()) {
         // Find the action associated with this key
-        for (const auto& binding : keyBindings) {
+        for (const auto& binding : *keyBindings) {
             if (binding.first == keyPressed->scancode) {
                 const std::string& action = binding.second;
                 

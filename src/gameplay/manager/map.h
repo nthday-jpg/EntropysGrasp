@@ -8,6 +8,7 @@ class Map {
 	float width;
 	float height;
 	entt::registry registry; // Registry for entities in the map
+	entt::dispatcher dispatcher; // Dispatcher for events in the map
 	std::shared_ptr<sf::Texture> mapBackground;
 public:
 	void update(float dt);

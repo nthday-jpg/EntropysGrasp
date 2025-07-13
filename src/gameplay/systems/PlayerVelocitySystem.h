@@ -11,8 +11,9 @@
 // so this system only calculate the velocity and speed of the player.
 
 
-struct PlayerVelocityController
+class PlayerVelocityController
 {
+public:
 
 	// Calculate the velocity of the player based on movement direction and speed.
 	// The required components are:
@@ -29,5 +30,5 @@ struct PlayerVelocityController
 	// - LookingDirection
 	// - Speed
 	// If the player entity does not have all required components, an exception is thrown.
-	static float calculateSpeed(entt::registry& registry, entt::entity playerEntity);
+	static float calculateSpeed(entt::registry& registry,entt::entity playerEntity);
 };

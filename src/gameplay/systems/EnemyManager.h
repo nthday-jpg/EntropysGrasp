@@ -18,11 +18,11 @@
 class EnemyManager
 {
 public:
-	EnemyManager(entt::registry registry, EnemyLibrary& enemyLibrary, sf::View& view, sf::Clock& gameClock);
+	EnemyManager(entt::registry& registry, sf::View& view, sf::Clock& gameClock);
 	void update(float dt);
 private:
 	entt::registry& registry;
-	const EnemyLibrary& enemyLibrary;
+	const EnemyLibrary& enemyLibrary = EnemyLibrary::getInstance();
 	const sf::View& view;
 	const sf::Clock& gameClock;
 

@@ -101,8 +101,8 @@ void EnemyManager::update(float dt)
     removing();
 }
 
-EnemyManager::EnemyManager(entt::registry registry, EnemyLibrary& enemyLibrary, sf::View& view, sf::Clock& gameClock)
-    : registry(registry), enemyLibrary(enemyLibrary), view(view), gameClock(gameClock) {};
+EnemyManager::EnemyManager(entt::registry& registry, sf::View& view, sf::Clock& gameClock)
+    : registry(registry), view(view), gameClock(gameClock) {};
 
 Position EnemyManager::randomizeOffScreenPosition(const Position& position) const
 {

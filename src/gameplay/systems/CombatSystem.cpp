@@ -15,11 +15,12 @@ void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity 
 	}
 }
 
-void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity spell, SpellLibrary spellLibrary) 
+void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity spell) 
 {
 	auto& EnemyHealth = registry.get<Health>(enemy);
 	// Example: Player takes damage from spell
 	SpellID spellName = registry.get<SpellID>(spell);
+	const SpellLibrary& spellLibrary = SpellLibrary::getInstance(); // Assuming SpellLibrary is a singleton
 	const SpellData& spellData = spellLibrary.getSpell(spellName); // Assuming getSpellData is a function that retrieves spell data
 	auto damage = spellData.damage; // Assuming SpellData has a damage field
 	EnemyHealth.current -= damage;

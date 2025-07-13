@@ -9,12 +9,9 @@
 // multiple specialized movement systems
 class MovementPipeline {
 private:
-    BehaviorSystem behaviorSystem;
-    const SpellLibrary& spellLibrary;
-    const EnemyLibrary& enemyLibrary;
-
+    entt::registry& registry;
 public:
-    MovementPipeline(const SpellLibrary& spellLib, const EnemyLibrary& enemyLib);
+    MovementPipeline(entt::registry& registry);
 
-    void update(entt::registry& registry, float dt);
+    void update(float dt);
 };

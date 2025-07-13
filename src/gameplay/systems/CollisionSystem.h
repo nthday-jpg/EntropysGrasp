@@ -19,6 +19,7 @@ class CollisionSystem
 {
     std::vector<CollisionEvent> collisionEvents;
     entt::registry& registry;
+	entt::dispatcher* dispatcher; // Optional dispatcher for event handling
 public:
     CollisionSystem(entt::registry& registry);
     void detectCollisions();

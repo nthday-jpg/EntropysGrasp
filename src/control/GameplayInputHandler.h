@@ -17,7 +17,7 @@ class GameplayInputHandler {
 	GameplayCommandManager* commandManager;
 	GameConfig* gameConfig;
 
-	const std::map<sf::Keyboard::Scancode, std::string>& keyBindings;
+	const std::map<sf::Keyboard::Scancode, std::string>* keyBindings;
 	
 	// Define which actions are continuous (held down) vs discrete (single press)
 	std::set<std::string> continuousActions;
