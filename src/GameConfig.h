@@ -12,12 +12,6 @@ public:
 		return instance;
 	}
 
-	// Window settings (const - set at initialization)
-	const int windowWidth = 800;
-	const int windowHeight = 600;
-	const bool fullscreen = false;
-	const std::string windowTitle = "Game Window";
-
 	// Performance settings (const - set at initialization)
 	const int maxFPS = 60;
 	const bool vsyncEnabled = true;  // Controls vertical synchronization
@@ -42,23 +36,29 @@ public:
 	const std::map<sf::Keyboard::Scancode, std::string>& getKeyBindings() const { return keyBindings; }
 	//void setKeyBinding(sf::Keyboard::Scancode key, const std::string& action) { keyBindings[key] = action; }
 
+	// Window settings access
+	int getWindowWidth() const { return windowWidth; }
+	int getWindowHeight() const { return windowHeight; }
+
 private:
 	GameConfig() = default; // Private constructor for singleton
 	GameConfig(const GameConfig&) = delete;
 	GameConfig& operator=(const GameConfig&) = delete;
 
 	// Helper function to clamp values
-	float clamp(float value, float min, float max) const {
-		if (value < min) return min;
-		if (value > max) return max;
-		return value;
-	}
+	float clamp(float value, float min, float max) const;
 
 	// Audio settings
 	float masterVolume = 1.0f;  // Range from 0.0 to 1.0
 	float musicVolume = 0.8f;   // Range from 0.0 to 1.0
 	float sfxVolume = 0.8f;     // Range from 0.0 to 1.0
 	bool muteAudio = false;     // Mute all audio
+
+	// Window settings (const - set at initialization)
+	int windowWidth = 800;
+	int windowHeight = 600;
+	const bool fullscreen = false;
+	const std::string windowTitle = "Game Window";
 
 	// Key bindings - maps keyboard keys to action strings
 	std::map<sf::Keyboard::Scancode, std::string> keyBindings = {
