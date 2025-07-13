@@ -64,6 +64,7 @@
     <ClInclude Include="src\manager\SpellLibrary.h" />
     <ClInclude Include="src\manager\TextureManager.h" />
     <ClInclude Include="src\manager\WindowManager.h" />
+    <ClInclude Include="src\scenes\Gameplay\Camera.h" />
     <ClInclude Include="src\scenes\Gameplay\GameplayScene.h" />
     <ClInclude Include="src\scenes\MainMenu\MainMenu.h" />
     <ClInclude Include="src\scenes\Scene.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="src\manager\SpellLibrary.cpp" />
     <ClCompile Include="src\manager\TextureManager.cpp" />
     <ClCompile Include="src\manager\WindowManager.cpp" />
+    <ClCompile Include="src\scenes\Gameplay\Camera.cpp" />
     <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp" />
     <ClCompile Include="src\scenes\MainMenu\MainMenu.cpp" />
     <ClCompile Include="src\scenes\Scene.cpp" />
