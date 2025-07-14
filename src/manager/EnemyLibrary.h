@@ -5,7 +5,7 @@
 
 class EnemyLibrary {
     std::unordered_map<EnemyType, EnemyData> enemyDatabase;
-    std::string path = "src/resources/enemy.json";
+    std::string path = "assets/enemy.json";
 
     EnemyLibrary();
     EnemyLibrary(const EnemyLibrary&) = delete;

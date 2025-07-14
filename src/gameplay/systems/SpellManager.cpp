@@ -13,7 +13,7 @@ using namespace std;
 
 const float PI = 3.14159265358979323846f;
 
-vector<entt::entity> SpellSystem::createSpell(entt::entity caster, SpellID spellID)
+vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spellID)
 {
 	const SpellLibrary& spellLibrary = SpellLibrary::getInstance(); // Assuming SpellLibrary is a singleton
     const SpellData& spellData = spellLibrary.getSpell(spellID);
@@ -48,7 +48,7 @@ vector<entt::entity> SpellSystem::createSpell(entt::entity caster, SpellID spell
     return spellEntities;
 }
 
-vector<MovementDirection> SpellSystem::putDirection(SpellID spellID, int count, entt::entity caster)
+vector<MovementDirection> SpellManager::putDirection(SpellID spellID, int count, entt::entity caster)
 {
 	const SpellLibrary& spellLibrary = SpellLibrary::getInstance(); // Assuming SpellLibrary is a singleton
     const SpellData& spellData = spellLibrary.getSpell(spellID);
@@ -76,7 +76,7 @@ vector<MovementDirection> SpellSystem::putDirection(SpellID spellID, int count, 
     return directions;
 }
 
-void SpellSystem::updateCastingSystem(float dt) 
+void SpellManager::updateCastingSystem(float dt) 
 {
     auto view = registry.view<PlayerTag>();
     for (auto player : view) 
@@ -117,7 +117,7 @@ void SpellSystem::updateCastingSystem(float dt)
     }
 }
 
-void SpellSystem::updateCooldownSystem(float dt) 
+void SpellManager::updateCooldownSystem(float dt)
 {
     for (auto it = cooldowns.begin(); it != cooldowns.end();)
     {
@@ -133,7 +133,7 @@ void SpellSystem::updateCooldownSystem(float dt)
     }
 }
 
-void SpellSystem::updateDurationSystem(float dt) 
+void SpellManager::updateDurationSystem(float dt)
 {
     for (auto it = durations.begin(); it != durations.end();)
     {
@@ -151,7 +151,7 @@ void SpellSystem::updateDurationSystem(float dt)
     }
 }
 
-void SpellSystem::update(float dt) 
+void SpellManager::update(float dt) 
 {
     updateCastingSystem(dt);
     updateCooldownSystem(dt);

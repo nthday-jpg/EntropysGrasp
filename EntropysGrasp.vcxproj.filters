@@ -76,6 +76,12 @@
     <Filter Include="Source Files\scenes\MainMenu">
       <UniqueIdentifier>{070cf6d2-64b0-432a-8ee7-b2c3b63a25dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\scenes\Gameplay">
+      <UniqueIdentifier>{dc484eef-613c-45ef-8981-462a77839cf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\scenes\Gameplay">
+      <UniqueIdentifier>{f7ccb12f-70c2-461a-aa56-ca2e24c3672e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\control\Command.h">
@@ -228,9 +234,6 @@
     <ClInclude Include="src\manager\FontManager.h">
       <Filter>Header Files\manager</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\Gameplay\GameplayScene.h">
-      <Filter>Header Files\scenes</Filter>
-    </ClInclude>
     <ClInclude Include="src\manager\SceneManager.h">
       <Filter>Header Files\manager</Filter>
     </ClInclude>
@@ -242,6 +245,12 @@
     </ClInclude>
     <ClInclude Include="src\manager\SoundManager.h">
       <Filter>Header Files\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Gameplay\GameplayScene.h">
+      <Filter>Header Files\scenes\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Gameplay\Camera.h">
+      <Filter>Header Files\scenes\Gameplay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -350,9 +359,6 @@
     <ClCompile Include="src\manager\FontManager.cpp">
       <Filter>Source Files\manager</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp">
-      <Filter>Source Files\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="src\manager\SceneManager.cpp">
       <Filter>Source Files\manager</Filter>
     </ClCompile>
@@ -361,6 +367,12 @@
     </ClCompile>
     <ClCompile Include="src\manager\SoundManager.cpp">
       <Filter>Source Files\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp">
+      <Filter>Source Files\scenes\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Gameplay\Camera.cpp">
+      <Filter>Source Files\scenes\Gameplay</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

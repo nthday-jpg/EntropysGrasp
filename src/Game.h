@@ -40,4 +40,5 @@ private:
 	void processEvents();
 	void update(float deltaTime);
 	void render();
+
 };

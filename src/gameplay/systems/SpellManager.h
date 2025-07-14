@@ -2,8 +2,9 @@
 #include <entt/entt.hpp>
 #include <unordered_map>
 #include "../../manager/SpellLibrary.h"
+#include "../components/MovementComponents.h"
 
-class SpellSystem
+class SpellManager
 {
 	entt::registry& registry; // Reference to the entity registry
 public:
@@ -11,7 +12,7 @@ public:
     std::unordered_map<SpellID, float> cooldowns; // Maps spell names to their cooldown times
     std::unordered_map<entt::entity, float> durations;
 
-	SpellSystem(entt::registry& registry) : registry(registry) {}
+	SpellManager(entt::registry& registry) : registry(registry) {}
 
     std::vector<entt::entity> createSpell(entt::entity caster, SpellID spellID);
     std::vector<MovementDirection> putDirection(SpellID spellID, int count, entt::entity caster);

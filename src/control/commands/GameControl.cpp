@@ -49,5 +49,6 @@ void Exit::execute()
 
 void ChangeScene::execute()
 {
+	std::cout << "Changing scene to: " << targetScene << std::endl;
 	sceneManager->navigateTo(targetScene);
 }
