@@ -2,6 +2,7 @@
 #include "../components/MovementComponents.h" // or your position component
 #include "../../manager/WindowManager.h"
 #include <iostream>
+#include "../components/Particle.h"
 
 void RenderSystem::renderBackGround(sf::Texture* background) {
     if (background) {
@@ -35,10 +36,45 @@ void RenderSystem::render() {
         sprite.setPosition(pos);
         WindowManager::getInstance().draw(sprite);
     }
+
+    renderParticles();
 }
 
 void RenderSystem::renderParticles() {
-    // Implement particle rendering logic here if needed
-    // This could involve iterating over a particle component and drawing each particle
-    // For now, this is left empty as a placeholder
+    auto view = registry.view<ParticleComponent, Position>();
+	// Use vertex array for efficient rendering
+    for (auto [entity, particle, position] : view.each()) {
+
+        if (registry.any_of<InactiveParticle>(entity)) {
+            continue;
+        }
+
+        sf::VertexArray* particleArray;
+        if (auto* existing = registry.try_get<sf::VertexArray>(entity)) {
+            particleArray = existing;
+        }
+        else {
+            // Only create if it doesn't exist
+            particleArray = &registry.emplace<sf::VertexArray>(entity, sf::PrimitiveType::TriangleStrip, 4);
+        }
+
+        float size = particle.beginSize - (particle.beginSize - particle.endSize) * particle.age/particle.lifetime;
+
+        // Update vertex positions and colors
+        (*particleArray)[0].position = sf::Vector2f(position.x - size, position.y - size);
+        (*particleArray)[1].position = sf::Vector2f(position.x - size, position.y + size);
+        (*particleArray)[2].position = sf::Vector2f(position.x + size, position.y - size);
+        (*particleArray)[3].position = sf::Vector2f(position.x + size, position.y + size);
+
+        // Update colors
+        (*particleArray)[0].color = particle.colorStart;
+        (*particleArray)[1].color = particle.colorStart;
+        (*particleArray)[2].color = particle.colorStart;
+        (*particleArray)[3].color = particle.colorStart;
+
+		// Draw the particle
+        WindowManager::getInstance().draw(*particleArray);
+        // Optionally, remove the particle if it has aged out
+        
+    }
 }

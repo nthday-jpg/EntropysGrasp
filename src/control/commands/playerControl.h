@@ -1,6 +1,9 @@
 #pragma once
 #include "../command.h"
 #include <entt/entt.hpp>
+#include <string>
+#include "../../gameplay/systems/ParticleSystem.h"
+
 
 // The bindings of string with these commands are defined in gameplayInputHandler.h
 // and bindings of string with the keyboard keys are defined in gameConfig.h
@@ -41,8 +44,10 @@ public:
 class CastSpell : public Command
 {
 	entt::entity playerEntity;
+	ParticleSystem* particleSystem;
 public:
-	CastSpell(entt::entity player) : playerEntity(player) {}
+	CastSpell(entt::entity player, ParticleSystem* particleSystem) 
+		: playerEntity(player), particleSystem(particleSystem) {}
 	void execute(entt::registry& registry) override;
 };
 

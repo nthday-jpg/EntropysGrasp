@@ -3,7 +3,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include "MovementComponents.h"
 
-struct inativeParticle {}; 
+struct InactiveParticle {}; 
 
 enum class ParticleBehaviorType
 {
@@ -31,7 +31,7 @@ struct ParticleComponent {
 	sf::Color colorStart, colorEnd;
 	float beginSize, endSize;
 	float lifetime;
-	float age = 0.0f;
-
 	ParticleBehaviorType behaviorType = ParticleBehaviorType::Linear; // Default behavio
+
+	float age = 0.0f;
 };

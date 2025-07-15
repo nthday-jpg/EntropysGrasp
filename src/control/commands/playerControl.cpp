@@ -71,7 +71,20 @@ void MoveRight::execute(entt::registry& registry)
 
 void CastSpell::execute(entt::registry& registry)
 {
+	ParticleProperties particleProperties;
+	particleProperties.startColor = sf::Color::Red;
+	particleProperties.endColor = sf::Color::Yellow;
+	particleProperties.sizeEnd = 0.0f;
+	particleProperties.sizeStart = 5.0f;
+	particleProperties.lifetime = 5.0f;
+	particleProperties.velocity = { 0.0f, 0.f };
+	particleProperties.velocityVariation = { -2.0f, 2.0f };
+	particleProperties.behaviorType = ParticleBehaviorType::Floating;
 
+	for (int i = 0; i < 10; i++)
+	{
+		particleSystem->emit(particleProperties);
+	}
 }
 
 void Dash::execute(entt::registry& registry)

@@ -12,6 +12,7 @@ class ParticleSystem
 	std::unordered_map<ParticleBehaviorType, ParticleBehaviorFunction> behaviorMap;
 
 	void initializeBehaviorMap();
+	entt::entity createOrGetEntity();
 
 public:
 	ParticleSystem(entt::registry& registry);

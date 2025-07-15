@@ -10,6 +10,7 @@
 #include "../../gameplay/systems/PhysicsSystem.h"
 #include "../../gameplay/systems/RenderSystem.h"
 #include "Camera.h"
+#include "../../gameplay/systems/ParticleSystem.h"
 #include <entt/entity/registry.hpp>
 
 class GameplayScene : public Scene {
@@ -32,6 +33,7 @@ private:
     EnemyManager enemyManager;
     PhysicsSystem physicsSystem;
     RenderSystem renderSystem;
+	ParticleSystem particleSystem;
 
     // UI
 	bool isLoaded = false;

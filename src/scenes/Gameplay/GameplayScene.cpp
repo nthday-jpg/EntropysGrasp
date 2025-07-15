@@ -16,7 +16,8 @@ GameplayScene::GameplayScene(sf::RenderWindow& window)
     spellManager(registry),
 	enemyManager(registry, camera.getView(), gameClock),
 	physicsSystem(registry),
-    renderSystem(registry)
+    renderSystem(registry), 
+	particleSystem(registry)
 {
 	gameplayCommandManager = new GameplayCommandManager(registry);
     inputHandler = new GameplayInputHandler(createPlayer(), gameplayCommandManager);
@@ -24,6 +25,7 @@ GameplayScene::GameplayScene(sf::RenderWindow& window)
 	pausedUI = new UIManager();
     pausedUI->load();
 
+    inputHandler->particleSystem = &particleSystem;
 
 	uiManager = new UIManager();
     uiManager->addElement(
@@ -108,6 +110,7 @@ void GameplayScene::update(float deltaTime) {
     spellManager.updateDurationSystem(deltaTime);
     enemyManager.update(deltaTime);
     physicsSystem.updateVelocity(deltaTime);
+	particleSystem.update(deltaTime);
     // Update camera
     Position playerPos = registry.get<Position>(registry.view<PlayerTag>().front());
     camera.setPosition(playerPos);

@@ -67,7 +67,7 @@ private:
 		{sf::Keyboard::Scancode::S, "MOVEDOWN"},
 		{sf::Keyboard::Scancode::D, "MOVERIGHT"},
 		{sf::Keyboard::Scancode::Space, "DASH"},
-		{sf::Keyboard::Scancode::LShift, "CAST"},
+		{sf::Keyboard::Scancode::F, "CAST"},
 		{sf::Keyboard::Scancode::Escape, "PAUSE"}
 	};
 };
