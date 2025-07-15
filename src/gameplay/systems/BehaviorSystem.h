@@ -11,10 +11,7 @@ class BehaviorSystem
 {
 	std::unordered_map<BehaviorType, BehaviorFunction> behaviorMap;
 
-	BehaviorSystem(const BehaviorSystem&) = delete;
-	BehaviorSystem& operator=(const BehaviorSystem&) = delete;
 public:
-	static BehaviorSystem& getInstance();
 	BehaviorSystem();
 	void initializeBehaviorMap();
 	void updateBehavior(entt::registry& registry, float dt);

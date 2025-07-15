@@ -80,9 +80,9 @@ void Camera::update(float dt)
 			view.setCenter(basePosition + shakeOffset);
 		}
 	}
-	else 
+	else
 	{
-		 view.setCenter(basePosition);
+		view.setCenter(basePosition);
 	}
 
 }
@@ -90,11 +90,11 @@ void Camera::update(float dt)
 void Camera::followEntity(entt::entity entity)
 {
 	this->followTarget = entity;
-	if (followTarget != entt::null) 
+	if (followTarget != entt::null)
 	{
 		isFollowing = true;
-	} 
-	else 
+	}
+	else
 	{
 		isFollowing = false;
 	}

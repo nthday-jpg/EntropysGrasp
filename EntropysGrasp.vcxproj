@@ -42,8 +42,8 @@
     <ClInclude Include="src\gameplay\components\Particle.h" />
     <ClInclude Include="src\gameplay\components\Spell.h" />
     <ClInclude Include="src\gameplay\components\StatComponent.h" />
-    <ClInclude Include="src\gameplay\components\tile.h" />
-    <ClInclude Include="src\gameplay\manager\map.h" />
+    <ClInclude Include="src\gameplay\components\Tile.h" />
+    <ClInclude Include="src\gameplay\manager\Map.h" />
     <ClInclude Include="src\gameplay\manager\MapManager.h" />
     <ClInclude Include="src\gameplay\manager\TileManager.h" />
     <ClInclude Include="src\gameplay\systems\AnimationSystem.h" />
@@ -89,7 +89,7 @@
     <ClCompile Include="src\control\UICommandManager.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameConfig.cpp" />
-    <ClCompile Include="src\gameplay\manager\map.cpp" />
+    <ClCompile Include="src\gameplay\manager\Map.cpp" />
     <ClCompile Include="src\gameplay\manager\MapManager.cpp" />
     <ClCompile Include="src\gameplay\manager\TileManager.cpp" />
     <ClCompile Include="src\gameplay\systems\AnimationSystem.cpp" />
@@ -212,7 +212,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -227,7 +227,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

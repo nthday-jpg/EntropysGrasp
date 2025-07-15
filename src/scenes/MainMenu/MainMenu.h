@@ -21,5 +21,7 @@ public:
 
 	void load() override;
 
+	void unload() override;
+
 	void render() override;
 };

@@ -3,6 +3,9 @@
 
 #include "../manager/WindowManager.h"
 
+UIManager::UIManager() : background(nullptr), backgroundTexture(nullptr)
+{
+}
 
 UIManager::~UIManager()
 {
@@ -10,6 +13,10 @@ UIManager::~UIManager()
 	{
 		delete element; 
 	}
+}
+
+void UIManager::load()
+{
 }
 
 void UIManager::setBackground(sf::Texture* texture)

@@ -26,7 +26,7 @@ class Camera
 	std::uniform_real_distribution<float> distribution;
 
 public:
-	Camera(entt::registry* registry);
+	Camera(entt::registry* registry = nullptr);
 	~Camera() = default;
 
 	void setPosition(const sf::Vector2f& position);

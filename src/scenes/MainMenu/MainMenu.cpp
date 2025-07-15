@@ -41,8 +41,8 @@ void MainMenu::load()
 		uiManager = new UIManager();
 		uiManager->addElement(
 			new Button(
-				"PAUSE",
-				"Pause",
+				"GAMEPLAY",
+				"GAMEPLAY",
 				font,
 				{ 100,100 },
 				30.0f
@@ -51,6 +51,11 @@ void MainMenu::load()
 
 		isLoaded = true;
 	}
+}
+
+void MainMenu::unload()
+{
+
 }
 
 void MainMenu::render()

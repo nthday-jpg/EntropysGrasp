@@ -3,12 +3,12 @@
 #include <map>
 #include <SFML/Window/Keyboard.hpp>  
 
-class GameConfig 
+class GameConfig
 {
 public:
 	static GameConfig& getInstance()
 	{
-		static GameConfig instance; 
+		static GameConfig instance;
 		return instance;
 	}
 
@@ -31,7 +31,7 @@ public:
 	void setMusicVolume(float value) { musicVolume = clamp(value, 0.0f, 1.0f); }
 	void setSfxVolume(float value) { sfxVolume = clamp(value, 0.0f, 1.0f); }
 	void setMuteAudio(bool value) { muteAudio = value; }*/
-	
+
 	// Key bindings access
 	const std::map<sf::Keyboard::Scancode, std::string>* getKeyBindings() const { return &keyBindings; }
 	//void setKeyBinding(sf::Keyboard::Scancode key, const std::string& action) { keyBindings[key] = action; }
@@ -69,5 +69,5 @@ private:
 		{sf::Keyboard::Scancode::Space, "DASH"},
 		{sf::Keyboard::Scancode::LShift, "CAST"},
 		{sf::Keyboard::Scancode::Escape, "PAUSE"}
-	};		
+	};
 };

@@ -25,6 +25,9 @@
     <Filter Include="Header Files\gameplay">
       <UniqueIdentifier>{fe9d2416-7311-4b15-a623-8a4e3b8dafd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\scenes">
+      <UniqueIdentifier>{74fab23e-d7e6-4030-9b3b-b78c3a29463f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\utils">
       <UniqueIdentifier>{47b9d6f2-71d5-48f6-a8e3-190e80fa1477}</UniqueIdentifier>
     </Filter>
@@ -58,6 +61,9 @@
     <Filter Include="Header Files\gameplay\systems">
       <UniqueIdentifier>{0858eeb4-f60f-4c14-977a-008fd354095a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\scenes\MainMenu">
+      <UniqueIdentifier>{5eb03092-8c87-47a5-8263-c9850523f495}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\control\commands">
       <UniqueIdentifier>{6110f19e-a1b9-4f5d-a543-a4e86e414bc0}</UniqueIdentifier>
     </Filter>
@@ -70,17 +76,11 @@
     <Filter Include="Source Files\scenes\MainMenu">
       <UniqueIdentifier>{070cf6d2-64b0-432a-8ee7-b2c3b63a25dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\scenes">
-      <UniqueIdentifier>{74fab23e-d7e6-4030-9b3b-b78c3a29463f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\scenes\MainMenu">
-      <UniqueIdentifier>{5eb03092-8c87-47a5-8263-c9850523f495}</UniqueIdentifier>
+    <Filter Include="Source Files\scenes\Gameplay">
+      <UniqueIdentifier>{dc484eef-613c-45ef-8981-462a77839cf2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\scenes\Gameplay">
-      <UniqueIdentifier>{992aa437-0488-43c0-a99b-2c4006a86c3c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\scenes\Gameplay">
-      <UniqueIdentifier>{5299f777-c190-44f7-87dc-ad396e3f0b59}</UniqueIdentifier>
+      <UniqueIdentifier>{f7ccb12f-70c2-461a-aa56-ca2e24c3672e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,10 +156,10 @@
     <ClInclude Include="src\gameplay\components\statComponent.h">
       <Filter>Header Files\gameplay\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameplay\components\tile.h">
+    <ClInclude Include="src\gameplay\components\Tile.h">
       <Filter>Header Files\gameplay\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameplay\manager\map.h">
+    <ClInclude Include="src\gameplay\manager\Map.h">
       <Filter>Header Files\gameplay\manager</Filter>
     </ClInclude>
     <ClInclude Include="src\gameplay\manager\MapManager.h">
@@ -243,11 +243,11 @@
     <ClInclude Include="src\gameplay\systems\EffectSystem.h">
       <Filter>Header Files\gameplay\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\Gameplay\GameplayScene.h">
-      <Filter>Header Files\scenes\Gameplay</Filter>
-    </ClInclude>
     <ClInclude Include="src\manager\SoundManager.h">
       <Filter>Header Files\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Gameplay\GameplayScene.h">
+      <Filter>Header Files\scenes\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="src\scenes\Gameplay\Camera.h">
       <Filter>Header Files\scenes\Gameplay</Filter>
@@ -296,7 +296,7 @@
     <ClCompile Include="src\control\commands\PlayerControl.cpp">
       <Filter>Source Files\control\commands</Filter>
     </ClCompile>
-    <ClCompile Include="src\gameplay\manager\map.cpp">
+    <ClCompile Include="src\gameplay\manager\Map.cpp">
       <Filter>Source Files\gameplay\manager</Filter>
     </ClCompile>
     <ClCompile Include="src\gameplay\manager\MapManager.cpp">
@@ -380,11 +380,11 @@
     <ClCompile Include="src\gameplay\systems\PhysicsSystem.cpp">
       <Filter>Source Files\gameplay\systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp">
-      <Filter>Source Files\scenes\Gameplay</Filter>
-    </ClCompile>
     <ClCompile Include="src\manager\SoundManager.cpp">
       <Filter>Source Files\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp">
+      <Filter>Source Files\scenes\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="src\scenes\Gameplay\Camera.cpp">
       <Filter>Source Files\scenes\Gameplay</Filter>

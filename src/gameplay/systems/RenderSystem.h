@@ -1,12 +1,16 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <entt/entt.hpp>
+#include <unordered_map>
 
 class RenderSystem {
 	entt::registry& registry; // Pointer to the registry containing entities
-	RenderSystem(entt::registry& registry) : registry(registry) {}
 public:
-    void render(sf::RenderTarget& target);
+	RenderSystem(entt::registry& registry) : registry(registry) {}
+
+	void renderBackGround(sf::Texture* background);
+    void render();
+	void renderParticles();
 };
 
 //RenderSystem renderSystem;

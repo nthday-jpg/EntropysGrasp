@@ -1,8 +1,8 @@
 #pragma once
 #include <entt/entt.hpp>
 #include <SFML/Graphics.hpp>
-#include "map.h"
-#include "../components/tile.h"
+#include "Map.h"
+#include "../components/Tile.h"
 #include "../components/MovementComponents.h"
 #include <string>
 #include <vector>

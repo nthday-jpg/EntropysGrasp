@@ -11,9 +11,7 @@ MapManager::MapManager() {
 }
 
 bool MapManager::loadMap(const std::string& mapFilePath) {
-	// Load the map from the specified file path
-	// This could involve parsing a file, loading tiles, etc.
-	// For now, we will just return true to indicate success
+
 	return true;
 }
 

@@ -1,10 +1,12 @@
 #include "SceneManager.h"
 #include "../scenes/MainMenu/MainMenu.h"
 #include "../manager/WindowManager.h"
+#include "../scenes/Gameplay/GameplayScene.h"
 
 SceneManager::SceneManager()
 {
 	addScene("MainMenu", new MainMenu(WindowManager::getInstance().getWindow()));
+	addScene("GamePlay", new GameplayScene(WindowManager::getInstance().getWindow()));
 }
 
 void SceneManager::bindDispatcher(entt::dispatcher* dispatcher) {

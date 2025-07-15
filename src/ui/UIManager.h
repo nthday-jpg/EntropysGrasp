@@ -20,10 +20,12 @@ class UIManager
 	std::vector<UIElement*> elements;
 
 public:
-	UIManager() = default;
+	UIManager();
 	~UIManager();
 
 	void setBackground(sf::Texture* texture);
+
+	void load();
 
 	void draw(sf::RenderTarget& target) const;
 

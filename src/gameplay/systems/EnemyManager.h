@@ -18,7 +18,7 @@
 class EnemyManager
 {
 public:
-	EnemyManager(entt::registry& registry, sf::View& view, sf::Clock& gameClock);
+	EnemyManager(entt::registry& registry, const sf::View& view, sf::Clock& gameClock);
 	void update(float dt);
 private:
 	entt::registry& registry;

@@ -6,7 +6,7 @@ void MovementPipeline::update(float dt)
 {
     PlayerVelocityController::calculateVelocity(registry);
 
-    BehaviorSystem::getInstance().updateBehavior(registry, dt);
+    behaviorSystem.updateBehavior(registry, dt);
 
     PositionIntegrator::update(registry, dt);
 
