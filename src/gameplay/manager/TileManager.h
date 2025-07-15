@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <unordered_map>
-#include "../components/tile.h"
+#include "../components/Tile.h"
 
 class TileManager {
 	std::unordered_map<TileType, sf::IntRect> tileDatabase;

@@ -18,8 +18,9 @@ GameplayScene::GameplayScene(sf::RenderWindow& window)
 	physicsSystem(registry),
     renderSystem(registry)
 {
+	gameplayCommandManager = new GameplayCommandManager(registry);
     inputHandler = new GameplayInputHandler(createPlayer(), gameplayCommandManager);
-	gameplayCommandManager = nullptr;
+
 	pausedUI = new UIManager();
     pausedUI->load();
 
@@ -93,17 +94,13 @@ void GameplayScene::update(float deltaTime) {
     }
     
     // Update UI
-    if (uiManager) {
-        uiManager->syncUIWithViewport();
-    }
     
     // Here you would typically run your game systems like:
     // - Movement system
     // - Collision system
     // - Rendering system
     // - etc.
-	inputHandler->handleInput(); // Handle continuous input
-	collisionSystem.detectCollisions();
+    collisionSystem.detectCollisions();
     movementPipeline.update(deltaTime);
     //combatSystem.update(deltaTime);
     spellManager.updateCastingSystem(deltaTime);
@@ -112,12 +109,16 @@ void GameplayScene::update(float deltaTime) {
     enemyManager.update(deltaTime);
     physicsSystem.updateVelocity(deltaTime);
     // Update camera
-	Position playerPos = registry.get<Position>(registry.view<PlayerTag>().front());
+    Position playerPos = registry.get<Position>(registry.view<PlayerTag>().front());
     camera.setPosition(playerPos);
     camera.update(deltaTime);
-	window.setView(camera.getView());
+    window.setView(camera.getView());
+
+    if (uiManager) {
+        uiManager->syncUIWithViewport();
+    }
     // Render the scene
-	this->render();
+    this->render();
 
 }
 
@@ -168,13 +169,15 @@ entt::entity GameplayScene::createPlayer() {
 	sf::Sprite* playerSprite = new sf::Sprite(*playerTexture);
     playerSprite->setPosition({ 0.0f, 0.0f }); // Set initial position to match entity position
     playerSprite->setTextureRect(sf::IntRect({ 0, 0 }, { 50, 50 })); // Set texture rect to match hitbox size
-	renderSystem.setSprite(player, playerSprite);
 
+	registry.emplace<sf::Sprite>(player, *playerSprite);
+
+    entt::entity blockS = registry.create();
 	sf::Sprite* block = new sf::Sprite(*playerTexture);
 	block->setPosition({ 10.f, 10.0f });
 	block->setTextureRect(sf::IntRect({ 0, 0 }, { 50, 50 }));
-    entt::entity blockS = registry.create();
-	renderSystem.setSprite(blockS, block);
+	registry.emplace<Position>(blockS, 10.0f, 10.0f);
+	registry.emplace<sf::Sprite>(blockS, *block);
     
     return player;
 }

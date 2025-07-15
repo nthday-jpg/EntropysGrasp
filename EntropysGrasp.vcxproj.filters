@@ -156,10 +156,10 @@
     <ClInclude Include="src\gameplay\components\statComponent.h">
       <Filter>Header Files\gameplay\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameplay\components\tile.h">
+    <ClInclude Include="src\gameplay\components\Tile.h">
       <Filter>Header Files\gameplay\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameplay\manager\map.h">
+    <ClInclude Include="src\gameplay\manager\Map.h">
       <Filter>Header Files\gameplay\manager</Filter>
     </ClInclude>
     <ClInclude Include="src\gameplay\manager\MapManager.h">
@@ -281,7 +281,7 @@
     <ClCompile Include="src\control\commands\PlayerControl.cpp">
       <Filter>Source Files\control\commands</Filter>
     </ClCompile>
-    <ClCompile Include="src\gameplay\manager\map.cpp">
+    <ClCompile Include="src\gameplay\manager\Map.cpp">
       <Filter>Source Files\gameplay\manager</Filter>
     </ClCompile>
     <ClCompile Include="src\gameplay\manager\MapManager.cpp">

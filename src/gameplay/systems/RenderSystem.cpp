@@ -14,12 +14,27 @@ void RenderSystem::renderBackGround(sf::Texture* background) {
 }
 
 void RenderSystem::render() {
-    for (auto & pair : sprites) {
-        sf::Sprite* sprite = pair.second;
-        // Check if the entity has a Position component
-		WindowManager::getInstance().draw(*sprite);
-		std::cout << "render" << std::endl;
-	}
+    auto group = registry.group<Position, sf::Sprite>();
+
+    std::vector<entt::entity> entities;
+    entities.reserve(group.size());
+
+    for (auto entity : group) {
+        entities.push_back(entity);
+    }
+
+    std::sort(entities.begin(), entities.end(), [&group](entt::entity a, entt::entity b) {
+        const Position& posA = group.get<Position>(a);
+        const Position& posB = group.get<Position>(b);
+        return posA.y < posB.y;
+    });
+    
+    for (auto entity : entities) {
+        const Position& pos = group.get<Position>(entity);
+        sf::Sprite& sprite = group.get<sf::Sprite>(entity);
+        sprite.setPosition(pos);
+        WindowManager::getInstance().draw(sprite);
+    }
 }
 
 void RenderSystem::renderParticles() {
