@@ -1,5 +1,5 @@
 #include "CombatSystem.h"
-#include "../components/statComponent.h"
+#include "../components/StatComponent.h"
 #include "../components/Behavior.h"
 
 void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity enemy) 

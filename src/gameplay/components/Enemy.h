@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "../components/statComponent.h"
-#include "../components/behavior.h"
+#include "../components/StatComponent.h"
+#include "../components/Behavior.h"
 
 //include behavior here too
 

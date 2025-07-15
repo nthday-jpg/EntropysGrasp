@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <optional>
 
 class UIElement;
@@ -14,6 +15,7 @@ class UIManager
 {
 	sf::Sprite* background;
 	sf::Texture* backgroundTexture;
+	sf::Font* font;
 
 	std::vector<UIElement*> elements;
 

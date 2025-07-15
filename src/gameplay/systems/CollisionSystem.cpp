@@ -1,9 +1,9 @@
 #include <iostream>
 #include "../systems/CollisionSystem.h"
 #include "../components/EntityTags.h"
-#include "../components/statComponent.h"
-#include "../components/hitbox.h"
-#include "../components/movementComponents.h"
+#include "../components/StatComponent.h"
+#include "../components/Hitbox.h"
+#include "../components/MovementComponents.h"
 #include "../../utils/VectorMath.h"
 
 using namespace std;
