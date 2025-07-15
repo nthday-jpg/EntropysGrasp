@@ -4,6 +4,7 @@
 #include "../components/EntityTags.h"
 #include "../components/Enemy.h"
 #include "../components/MovementComponents.h"
+#include "../../utils/Random.h"
 
 entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 {

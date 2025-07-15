@@ -252,6 +252,21 @@
     <ClInclude Include="src\scenes\Gameplay\Camera.h">
       <Filter>Header Files\scenes\Gameplay</Filter>
     </ClInclude>
+    <ClInclude Include="src\gameplay\systems\ParticleSystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Random.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\Particle.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\particle_behaviors\ParticleBehaviors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\ParticleBehaviors.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\control\GameplayCommandManager.cpp">
@@ -373,6 +388,15 @@
     </ClCompile>
     <ClCompile Include="src\scenes\Gameplay\Camera.cpp">
       <Filter>Source Files\scenes\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\ParticleSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\Random.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\ParticleBehaviors.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
