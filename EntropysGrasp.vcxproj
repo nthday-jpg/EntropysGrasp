@@ -55,7 +55,6 @@
     <ClInclude Include="src\gameplay\systems\MovementPipeline.h" />
     <ClInclude Include="src\gameplay\systems\ParticleBehaviors.h" />
     <ClInclude Include="src\gameplay\systems\ParticleSystem.h" />
-    <ClInclude Include="src\gameplay\systems\particle_behaviors\ParticleBehaviors.h" />
     <ClInclude Include="src\gameplay\systems\PhysicsSystem.h" />
     <ClInclude Include="src\gameplay\systems\PlayerVelocitySystem.h" />
     <ClInclude Include="src\gameplay\systems\PositionIntegrator.h" />

@@ -13,7 +13,7 @@ void GameplayInputHandler::initCommandFactory()
     commandFactory["MOVERIGHT"] = [this]() { return new MoveRight(playerEntity); };
     commandFactory["MOVEUP"] = [this]() { return new MoveUp(playerEntity); };
     commandFactory["MOVEDOWN"] = [this]() { return new MoveDown(playerEntity); };
-    commandFactory["CAST"] = [this]() { return new CastSpell(playerEntity, particleSystem); };
+    commandFactory["CAST"] = [this]() { return new CastSpell(playerEntity, particleSystem, spellManager); };
     commandFactory["DASH"] = [this]() { return new Dash(playerEntity); };
     // Add more commands as needed
 }

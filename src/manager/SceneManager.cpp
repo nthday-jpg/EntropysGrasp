@@ -6,7 +6,6 @@
 SceneManager::SceneManager()
 {
 	addScene("MainMenu", new MainMenu(WindowManager::getInstance().getWindow()));
-	addScene("GamePlay", new GameplayScene(WindowManager::getInstance().getWindow()));
 }
 
 void SceneManager::bindDispatcher(entt::dispatcher* dispatcher) {
@@ -28,11 +27,15 @@ void SceneManager::addScene(std::string name, Scene* scene) {
 	}
 }
 
-void SceneManager::navigateTo(std::string name) {
+void SceneManager::navigateTo(const std::string& name) {
 	auto it = scenes.find(name);
-	if (it != scenes.end()) {
-		currentScene = it->second;
+	if (it == scenes.end()) 
+	{
+		addScene(name, new GameplayScene(WindowManager::getInstance().getWindow(), dispatcher));
+		it = scenes.find(name);
 	}
+	currentScene = it->second;
+
 }
 
 void SceneManager::update(float deltaTime) {

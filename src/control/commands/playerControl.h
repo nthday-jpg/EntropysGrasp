@@ -3,6 +3,7 @@
 #include <entt/entt.hpp>
 #include <string>
 #include "../../gameplay/systems/ParticleSystem.h"
+#include "../../gameplay/systems/SpellManager.h"
 
 
 // The bindings of string with these commands are defined in gameplayInputHandler.h
@@ -45,9 +46,10 @@ class CastSpell : public Command
 {
 	entt::entity playerEntity;
 	ParticleSystem* particleSystem;
+	SpellManager* spellManager;
 public:
-	CastSpell(entt::entity player, ParticleSystem* particleSystem) 
-		: playerEntity(player), particleSystem(particleSystem) {}
+	CastSpell(entt::entity player, ParticleSystem* particleSystem, SpellManager* spellManager) 
+		: playerEntity(player), particleSystem(particleSystem), spellManager(spellManager) {}
 	void execute(entt::registry& registry) override;
 };
 

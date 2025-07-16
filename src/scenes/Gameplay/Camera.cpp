@@ -51,7 +51,7 @@ void Camera::update(float dt)
 	{
 		Position& targetPos = registry->get<Position>(followTarget);
 		sf::Vector2f diff = targetPos - basePosition + followOffset;
-		basePosition += diff * followSmoothness * dt;
+		basePosition += diff * followSmoothness;
 	}
 	else
 	{
@@ -84,7 +84,6 @@ void Camera::update(float dt)
 	{
 		view.setCenter(basePosition);
 	}
-
 }
 
 void Camera::followEntity(entt::entity entity)
@@ -93,6 +92,11 @@ void Camera::followEntity(entt::entity entity)
 	if (followTarget != entt::null)
 	{
 		isFollowing = true;
+		if (!registry)
+		{
+			Position* pos = registry->try_get<Position>(followTarget);
+			basePosition = pos ? sf::Vector2f(pos->x, pos->y) : basePosition;
+		}
 	}
 	else
 	{

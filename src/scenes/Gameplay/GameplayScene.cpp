@@ -8,24 +8,28 @@
 #include "../../ui/Button.h"
 #include "../../manager/FontManager.h"
 
-GameplayScene::GameplayScene(sf::RenderWindow& window) 
-    : Scene(window) , 
-    collisionSystem(registry),
+GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatcher) 
+	: Scene(window), dispatcher(dispatcher),
+    collisionSystem(registry, dispatcher),
     movementPipeline(registry),
-    combatSystem(registry),
+    combatSystem(registry, dispatcher),
     spellManager(registry),
+	camera(&registry),
 	enemyManager(registry, camera.getView(), gameClock),
 	physicsSystem(registry),
     renderSystem(registry), 
 	particleSystem(registry)
 {
 	gameplayCommandManager = new GameplayCommandManager(registry);
-    inputHandler = new GameplayInputHandler(createPlayer(), gameplayCommandManager);
+	entt::entity playerEntity = createPlayer();
+    inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
+	camera.followEntity(playerEntity);
 
 	pausedUI = new UIManager();
     pausedUI->load();
 
     inputHandler->particleSystem = &particleSystem;
+	inputHandler->spellManager = &spellManager;
 
 	uiManager = new UIManager();
     uiManager->addElement(
@@ -50,7 +54,6 @@ GameplayScene::~GameplayScene() {
 
 void GameplayScene::load() 
 {
-    
 	isLoaded = true;    
 }
 
@@ -102,7 +105,7 @@ void GameplayScene::update(float deltaTime) {
     // - Collision system
     // - Rendering system
     // - etc.
-    collisionSystem.detectCollisions();
+	collisionSystem.update(deltaTime);
     movementPipeline.update(deltaTime);
     //combatSystem.update(deltaTime);
     spellManager.update(deltaTime);
@@ -110,11 +113,9 @@ void GameplayScene::update(float deltaTime) {
     physicsSystem.updateVelocity(deltaTime);
 	particleSystem.update(deltaTime);
     // Update camera
-    Position playerPos = registry.get<Position>(registry.view<PlayerTag>().front());
-    camera.setPosition(playerPos);
     camera.update(deltaTime);
     window.setView(camera.getView());
-
+	
     if (uiManager) {
         uiManager->syncUIWithViewport();
     }
@@ -166,19 +167,12 @@ entt::entity GameplayScene::createPlayer() {
     registry.emplace<Mana>(player, 100.0f);
     registry.emplace<RepelResistance>(player, 0.5f);
 
+	//call texture manager to load the texture
 	sf::Texture* playerTexture = new sf::Texture("assets/texture/test.png");
 	sf::Sprite* playerSprite = new sf::Sprite(*playerTexture);
     playerSprite->setPosition({ 0.0f, 0.0f }); // Set initial position to match entity position
     playerSprite->setTextureRect(sf::IntRect({ 0, 0 }, { 50, 50 })); // Set texture rect to match hitbox size
 
 	registry.emplace<sf::Sprite>(player, *playerSprite);
-
-    entt::entity blockS = registry.create();
-	sf::Sprite* block = new sf::Sprite(*playerTexture);
-	block->setPosition({ 10.f, 10.0f });
-	block->setTextureRect(sf::IntRect({ 0, 0 }, { 50, 50 }));
-	registry.emplace<Position>(blockS, 10.0f, 10.0f);
-	registry.emplace<sf::Sprite>(blockS, *block);
-    
-    return player;
+	return player;
 }

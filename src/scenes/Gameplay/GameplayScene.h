@@ -24,6 +24,7 @@ private:
 	Camera camera;
 
     entt::registry registry;
+    entt::dispatcher* dispatcher;
     
     // Systems
     CollisionSystem collisionSystem;
@@ -41,7 +42,7 @@ private:
 	bool isPaused = false;
     
 public:
-    GameplayScene(sf::RenderWindow& window);
+    GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatcher);
     ~GameplayScene();
     
     void load() override;

@@ -12,6 +12,7 @@
 #include "gameplayCommandManager.h"
 #include "../GameConfig.h"
 #include "../gameplay/systems/ParticleSystem.h"
+#include "../gameplay/systems/SpellManager.h"
 
 class GameplayInputHandler {
 	entt::entity playerEntity;
@@ -35,6 +36,7 @@ class GameplayInputHandler {
 
 public:
 	ParticleSystem* particleSystem;
+	SpellManager* spellManager;
 	GameplayInputHandler(entt::entity playerEntity, GameplayCommandManager* commandManager);
 	~GameplayInputHandler();
 

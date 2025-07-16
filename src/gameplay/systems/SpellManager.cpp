@@ -3,6 +3,7 @@
 #include "../components/Spell.h"
 #include "../components/Hitbox.h"
 #include "../components/MovementComponents.h"
+#include "../../Utils/Random.h"
 #include "BehaviorSystem.h"
 #include "SpellManager.h"
 #include <iostream>
@@ -103,7 +104,7 @@ void SpellManager::updateCastingSystem(float dt)
                     vector<entt::entity> spell = createSpell(player, it->first);
                     for (size_t i = 0; i < spell.size(); ++i)
                     {
-                        durations[spell[i]] = spellData.duration; // Set the duration for the spell
+                        durations[spell[i]] = spellData.duration + Random::getFloat(-0.3f, 0.3f); // Set the duration for the spell
                     }
                     cooldowns[it->first] = spellData.cooldowns; // Set the cooldown for the spell
                     it = castTimes.erase(it);
