@@ -14,5 +14,5 @@ protected:
 	int currentFrame; // Index of the current frame
 	Animation& animation; // Animation data
 public:
-	
+	virtual ~AnimationSystem() = default;
 };
