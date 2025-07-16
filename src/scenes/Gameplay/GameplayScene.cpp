@@ -105,9 +105,7 @@ void GameplayScene::update(float deltaTime) {
     collisionSystem.detectCollisions();
     movementPipeline.update(deltaTime);
     //combatSystem.update(deltaTime);
-    spellManager.updateCastingSystem(deltaTime);
-    spellManager.updateCooldownSystem(deltaTime);
-    spellManager.updateDurationSystem(deltaTime);
+    spellManager.update(deltaTime);
     enemyManager.update(deltaTime);
     physicsSystem.updateVelocity(deltaTime);
 	particleSystem.update(deltaTime);

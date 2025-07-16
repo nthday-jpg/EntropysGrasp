@@ -1,6 +1,7 @@
 #include "RenderSystem.h"
 #include "../components/MovementComponents.h" // or your position component
 #include "../../manager/WindowManager.h"
+#include "../components/EntityTags.h"
 #include <iostream>
 #include "../components/Particle.h"
 
@@ -38,6 +39,24 @@ void RenderSystem::render() {
     }
 
     renderParticles();
+
+    auto view = registry.view<SpellTag>();
+    for (auto entity : view) 
+    {
+		sf::RectangleShape* spellShape = registry.try_get<sf::RectangleShape>(entity);
+        if (spellShape) {
+            const Position& pos = registry.get<Position>(entity);
+            spellShape->setPosition(pos);
+
+		}
+        else {
+			spellShape->setSize(sf::Vector2f(15.0f, 15.0f)); // Default size
+			spellShape->setFillColor(sf::Color::Red); // Default color
+			spellShape->setPosition(registry.get<Position>(entity));
+        }
+		WindowManager::getInstance().draw(*spellShape);
+    }
+
 }
 
 void RenderSystem::renderParticles() {

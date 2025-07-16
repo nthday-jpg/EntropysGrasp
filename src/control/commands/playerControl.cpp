@@ -8,6 +8,9 @@
 #include "../../gameplay/components/MovementComponents.h"
 #include "../../gameplay/components/LookingDirection.h"
 #include "../../gameplay/components/EntityTags.h"
+#include "../../gameplay/components/Spell.h"
+#include "../../gameplay/systems/SpellManager.h"
+#include "../../manager/SpellLibrary.h"
 
 #include "../../utils/VectorMath.h"
 
@@ -71,6 +74,24 @@ void MoveRight::execute(entt::registry& registry)
 
 void CastSpell::execute(entt::registry& registry)
 {
+	SpellData fireballData = {
+		1.0f, // damage
+		0.5f, // manaCost
+		0.2f, // castTime
+		0.1f, // cooldowns
+		5.0f, // speed
+		10.0f, // size
+		50.0f, // duration
+		15.0f, // radius
+		1, // count
+		SpellEffect::Burn, // effect
+		BehaviorType::Orbit // behaviorType
+	};
+
+	SpellManager spellManager(registry);
+	SpellLibrary& spellLibrary = SpellLibrary::getInstance();
+	spellLibrary.spellDatabase[SpellID::Fireball] = fireballData;
+	
 	ParticleProperties particleProperties;
 	particleProperties.startColor = sf::Color::Red;
 	particleProperties.endColor = sf::Color::Yellow;
