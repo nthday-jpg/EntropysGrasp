@@ -7,7 +7,6 @@
 MainMenu::MainMenu(sf::RenderWindow& window) : Scene(window)
 {
 	isLoaded = false;
-	font = FontManager::getInstance().getFont("default");
 }
 
 
@@ -39,15 +38,8 @@ void MainMenu::load()
 		}
 
 		uiManager = new UIManager();
-		uiManager->addElement(
-			new Button(
-				"PAUSE",
-				"Pause",
-				font,
-				{ 100,100 },
-				30.0f
-			)
-		);
+
+		uiManager->loadFile("../code/assets/UIelements.json");
 
 		isLoaded = true;
 	}

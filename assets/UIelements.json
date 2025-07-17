@@ -1,0 +1,33 @@
+{
+  "font": "CarrotFlower",
+  "elements": [
+    {
+      "type": "panel",
+      "position": [100,100],
+      "size": [100,300],
+      "children": [
+        {
+          "type": "button",
+          "command": "RESTART",
+          "text": "Restart",
+          "position": [10,30],
+          "characterSize": 30
+        },
+        {
+          "type": "button",
+          "command": "RESUME",
+          "text": "Resume",
+          "position": [10,130],
+          "characterSize": 30
+        },
+        {
+          "type": "button",
+          "command": "EXIT",
+          "text": "Exit",
+          "position": [10,230],
+          "characterSize": 30
+        }
+      ]
+    }
+  ]
+}
