@@ -60,6 +60,7 @@
     <ClInclude Include="src\gameplay\systems\PositionIntegrator.h" />
     <ClInclude Include="src\gameplay\systems\RenderSystem.h" />
     <ClInclude Include="src\gameplay\systems\SpellManager.h" />
+    <ClInclude Include="src\manager\AnimationManager.h" />
     <ClInclude Include="src\manager\EnemyLibrary.h" />
     <ClInclude Include="src\manager\FontManager.h" />
     <ClInclude Include="src\manager\SceneManager.h" />

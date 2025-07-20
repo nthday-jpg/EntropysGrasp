@@ -9,6 +9,7 @@
 #include "../../gameplay/systems/EnemyManager.h"
 #include "../../gameplay/systems/PhysicsSystem.h"
 #include "../../gameplay/systems/RenderSystem.h"
+#include "../../gameplay/systems/AnimationSystem.h"
 #include "Camera.h"
 #include "../../gameplay/systems/ParticleSystem.h"
 #include <entt/entity/registry.hpp>
@@ -35,6 +36,7 @@ private:
     PhysicsSystem physicsSystem;
     RenderSystem renderSystem;
 	ParticleSystem particleSystem;
+	AnimationSystem animationSystem;
 
     // UI
 	bool isLoaded = false;

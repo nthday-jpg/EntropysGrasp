@@ -1,4 +1,4 @@
-#include "GameplayScene.h"
+﻿#include "GameplayScene.h"
 #include "../../gameplay/components/MovementComponents.h"
 #include "../../gameplay/components/LookingDirection.h"
 #include "../../gameplay/components/EntityTags.h"
@@ -7,6 +7,8 @@
 #include "../../gameplay/components/Hitbox.h"
 #include "../../ui/Button.h"
 #include "../../manager/FontManager.h"
+#include "../../manager/TextureManager.h"
+#include "../../manager/AnimationManager.h"
 
 GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatcher) 
 	: Scene(window), dispatcher(dispatcher),
@@ -18,7 +20,8 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	enemyManager(registry, camera.getView(), gameClock),
 	physicsSystem(registry),
     renderSystem(registry), 
-	particleSystem(registry)
+	particleSystem(registry),
+	animationSystem(registry, dispatcher)
 {
 	gameplayCommandManager = new GameplayCommandManager(registry);
 	entt::entity playerEntity = createPlayer();
@@ -99,7 +102,6 @@ void GameplayScene::update(float deltaTime) {
     }
     
     // Update UI
-    
     // Here you would typically run your game systems like:
     // - Movement system
     // - Collision system
@@ -112,6 +114,7 @@ void GameplayScene::update(float deltaTime) {
     enemyManager.update(deltaTime);
     physicsSystem.updateVelocity(deltaTime);
 	particleSystem.update(deltaTime);
+	animationSystem.update(deltaTime);
     // Update camera
     camera.update(deltaTime);
     window.setView(camera.getView());
@@ -167,12 +170,26 @@ entt::entity GameplayScene::createPlayer() {
     registry.emplace<Mana>(player, 100.0f);
     registry.emplace<RepelResistance>(player, 0.5f);
 
-	//call texture manager to load the texture
-	sf::Texture* playerTexture = new sf::Texture("assets/texture/test.png");
-	sf::Sprite* playerSprite = new sf::Sprite(*playerTexture);
-    playerSprite->setPosition({ 0.0f, 0.0f }); // Set initial position to match entity position
-    playerSprite->setTextureRect(sf::IntRect({ 0, 0 }, { 50, 50 })); // Set texture rect to match hitbox size
+    TextureManager::getInstance().loadTexture("Mage-Sheet", "assets/texture/Mage-Sheet.png");
 
-	registry.emplace<sf::Sprite>(player, *playerSprite);
-	return player;
+    sf::Texture* mageTexture = TextureManager::getInstance().getTexture("Mage-Sheet");
+
+    AnimationManager::getInstance().loadAnimationData("Mage", "assets/texture/Mage-Sheet.png", mageTexture);
+
+    AnimationComponent animComp;
+    animComp.data = AnimationManager::getInstance().getAnimationData("Mage");
+    animComp.currentState = AnimationState::Idle;
+    animComp.currentDirection = Direction::Down;
+    animComp.currentFrame = { 0, 0 };
+    animComp.timer = 0.f;
+    registry.emplace<AnimationComponent>(player, animComp);
+
+    // sprite gắn vào để render
+    sf::IntRect textureRect({ 0, 0 }, { 30, 50}); // Assuming each frame is 50x50 pixels
+    sf::Sprite sprite(*mageTexture);
+	sprite.setTextureRect(textureRect);
+    sprite.setPosition({ 0.f, 0.f });
+
+    registry.emplace<sf::Sprite>(player, sprite);	
+    return player;
 }

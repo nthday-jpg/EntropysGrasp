@@ -261,11 +261,11 @@
     <ClInclude Include="src\gameplay\components\Particle.h">
       <Filter>Header Files\gameplay\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameplay\systems\particle_behaviors\ParticleBehaviors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\gameplay\systems\ParticleBehaviors.h">
       <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\manager\AnimationManager.h">
+      <Filter>Header Files\manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

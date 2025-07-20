@@ -1,0 +1,6 @@
+c assets/texture/c.png
+map1 assets/texture/map1.png
+objects assets/texture/objects.png
+terrain assets/texture/terrain.png
+test assets/texture/test.png
+Mage-Sheet assets/texture/Mage-Sheet.png
