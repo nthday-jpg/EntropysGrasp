@@ -136,7 +136,7 @@ void CastSpell::execute(entt::registry& registry)
 			castDirection = getDirectionFromLooking(lookDir);
 		}
 		
-		(*dispatcher)->enqueue<AnimationChangeEvent>(playerEntity, AnimationState::Attacking, castDirection);
+		(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Attacking, castDirection });
 	}
 }
 
@@ -150,7 +150,7 @@ void Dash::execute(entt::registry& registry)
 			dashDirection = getDirectionFromLooking(lookDir);
 		}
 		
-		(*dispatcher)->enqueue<AnimationChangeEvent>(playerEntity, AnimationState::Dashing, dashDirection);
+		(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Dashing, dashDirection });
 	}
 }
 
@@ -185,7 +185,7 @@ void ResetTempComponents::execute(entt::registry& registry)
 
 	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
 		Direction idleDirection = getDirectionFromLooking(currentLookingDir);
-		(*dispatcher)->enqueue<AnimationChangeEvent>(playerEntity, AnimationState::Idle, idleDirection);
+		(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Idle, idleDirection });
 	}
 }
 
@@ -232,7 +232,7 @@ void LookAtMouse::execute(entt::registry& registry)
 			AnimationState animState = isPlayerMoving(registry, playerEntity) ? 
 				AnimationState::Walking : AnimationState::Idle;
 			
-			(*dispatcher)->enqueue<AnimationChangeEvent>(playerEntity, animState, newDirection);
+			(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, animState, newDirection });
 		}
 	}
 }

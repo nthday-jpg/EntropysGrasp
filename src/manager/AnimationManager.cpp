@@ -37,11 +37,11 @@ AnimationData AnimationManager::loadMageAnimations(const std::string& spritePath
 		data.animations[{ state, dir }] = anim;
 		};
 
-	for (int i = 0; i < 24; i = i + 3) {
+	for (int i = 0; i < 8; i++) {
 		// Idle animations
-		add(AnimationState::Idle, (Direction)i, i);
-		add(AnimationState::Walking, (Direction)i, i + 1);
-		add(AnimationState::Attacking, (Direction)i, i + 2);
+		add(AnimationState::Idle, (Direction)i, 3*i);
+		add(AnimationState::Walking, (Direction)i, 3*i + 1);
+		add(AnimationState::Attacking, (Direction)i, 3*i + 2);
 	}
 
 	// (Có thể thêm các trạng thái khác như Attack, Cast...)

@@ -21,7 +21,7 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	physicsSystem(registry),
     renderSystem(registry), 
 	particleSystem(registry),
-	animationSystem(registry) // Remove dispatcher parameter
+	animationSystem(registry)
 {
     // Store dispatcher in registry context for all systems to access
     registry.ctx().emplace<entt::dispatcher*>(dispatcher);
@@ -104,9 +104,12 @@ void GameplayScene::update(float deltaTime) {
         gameplayCommandManager->executeCommands();
     }
     
+    int i = 0;
     // Process all queued events (including animation events)
     if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
         (*dispatcher)->update();
+        i++;
+		std::cout << "Processed " << i << " events in GameplayScene." << std::endl;
     }
     
     // Update UI
@@ -186,11 +189,11 @@ entt::entity GameplayScene::createPlayer() {
     AnimationManager::getInstance().loadAnimationData("Mage", "assets/texture/Mage-Sheet.png", mageTexture);
 
     AnimationComponent animComp;
-    animComp.data = AnimationManager::getInstance().getAnimationData("Mage");
+    animComp.name = "Mage";
     animComp.currentState = AnimationState::Walking;
     animComp.currentDirection = Direction::DownLeft;
     animComp.currentFrame = { 0, 0 };
-    animComp.timer = 0.f;
+    animComp.timer = 0.0f;
     registry.emplace<AnimationComponent>(player, animComp);
 
     // sprite gắn vào để render
