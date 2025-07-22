@@ -398,5 +398,8 @@
     <ClCompile Include="src\gameplay\systems\ParticleBehaviors.cpp">
       <Filter>Source Files\gameplay\systems</Filter>
     </ClCompile>
+    <ClCompile Include="src\manager\AnimationManager.cpp">
+      <Filter>Source Files\manager</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

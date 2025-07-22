@@ -19,8 +19,5 @@ class AnimationSystem {
 public:
 	void update(float deltaTime); //tăng timer tăng currentframe reset timer
 	void changeAnimation(const AnimationChangeEvent& event);
-	AnimationSystem(entt::registry& regítry, entt::dispatcher* dispatcher)
-		: registry(regítry), dispatcher(dispatcher), frameDuration(0.1f) {
-		dispatcher->sink<AnimationChangeEvent>().connect<&AnimationSystem::changeAnimation>(*this);
-	}
+	AnimationSystem(entt::registry& registry, entt::dispatcher* dispatcher);
 };

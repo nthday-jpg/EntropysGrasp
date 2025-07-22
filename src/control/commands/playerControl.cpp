@@ -29,8 +29,7 @@ void MoveDown::execute(entt::registry& registry)
 	}
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += down;
-
-	std::cout << "Moving down: " << std::endl;
+	
 }
 
 void MoveUp::execute(entt::registry& registry)
@@ -43,7 +42,6 @@ void MoveUp::execute(entt::registry& registry)
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += up;
 
-	std::cout << "Moving up: " << std::endl;
 }
 
 void MoveLeft::execute(entt::registry& registry)
@@ -56,7 +54,6 @@ void MoveLeft::execute(entt::registry& registry)
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += left;
 
-	std::cout << "Moving left: " << std::endl;
 }
 
 void MoveRight::execute(entt::registry& registry)
@@ -69,7 +66,6 @@ void MoveRight::execute(entt::registry& registry)
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += right;
 	
-	std::cout << "Moving right: " << std::endl;
 }
 
 void CastSpell::execute(entt::registry& registry)
@@ -90,7 +86,6 @@ void CastSpell::execute(entt::registry& registry)
 		particleSystem->emit(particleProperties);
 	}
 	
-	spellManager->castTimes[SpellID::Fireball] = 0.5f;
 }
 
 void Dash::execute(entt::registry& registry)

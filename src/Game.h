@@ -37,7 +37,6 @@ private:
 	entt::dispatcher dispatcher;
 
 	sf::Clock clock;
-	float deltaTime = 0.0f;
 
 	void processEvents();
 	void update(float deltaTime);

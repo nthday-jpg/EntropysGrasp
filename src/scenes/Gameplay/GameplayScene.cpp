@@ -115,6 +115,7 @@ void GameplayScene::update(float deltaTime) {
     physicsSystem.updateVelocity(deltaTime);
 	particleSystem.update(deltaTime);
 	animationSystem.update(deltaTime);
+
     // Update camera
     camera.update(deltaTime);
     window.setView(camera.getView());
@@ -178,14 +179,14 @@ entt::entity GameplayScene::createPlayer() {
 
     AnimationComponent animComp;
     animComp.data = AnimationManager::getInstance().getAnimationData("Mage");
-    animComp.currentState = AnimationState::Idle;
-    animComp.currentDirection = Direction::Down;
+    animComp.currentState = AnimationState::Walking;
+    animComp.currentDirection = Direction::DownLeft;
     animComp.currentFrame = { 0, 0 };
     animComp.timer = 0.f;
     registry.emplace<AnimationComponent>(player, animComp);
 
     // sprite gắn vào để render
-    sf::IntRect textureRect({ 0, 0 }, { 30, 50}); // Assuming each frame is 50x50 pixels
+    sf::IntRect textureRect({ 0, 0 }, { 32, 48}); // Assuming each frame is 50x50 pixels
     sf::Sprite sprite(*mageTexture);
 	sprite.setTextureRect(textureRect);
     sprite.setPosition({ 0.f, 0.f });

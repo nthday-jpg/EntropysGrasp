@@ -107,6 +107,7 @@
     <ClCompile Include="src\gameplay\systems\RenderSystem.cpp" />
     <ClCompile Include="src\gameplay\systems\SpellManager.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\manager\AnimationManager.cpp" />
     <ClCompile Include="src\manager\EnemyLibrary.cpp" />
     <ClCompile Include="src\manager\FontManager.cpp" />
     <ClCompile Include="src\manager\SceneManager.cpp" />
