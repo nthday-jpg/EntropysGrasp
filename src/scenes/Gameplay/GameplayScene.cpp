@@ -12,17 +12,20 @@
 
 GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatcher) 
 	: Scene(window), dispatcher(dispatcher),
-    collisionSystem(registry, dispatcher),
+    collisionSystem(registry), // Remove dispatcher parameter
     movementPipeline(registry),
-    combatSystem(registry, dispatcher),
+    combatSystem(registry), // Remove dispatcher parameter
     spellManager(registry),
 	camera(&registry),
 	enemyManager(registry, camera.getView(), gameClock),
 	physicsSystem(registry),
     renderSystem(registry), 
 	particleSystem(registry),
-	animationSystem(registry, dispatcher)
+	animationSystem(registry) // Remove dispatcher parameter
 {
+    // Store dispatcher in registry context for all systems to access
+    registry.ctx().emplace<entt::dispatcher*>(dispatcher);
+    
 	gameplayCommandManager = new GameplayCommandManager(registry);
 	entt::entity playerEntity = createPlayer();
     inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
@@ -99,6 +102,11 @@ void GameplayScene::update(float deltaTime) {
     // Execute all queued gameplay commands
     if (gameplayCommandManager) {
         gameplayCommandManager->executeCommands();
+    }
+    
+    // Process all queued events (including animation events)
+    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+        (*dispatcher)->update();
     }
     
     // Update UI

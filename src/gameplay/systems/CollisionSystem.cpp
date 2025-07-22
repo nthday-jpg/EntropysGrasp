@@ -4,14 +4,14 @@
 #include "../components/StatComponent.h"
 #include "../components/Hitbox.h"
 #include "../components/MovementComponents.h"
+#include "../components/CollisionType.h" 
 #include "../../utils/VectorMath.h"
 
 using namespace std;
 
-CollisionSystem::CollisionSystem(entt::registry& registry, entt::dispatcher* dispatcher)
-	: registry(registry), dispatcher(dispatcher)
+CollisionSystem::CollisionSystem(entt::registry& registry)
+	: registry(registry)
 {
-
 	collisionEvents.reserve(200);
 }
 
@@ -124,7 +124,12 @@ void CollisionSystem::detectCollisions()
 			{
 				CollisionType type1 = getCollisionType(entity);
 				CollisionType type2 = getCollisionType(otherEntity);
-				dispatcher->trigger<CollisionEvent>(CollisionEvent{ entity, otherEntity, type1, type2 });
+				
+				// Trigger collision event using dispatcher from registry context
+				if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+					(*dispatcher)->trigger<CollisionEvent>(CollisionEvent{ entity, otherEntity, type1, type2 });
+				}
+				
 				if (isSolid(type1, type2))
 				{
 					resolvePhysicalOverlap(entity, otherEntity);

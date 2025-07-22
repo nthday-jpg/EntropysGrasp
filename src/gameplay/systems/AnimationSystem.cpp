@@ -3,9 +3,12 @@
 #include <iostream>
 #include "../components/EntityTags.h"
 
-AnimationSystem::AnimationSystem(entt::registry& registry, entt::dispatcher* dispatcher)
-    : registry(registry), dispatcher(dispatcher), frameDuration(0.1f) {
-    dispatcher->sink<AnimationChangeEvent>().connect<&AnimationSystem::changeAnimation>(*this);
+AnimationSystem::AnimationSystem(entt::registry& registry)
+    : registry(registry), frameDuration(0.1f) {
+    // Access dispatcher from registry context and connect to events
+    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+        (*dispatcher)->sink<AnimationChangeEvent>().connect<&AnimationSystem::changeAnimation>(*this);
+    }
 }
 
 

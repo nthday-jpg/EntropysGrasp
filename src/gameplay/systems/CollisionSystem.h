@@ -13,15 +13,12 @@
 // Collision System also provides methods to check if two entities intersect
 // and to resolve physical overlaps between them.
 
-
-
 class CollisionSystem 
 {
     std::vector<CollisionEvent> collisionEvents;
     entt::registry& registry;
-	entt::dispatcher* dispatcher; // Optional dispatcher for event handling
 public:
-    CollisionSystem(entt::registry& registry, entt::dispatcher* dispatcher);
+    CollisionSystem(entt::registry& registry);
     void detectCollisions();
 
 	void update(float dt);
