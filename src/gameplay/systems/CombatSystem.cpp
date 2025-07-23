@@ -7,13 +7,7 @@
 CombatSystem::CombatSystem(entt::registry& registry)
 	: registry(registry)
 {
-	// Register collision handlers using dispatcher from registry context
-	std::cout << "CombatSystem initialized." << std::endl;
-	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-		(*dispatcher)->sink<CollisionEvent>().connect<&CombatSystem::handleEvent>(this);
-	} else {
-		std::cerr << "Dispatcher not found in registry context." << std::endl;
-	}
+	
 }
 
 void CombatSystem::handleEvent(const CollisionEvent& event)
@@ -74,4 +68,13 @@ void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity sp
 void CombatSystem::applyDamage(float dmg, entt::entity) 
 {
 	// Apply damage to entities based on collision and spell effects
+}
+
+void CombatSystem::sinkEvents() 
+{
+	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+		(*dispatcher)->sink<CollisionEvent>().connect<&CombatSystem::handleEvent>(*this);
+	} else {
+		std::cerr << "Dispatcher not found in registry context." << std::endl;
+	}
 }

@@ -4,13 +4,24 @@
 #include "../components/EntityTags.h"
 
 AnimationSystem::AnimationSystem(entt::registry& registry)
-    : registry(registry), frameDuration(0.1f) {
-    // Access dispatcher from registry context and connect to events
-    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-        (*dispatcher)->sink<AnimationChangeEvent>().connect<&AnimationSystem::changeAnimation>(*this);
-    }
+    : registry(registry), frameDuration(0.1f) 
+{
+    
 }
 
+void AnimationSystem::sinkEvents()
+{
+    // Access dispatcher from registry context and connect to events
+    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
+    {
+        (*dispatcher)->sink<AnimationChangeEvent>().connect<&AnimationSystem::changeAnimation>(*this);
+    }
+    else
+    {
+        std::cerr << "Dispatcher not found in registry context!" << std::endl;
+		assert(false); 
+    }
+}
 
 void AnimationSystem::update(float deltaTime) {
     auto view = registry.view<AnimationComponent, sf::Sprite>();

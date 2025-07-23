@@ -12,19 +12,22 @@
 
 GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatcher) 
 	: Scene(window), dispatcher(dispatcher),
-    collisionSystem(registry), // Remove dispatcher parameter
+    collisionSystem(registry), 
     movementPipeline(registry),
-    combatSystem(registry), // Remove dispatcher parameter
+    combatSystem(registry),
     spellManager(registry),
 	camera(&registry),
 	enemyManager(registry, camera.getView(), gameClock),
 	physicsSystem(registry),
     renderSystem(registry), 
 	particleSystem(registry),
-	animationSystem(registry) // Remove dispatcher parameter
+	animationSystem(registry) 
 {
     // Store dispatcher in registry context for all systems to access
     registry.ctx().emplace<entt::dispatcher*>(dispatcher);
+	combatSystem.sinkEvents();
+    animationSystem.sinkEvents();
+    collisionSystem.sinkEvents();
     
 	gameplayCommandManager = new GameplayCommandManager(registry);
 	entt::entity playerEntity = createPlayer();

@@ -18,5 +18,6 @@ class AnimationSystem {
 public:
 	void update(float deltaTime); //tăng timer tăng currentframe reset timer
 	void changeAnimation(const AnimationChangeEvent& event);
+	void sinkEvents();
 	AnimationSystem(entt::registry& registry);
 };

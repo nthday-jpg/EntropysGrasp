@@ -24,34 +24,9 @@ const MovementDirection right = MovementDirection(1, 0);
 
 // Helper function to convert LookingDirection to Direction enum for animation
 Direction getDirectionFromLooking(const LookingDirection& lookingDir) {
-    float x = lookingDir.x;
-    float y = lookingDir.y;
-    
-    // If looking direction is too small, return a default direction
-    if (std::abs(x) < 0.1f && std::abs(y) < 0.1f) {
-        return Direction::Down; // Default when not looking anywhere specific
-    }
-    
-    // Calculate angle to determine exact direction
-    float angle = std::atan2(y, x) * 180.0f / 3.14159265359f; // Convert to degrees
-    
-    // Normalize angle to 0-360 range
-    if (angle < 0) angle += 360.0f;
-    
-    // Map angle to 8 directions (each direction covers 45 degrees)
-    // Right = 0°, DownRight = 45°, Down = 90°, DownLeft = 135°, 
-    // Left = 180°, UpLeft = 225°, Up = 270°, UpRight = 315°
-    
-    if (angle >= 337.5f || angle < 22.5f) return Direction::Right;        // 0° ± 22.5°
-    else if (angle >= 22.5f && angle < 67.5f) return Direction::DownRight; // 45° ± 22.5°
-    else if (angle >= 67.5f && angle < 112.5f) return Direction::Down;     // 90° ± 22.5°
-    else if (angle >= 112.5f && angle < 157.5f) return Direction::DownLeft; // 135° ± 22.5°
-    else if (angle >= 157.5f && angle < 202.5f) return Direction::Left;     // 180° ± 22.5°
-    else if (angle >= 202.5f && angle < 247.5f) return Direction::UpLeft;   // 225° ± 22.5°
-    else if (angle >= 247.5f && angle < 292.5f) return Direction::Up;       // 270° ± 22.5°
-    else if (angle >= 292.5f && angle < 337.5f) return Direction::UpRight;  // 315° ± 22.5°
-    
-    return Direction::Down; // Default fallback
+	float x = lookingDir.x;
+	float y = lookingDir.y;
+	// x axis is horizontal and 
 }
 
 // Helper function to check if player is currently moving
@@ -185,7 +160,7 @@ void ResetTempComponents::execute(entt::registry& registry)
 
 	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
 		Direction idleDirection = getDirectionFromLooking(currentLookingDir);
-		(*dispatcher)->enqueue<AnimationChangeEvent>(playerEntity, AnimationState::Idle, idleDirection);
+		(*dispatcher)->trigger<AnimationChangeEvent>({ playerEntity, AnimationState::Idle, idleDirection });
 	}
 }
 
@@ -203,13 +178,14 @@ void LookAtMouse::execute(entt::registry& registry)
 		std::cerr << "Window is not open or does not exist." << std::endl;
 		return;
 	}
+	Direction oldDirection = Direction::Down;
+	if (registry.all_of<Direction>(playerEntity)) {
+		oldDirection = registry.get<Direction>(playerEntity);
+	}
 
 	Position& playerPosition = registry.get<Position>(playerEntity);
 	sf::Vector2i mousePosWindow = sf::Mouse::getPosition(windowManager.getWindow());
 	sf::Vector2f mousePos = windowManager.getWindow().mapPixelToCoords(mousePosWindow);
-
-	// Store previous looking direction to check if it changed significantly
-	LookingDirection previousLookingDir = registry.get<LookingDirection>(playerEntity);
 
 	LookingDirection& lookingDirection = registry.get<LookingDirection>(playerEntity);
 	lookingDirection = LookingDirection{
@@ -217,22 +193,14 @@ void LookAtMouse::execute(entt::registry& registry)
 		static_cast<float>(mousePos.y - playerPosition.y) };
 	
 	normalize(lookingDirection);
-
-	// Calculate the angle difference to avoid unnecessary animation updates
-	float angleDiff = std::atan2(lookingDirection.y, lookingDirection.x) - std::atan2(previousLookingDir.y, previousLookingDir.x);
-	if (angleDiff > 3.14159265359f) angleDiff -= 2 * 3.14159265359f;
-	if (angleDiff < -3.14159265359f) angleDiff += 2 * 3.14159265359f;
 	
-	// Only update animation if the direction changed significantly (more than ~11.25 degrees)
-	if (std::abs(angleDiff) > 0.196f) { // 0.196 radians ≈ 11.25 degrees
-		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-			Direction newDirection = getDirectionFromLooking(lookingDirection);
-			
-			// Choose animation state based on whether player is moving
-			AnimationState animState = isPlayerMoving(registry, playerEntity) ? 
-				AnimationState::Walking : AnimationState::Idle;
-			
-			(*dispatcher)->enqueue<AnimationChangeEvent>(playerEntity, animState, newDirection);
+	Direction newDirection = getDirectionFromLooking(lookingDirection);
+	if (newDirection != oldDirection) {
+		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) 
+		{
+			(*dispatcher)->enqueue<AnimationChangeEvent>({playerEntity, AnimationState::Walking, newDirection});
 		}
 	}
+	registry.emplace_or_replace<LookingDirection>(playerEntity, lookingDirection);
+	registry.emplace_or_replace<Direction>(playerEntity, newDirection);
 }

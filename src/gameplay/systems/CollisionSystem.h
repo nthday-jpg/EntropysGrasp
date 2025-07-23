@@ -15,15 +15,14 @@
 
 class CollisionSystem 
 {
-    std::vector<CollisionEvent> collisionEvents;
     entt::registry& registry;
 public:
     CollisionSystem(entt::registry& registry);
-    void detectCollisions();
-
 	void update(float dt);
+    void sinkEvents();
+
 private:
-    const std::vector<CollisionEvent>& getCollisionEvents() const;
+    void detectCollisions();
     void resolvePhysicalOverlap(entt::entity e1, entt::entity e2);
     bool isIntersect(entt::entity e1, entt::entity e2) const;
     CollisionType getCollisionType(entt::entity e) const;

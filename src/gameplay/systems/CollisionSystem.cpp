@@ -12,15 +12,18 @@ using namespace std;
 CollisionSystem::CollisionSystem(entt::registry& registry)
 	: registry(registry)
 {
-	collisionEvents.reserve(200);
 }
 
 void CollisionSystem::update(float dt)
 {
 	detectCollisions();
-	for (const auto& event : getCollisionEvents())
+}
+
+void CollisionSystem::sinkEvents()
+{
+	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
 	{
-		resolvePhysicalOverlap(event.entity1, event.entity2);
+		(*dispatcher)->sink<CollisionEvent>().connect<&CollisionSystem::detectCollisions>(*this);
 	}
 }
 
@@ -98,7 +101,6 @@ bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2) const
 
 void CollisionSystem::detectCollisions()
 {
-	collisionEvents.clear();
 	SpatialHashGrid spatialHashGrid(50.0f);
 	spatialHashGrid.makeGrid(registry);
 
@@ -127,7 +129,7 @@ void CollisionSystem::detectCollisions()
 				
 				// Trigger collision event using dispatcher from registry context
 				if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-					(*dispatcher)->trigger<CollisionEvent>(CollisionEvent{ entity, otherEntity, type1, type2 });
+					(*dispatcher)->enqueue<CollisionEvent>(CollisionEvent{ entity, otherEntity, type1, type2 });
 				}
 				
 				if (isSolid(type1, type2))
@@ -300,11 +302,6 @@ void CollisionSystem::resolveCC(entt::entity e1, entt::entity e2)
 	{
 		cerr << "No overlap detected, cannot resolve." << endl;
 	}
-}
-
-const std::vector<CollisionEvent>& CollisionSystem::getCollisionEvents() const
-{
-	return collisionEvents;
 }
 
 CollisionType CollisionSystem::getCollisionType(entt::entity e) const
