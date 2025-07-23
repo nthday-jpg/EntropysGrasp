@@ -27,6 +27,7 @@ Direction getDirectionFromLooking(const LookingDirection& lookingDir) {
 	float x = lookingDir.x;
 	float y = lookingDir.y;
 	// x axis is horizontal and 
+	return Direction::Down;
 }
 
 // Helper function to check if player is currently moving
@@ -191,26 +192,19 @@ void LookAtMouse::execute(entt::registry& registry)
 	lookingDirection = LookingDirection{
 		static_cast<float>(mousePos.x - playerPosition.x),
 		static_cast<float>(mousePos.y - playerPosition.y) };
-	
+
 	normalize(lookingDirection);
 
 	// Calculate the angle difference to avoid unnecessary animation updates
-	float angleDiff = std::atan2(lookingDirection.y, lookingDirection.x) - std::atan2(previousLookingDir.y, previousLookingDir.x);
-	if (angleDiff > 3.14159265359f) angleDiff -= 2 * 3.14159265359f;
-	if (angleDiff < -3.14159265359f) angleDiff += 2 * 3.14159265359f;
-	
-	// Only update animation if the direction changed significantly (more than ~11.25 degrees)
-	if (std::abs(angleDiff) > 0.196f) { // 0.196 radians ≈ 11.25 degrees
-		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-			Direction newDirection = getDirectionFromLooking(lookingDirection);
-			
-			// Choose animation state based on whether player is moving
-			AnimationState animState = isPlayerMoving(registry, playerEntity) ? 
-				AnimationState::Walking : AnimationState::Idle;
-			
-			(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, animState, newDirection });
+
+	Direction newDirection = getDirectionFromLooking(lookingDirection);
+	if (newDirection != oldDirection) {
+		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
+		{
+			(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Walking, newDirection });
+
+			registry.emplace_or_replace<LookingDirection>(playerEntity, lookingDirection);
+			registry.emplace_or_replace<Direction>(playerEntity, newDirection);
 		}
 	}
-	registry.emplace_or_replace<LookingDirection>(playerEntity, lookingDirection);
-	registry.emplace_or_replace<Direction>(playerEntity, newDirection);
 }
