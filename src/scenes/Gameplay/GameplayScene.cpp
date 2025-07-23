@@ -12,17 +12,23 @@
 
 GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatcher) 
 	: Scene(window), dispatcher(dispatcher),
-    collisionSystem(registry, dispatcher),
+    collisionSystem(registry), 
     movementPipeline(registry),
-    combatSystem(registry, dispatcher),
+    combatSystem(registry),
     spellManager(registry),
 	camera(&registry),
 	enemyManager(registry, camera.getView(), gameClock),
 	physicsSystem(registry),
     renderSystem(registry), 
 	particleSystem(registry),
-	animationSystem(registry, dispatcher)
+	animationSystem(registry)
 {
+    // Store dispatcher in registry context for all systems to access
+    registry.ctx().emplace<entt::dispatcher*>(dispatcher);
+	combatSystem.sinkEvents();
+    animationSystem.sinkEvents();
+    collisionSystem.sinkEvents();
+    
 	gameplayCommandManager = new GameplayCommandManager(registry);
 	entt::entity playerEntity = createPlayer();
     inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
@@ -99,6 +105,14 @@ void GameplayScene::update(float deltaTime) {
     // Execute all queued gameplay commands
     if (gameplayCommandManager) {
         gameplayCommandManager->executeCommands();
+    }
+    
+    int i = 0;
+    // Process all queued events (including animation events)
+    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+        (*dispatcher)->update();
+        i++;
+		std::cout << "Processed " << i << " events in GameplayScene." << std::endl;
     }
     
     // Update UI
@@ -178,11 +192,11 @@ entt::entity GameplayScene::createPlayer() {
     AnimationManager::getInstance().loadAnimationData("Mage", "assets/texture/Mage-Sheet.png", mageTexture);
 
     AnimationComponent animComp;
-    animComp.data = AnimationManager::getInstance().getAnimationData("Mage");
+    animComp.name = "Mage";
     animComp.currentState = AnimationState::Walking;
     animComp.currentDirection = Direction::DownLeft;
     animComp.currentFrame = { 0, 0 };
-    animComp.timer = 0.f;
+    animComp.timer = 0.0f;
     registry.emplace<AnimationComponent>(player, animComp);
 
     // sprite gắn vào để render

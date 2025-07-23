@@ -14,10 +14,10 @@ struct AnimationChangeEvent {
 
 class AnimationSystem {
 	entt::registry& registry;
-	entt::dispatcher* dispatcher;
 	float frameDuration; // Duration for each frame
 public:
 	void update(float deltaTime); //tăng timer tăng currentframe reset timer
 	void changeAnimation(const AnimationChangeEvent& event);
-	AnimationSystem(entt::registry& registry, entt::dispatcher* dispatcher);
+	void sinkEvents();
+	AnimationSystem(entt::registry& registry);
 };

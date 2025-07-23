@@ -4,6 +4,7 @@
 #include <string>
 #include "../../gameplay/systems/ParticleSystem.h"
 #include "../../gameplay/systems/SpellManager.h"
+#include "../../gameplay/systems/AnimationSystem.h"
 
 
 // The bindings of string with these commands are defined in gameplayInputHandler.h

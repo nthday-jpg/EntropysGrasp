@@ -36,7 +36,7 @@ struct AnimationData {
 };
 
 struct AnimationComponent { // được gắn vào entity
-	AnimationData* data; 
+	std::string name; // tên animation
 	AnimationState currentState;
 	Direction currentDirection;
 	sf::Vector2u currentFrame;

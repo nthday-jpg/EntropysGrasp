@@ -4,16 +4,10 @@
 #include "../components/EntityTags.h"
 #include "CollisionSystem.h"
 
-CombatSystem::CombatSystem(entt::registry& registry, entt::dispatcher* dispatcher)
-	: registry(registry), dispatcher(dispatcher)
+CombatSystem::CombatSystem(entt::registry& registry)
+	: registry(registry)
 {
-	// Register collision handlers
-	std::cout << "CombatSystem initialized." << std::endl;
-	if (!dispatcher) {
-		std::cerr << "Dispatcher is null in CombatSystem constructor." << std::endl;
-		return;
-	}
-	dispatcher->sink<CollisionEvent>().connect<&CombatSystem::handleEvent>(this);
+	
 }
 
 void CombatSystem::handleEvent(const CollisionEvent& event)
@@ -64,25 +58,23 @@ void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity sp
 		// Handle enemy death, e.g., remove entity or trigger death animation
 		registry.destroy(enemy); // Example of removing the enemy entity
 	}
-	SpellEffect spellType = spellData.effect;
-	//if (spellType == "fireball") {
-	//	std::cout << "Enemy hit by fireball spell!" << std::endl;
-	// 	registry.emplace_or_replace<EffectTag>(enemy);
-	//}
-	//else if (spellType == "iceblast") {
-	//	std::cout << "Enemy hit by ice blast spell!" << std::endl;
-	//	registry.emplace_or_replace<EffectTag>(enemy);
-	//}
-	//else if (spellType == "lightningstrike") {
-	//	std::cout << "Enemy hit by lightning strike spell!" << std::endl;
-	//	registry.emplace_or_replace<EffectTag>(enemy);
-	//}
-	//else {
-	//	std::cout << "Unknown spell type!" << std::endl;
-	//}
+
+	// Optionally trigger death animation using dispatcher
+	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+		// (*dispatcher)->enqueue<EnemyDeathEvent>(enemy);
+	}
 }
 
 void CombatSystem::applyDamage(float dmg, entt::entity) 
 {
 	// Apply damage to entities based on collision and spell effects
+}
+
+void CombatSystem::sinkEvents() 
+{
+	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+		(*dispatcher)->sink<CollisionEvent>().connect<&CombatSystem::handleEvent>(*this);
+	} else {
+		std::cerr << "Dispatcher not found in registry context." << std::endl;
+	}
 }

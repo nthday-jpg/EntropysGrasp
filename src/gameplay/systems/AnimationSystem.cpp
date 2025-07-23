@@ -2,27 +2,41 @@
 #include <cassert>
 #include <iostream>
 #include "../components/EntityTags.h"
+#include "../../manager/AnimationManager.h"
 
-AnimationSystem::AnimationSystem(entt::registry& registry, entt::dispatcher* dispatcher)
-    : registry(registry), dispatcher(dispatcher), frameDuration(0.1f) {
-    dispatcher->sink<AnimationChangeEvent>().connect<&AnimationSystem::changeAnimation>(*this);
+AnimationSystem::AnimationSystem(entt::registry& registry)
+    : registry(registry), frameDuration(0.1f) 
+{
+    
 }
 
+void AnimationSystem::sinkEvents()
+{
+    // Access dispatcher from registry context and connect to events
+    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
+    {
+        (*dispatcher)->sink<AnimationChangeEvent>().connect<&AnimationSystem::changeAnimation>(*this);
+    }
+    else
+    {
+        std::cerr << "Dispatcher not found in registry context!" << std::endl;
+		assert(false); 
+    }
+}
 
 void AnimationSystem::update(float deltaTime) {
     auto view = registry.view<AnimationComponent, sf::Sprite>();
 
     for (auto [entity, animation, sprite] : view.each()) {
 
-        auto it = animation.data->animations.find({ animation.currentState, animation.currentDirection });
-        if (it == animation.data->animations.end()) continue;
+        auto it = AnimationManager::getInstance().getAnimationData(animation.name)->animations.find({ animation.currentState, animation.currentDirection });
+        if (it == AnimationManager::getInstance().getAnimationData(animation.name)->animations.end()) continue;
 
         Animation* currentAnimation = &it->second;
         sprite.setTexture(*currentAnimation->texture);
         animation.timer += deltaTime;
 
         if (animation.timer >= currentAnimation->frameDuration) {
-			std::cout << "Animation timer: " << animation.timer << std::endl;
             animation.timer -= currentAnimation->frameDuration;
             animation.currentFrame.x++;
             if (animation.currentFrame.x >= currentAnimation->frameCount.x) {
@@ -32,7 +46,6 @@ void AnimationSystem::update(float deltaTime) {
                     animation.currentFrame.y = 0; // Reset to first row if needed
                 }
 			}
-			std::cout << "Current frame: " << animation.currentFrame.x << std::endl;
 
             int frameWidth = static_cast<int>(currentAnimation->frameSize.x);
             int frameHeight = static_cast<int>(currentAnimation->frameSize.y);
@@ -50,11 +63,6 @@ void AnimationSystem::update(float deltaTime) {
 
         // Không cần replace sprite nữa
         registry.emplace_or_replace<AnimationComponent>(entity, animation);
-		//auto view = registry.view<PlayerTag>();
-  //      for (auto playerEntity : view) {
-		//	std::cout << animation.currentFrame.x << " " << animation.currentFrame.y << std::endl;
-		//}
-
     }
 }
 
@@ -65,8 +73,8 @@ void AnimationSystem::changeAnimation(const AnimationChangeEvent& event) {
     AnimationComponent& animComp = registry.get<AnimationComponent>(event.entity);
     sf::Sprite& sprite = registry.get<sf::Sprite>(event.entity);
 
-    auto it = animComp.data->animations.find({ event.newState, event.newDirection });
-    if (it == animComp.data->animations.end()) return;
+    auto it = AnimationManager::getInstance().getAnimationData(animComp.name)->animations.find({ event.newState, event.newDirection });
+    if (it == AnimationManager::getInstance().getAnimationData(animComp.name)->animations.end()) return;
 
     Animation& animation = it->second;
 
