@@ -4,6 +4,7 @@
 #include "../components/EntityTags.h"
 #include <iostream>
 #include "../components/Particle.h"
+#include "../../manager/TextureManager.h"
 
 void RenderSystem::renderBackGround(sf::Texture* background) {
     if (background) {
@@ -16,6 +17,7 @@ void RenderSystem::renderBackGround(sf::Texture* background) {
 }
 
 void RenderSystem::render() {
+	renderEnemies();
     auto group = registry.group<Position, sf::Sprite>();
 
     std::vector<entt::entity> entities;
@@ -78,4 +80,17 @@ void RenderSystem::renderParticles() {
         // Optionally, remove the particle if it has aged out
         
     }
+}
+
+void RenderSystem::renderEnemies() {
+	auto view = registry.view<EnemyTag>();
+    for (auto entity : view) {
+        if (!registry.all_of<sf::Sprite>(entity)) {
+			sf::Texture* texture = TextureManager::getInstance().getTexture("test");
+			sf::IntRect rect({0, 0}, {32, 48});
+			sf::Sprite sprite(*texture);
+			sprite.setTextureRect(rect);
+			registry.emplace<sf::Sprite>(entity, sprite);
+		}
+	}
 }

@@ -23,7 +23,7 @@ void CollisionSystem::sinkEvents()
 {
 	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
 	{
-		(*dispatcher)->sink<CollisionEvent>().connect<&CollisionSystem::detectCollisions>(*this);
+		(*dispatcher)->sink<CollisionEvent>().connect<&CollisionSystem::resolvePhysicalOverlap>(*this);
 	}
 }
 
@@ -131,18 +131,15 @@ void CollisionSystem::detectCollisions()
 				if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
 					(*dispatcher)->enqueue<CollisionEvent>(CollisionEvent{ entity, otherEntity, type1, type2 });
 				}
-				
-				if (isSolid(type1, type2))
-				{
-					resolvePhysicalOverlap(entity, otherEntity);
-				}
 			}
 		}
 	}
 }
 
-void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
+void CollisionSystem::resolvePhysicalOverlap(const CollisionEvent& event)
 {
+	entt::entity e1 = event.entity1;
+	entt::entity e2 = event.entity2;
 	auto type1 = getCollisionType(e1);
 	auto type2 = getCollisionType(e2);
 

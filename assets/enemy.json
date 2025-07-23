@@ -5,7 +5,7 @@
       "mana": 10,
       "attack": 5,
       "defense": 2,
-      "speed": 3,
+      "speed": 100,
       "resistance": 1
     },
     "appearance": {
@@ -19,7 +19,7 @@
       "mana": 5,
       "attack": 10,
       "defense": 5,
-      "speed": 2,
+      "speed": 100,
       "resistance": 3
     },
     "appearance": {

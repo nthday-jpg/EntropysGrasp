@@ -1,11 +1,13 @@
 #include <SFML/System/Time.hpp>
 #include <random>           
+#include <iostream>
 #include "../systems/EnemyManager.h"
 #include "../components/EntityTags.h"
 #include "../components/Enemy.h"
 #include "../components/MovementComponents.h"
 #include "../../scenes/Gameplay/Camera.h"
 #include "../../utils/Random.h"
+#include "../components/Hitbox.h"
 
 entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 {
@@ -35,6 +37,10 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
     registry.emplace<Attack>(entity, attack);
     registry.emplace<RepelResistance>(entity, data.resistance);
     registry.emplace<EnemyType>(entity, type);
+	registry.emplace<BehaviorType>(entity, BehaviorType::HomingPlayer);
+	registry.emplace<MovementDirection>(entity, 0.0f, 0.0f);
+	registry.emplace<Hitbox>(entity, 32.0f, 48.0f, 0.0f, 0.0f); // Assuming a default hitbox size
+	std::cout << "spawn position: " << position.x << ", " << position.y << std::endl;
     return entity;
 }
 
@@ -51,7 +57,7 @@ void EnemyManager::spawning(float dt)
                 if (isInLoadChunk(position))
                 {
                     Position randomPosition = randomizeOffScreenPosition(position);
-                    spawnEnemy(info.type, randomPosition);
+					std::cout << (int)spawnEnemy(info.type, randomPosition) << std::endl;
                 }
             }
             timer = 0.0f; // Reset timer after spawning all positions for this type

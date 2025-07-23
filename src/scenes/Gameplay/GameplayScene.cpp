@@ -31,6 +31,7 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
     
 	gameplayCommandManager = new GameplayCommandManager(registry);
 	entt::entity playerEntity = createPlayer();
+
     inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
 	camera.followEntity(playerEntity);
 
@@ -107,12 +108,9 @@ void GameplayScene::update(float deltaTime) {
         gameplayCommandManager->executeCommands();
     }
     
-    int i = 0;
     // Process all queued events (including animation events)
     if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
         (*dispatcher)->update();
-        i++;
-		std::cout << "Processed " << i << " events in GameplayScene." << std::endl;
     }
     
     // Update UI
@@ -176,9 +174,11 @@ void GameplayScene::exit()
 
 entt::entity GameplayScene::createPlayer() {
     auto player = registry.create();
+	std::cout << "Creating player entity with ID: " << static_cast<unsigned int>(player) << std::endl;
     registry.emplace<PlayerTag>(player);
     registry.emplace<Position>(player, 0.0f, 0.0f);
     registry.emplace<Speed>(player, 800.0f);
+	registry.emplace<Health>(player, 100.0f, 100.0f);
     registry.emplace<Hitbox>(player, 50.0f, 50.0f, 0.0f, 0.0f);
     registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
     registry.emplace<LookingDirection>(player, 0.0f, 0.0f);

@@ -36,7 +36,7 @@ bool EnemyLibrary::loadFromFile() {
 			data.attack.value = stat.value("attack", 10.0f);
 			data.mana.value = stat.value("mana", 50.0f);
 			data.resistance.value = stat.value("resistance", 5.0f);
-			data.speed.value = stat.value("speed", 2.0f);
+			data.speed.value = stat.value("speed", 50.0f);
 
 			enemyDatabase[type] = data;
 			// load animation data

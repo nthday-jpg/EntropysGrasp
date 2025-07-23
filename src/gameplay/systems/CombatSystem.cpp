@@ -3,6 +3,8 @@
 #include "../components/Behavior.h"
 #include "../components/EntityTags.h"
 #include "CollisionSystem.h"
+#include "../../manager/SpellLibrary.h"
+#include "../../manager/EnemyLibrary.h"
 
 CombatSystem::CombatSystem(entt::registry& registry)
 	: registry(registry)
@@ -15,18 +17,22 @@ void CombatSystem::handleEvent(const CollisionEvent& event)
 	if (event.type1 == CollisionType::Player && event.type2 == CollisionType::Enemy)
 	{
 		handlePlayerEnemyCollision(event.entity1, event.entity2);
+		applyDamage(event.entity1, event.entity2);
 	}
 	else if (event.type2 == CollisionType::Player && event.type1 == CollisionType::Enemy)
 	{
 		handlePlayerEnemyCollision(event.entity2, event.entity1);
+		applyDamage(event.entity2, event.entity1);
 	}
 	else if (event.type1 == CollisionType::Enemy && event.type2 == CollisionType::Spell)
 	{
 		handleEnemySpellCollision(event.entity1, event.entity2);
+		applyDamage(event.entity1, event.entity2);
 	}
 	else if (event.type2 == CollisionType::Enemy && event.type1 == CollisionType::Spell)
 	{
 		handleEnemySpellCollision(event.entity2, event.entity1);
+		applyDamage(event.entity2, event.entity1);
 	}
 }
 
@@ -53,11 +59,6 @@ void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity sp
 	const SpellData& spellData = spellLibrary.getSpell(spellName); // Assuming getSpellData is a function that retrieves spell data
 	auto damage = spellData.damage; // Assuming SpellData has a damage field
 	EnemyHealth.current -= damage;
-	if (EnemyHealth.current <= 0) 
-	{
-		// Handle enemy death, e.g., remove entity or trigger death animation
-		registry.destroy(enemy); // Example of removing the enemy entity
-	}
 
 	// Optionally trigger death animation using dispatcher
 	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
@@ -65,9 +66,18 @@ void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity sp
 	}
 }
 
-void CombatSystem::applyDamage(float dmg, entt::entity) 
+void CombatSystem::applyDamage(entt::entity entityA, entt::entity entityB) 
 {
-	// Apply damage to entities based on collision and spell effects
+	if (registry.all_of<EnemyTag>(entityB)) {
+		float& attack = registry.get<Attack>(entityB).value;
+		float& health = registry.get<Health>(entityA).current;
+		health -= attack;
+	}
+	if (registry.all_of<SpellTag>(entityB)) {
+		float& attack = registry.get<Attack>(entityB).value;
+		float& health = registry.get<Health>(entityA).current;
+		health -= attack;
+	}
 }
 
 void CombatSystem::sinkEvents() 

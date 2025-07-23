@@ -11,6 +11,7 @@ public:
 	void renderBackGround(sf::Texture* background);
     void render();
 	void renderParticles();
+	void renderEnemies();
 };
 
 //RenderSystem renderSystem;
