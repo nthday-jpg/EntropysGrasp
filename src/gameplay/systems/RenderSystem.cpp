@@ -118,8 +118,8 @@ void RenderSystem::renderParticles() {
 }
 
 void RenderSystem::renderEnemies() {
-	auto view = registry.view<EnemyTag, SpellTag>();
-    for (auto [entity] : view.each()) {
+	auto view = registry.view<EnemyTag>();
+    for (auto entity : view) {
         if (!registry.all_of<sf::Sprite>(entity)) {
 			sf::Texture* texture = TextureManager::getInstance().getTexture("test");
 			sf::IntRect rect({0, 0}, {32, 48});
@@ -128,4 +128,14 @@ void RenderSystem::renderEnemies() {
 			registry.emplace<sf::Sprite>(entity, sprite);
 		}
 	}
+    auto view1 = registry.view<SpellTag>();
+    for (auto entity : view1) {
+        if (!registry.all_of<sf::Sprite>(entity)) {
+            sf::Texture* texture = TextureManager::getInstance().getTexture("test");
+            sf::IntRect rect({ 0, 0 }, { 32, 48 });
+            sf::Sprite sprite(*texture);
+            sprite.setTextureRect(rect);
+            registry.emplace<sf::Sprite>(entity, sprite);
+        }
+    }
 }

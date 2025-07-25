@@ -60,9 +60,9 @@ bool SpellLibrary::loadSpells()
 			data.radius = stats.value("radius", 1.0f);
 			string effectStr = stats.value("effect", "None");
 			data.effect = stringToSpellEffect(effectStr);
-			string behaviorStr = stats.value("behaviorType", "HomingEnemy");
+			string behaviorStr = stats.value("behaviorType", "Orbit");
 			data.behaviorType = stringToBehaviorType(behaviorStr);
-			spellDatabase[spellID] = data;
+			data.count = stats.value("count", 1);
 
 			spellDatabase[spellID] = data;
 

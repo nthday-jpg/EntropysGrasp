@@ -89,7 +89,8 @@ void MoveRight::execute(entt::registry& registry)
 
 void CastSpell::execute(entt::registry& registry)
 {
-	spellManager->castTimes[SpellID::Fireball];
+	
+	spellManager->castTimes[SpellID::Fireball] = SpellLibrary::getInstance().getSpell(SpellID::Fireball).castTime;
 	ParticleProperties particleProperties;
 	particleProperties.startColor = sf::Color::Red;
 	particleProperties.endColor = sf::Color::Yellow;
