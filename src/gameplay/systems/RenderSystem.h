@@ -8,7 +8,7 @@ class RenderSystem {
 public:
 	RenderSystem(entt::registry& registry) : registry(registry) {}
 
-	void renderBackGround(sf::Texture* background);
+	void renderBackGround();
     void render();
 	void renderParticles();
 	void renderEnemies();

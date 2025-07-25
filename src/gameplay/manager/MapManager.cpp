@@ -1,6 +1,7 @@
 ﻿#include "MapManager.h"
 #include <tinyxml2.h>
 #include <iostream>
+#include "../../manager/TextureManager.h"
 
 using namespace tinyxml2;
 
@@ -13,11 +14,12 @@ MapManager::MapManager() {
 	// Initialize the map manager, possibly loading default maps or configurations
 }
 
-bool MapManager::loadMap(const std::string& mapFilePath) {
+bool MapManager::loadMap() {
     XMLDocument doc;
-	std::string mapname = "map";
-    if (doc.LoadFile(mapFilePath.c_str()) != XML_SUCCESS) {
-        std::cerr << "Lỗi khi mở file: " << mapFilePath << std::endl;
+    std::string mapname = "map";
+
+    if (doc.LoadFile(pathToMaps.c_str()) != XML_SUCCESS) {
+        std::cerr << "Lỗi khi mở file: " << pathToMaps << std::endl;
         return false;
     }
 
@@ -37,41 +39,46 @@ bool MapManager::loadMap(const std::string& mapFilePath) {
     std::cout << "Kích thước map: " << mapWidth << "x" << mapHeight
         << " | Tile: " << tileWidth << "x" << tileHeight << std::endl;
 
-    // Lấy layer đầu tiên
+    // Khởi tạo bản đồ mới
+    Map newMap;
+    newMap.width = mapWidth;
+    newMap.height = mapHeight;
+    newMap.tileSize = sf::Vector2f(tileWidth, tileHeight);
+
+    // Lấy từng <layer>
     XMLElement* layerElement = mapElement->FirstChildElement("layer");
-    if (!layerElement) {
-        std::cerr << "Không tìm thấy layer" << std::endl;
-        return false;
+    while (layerElement) {
+        XMLElement* dataElement = layerElement->FirstChildElement("data");
+        if (!dataElement || std::string(dataElement->Attribute("encoding")) != "csv") {
+            std::cerr << "Dữ liệu layer không ở dạng CSV" << std::endl;
+            return false;
+        }
+
+        const char* csvText = dataElement->GetText();
+        if (!csvText) {
+            std::cerr << "Không có nội dung CSV" << std::endl;
+            return false;
+        }
+
+        std::stringstream ss(csvText);
+        std::string item;
+        std::vector<int> tiles;
+
+        while (std::getline(ss, item, ',')) {
+            int gid = std::stoi(item);
+            tiles.push_back(gid);
+        }
+
+        newMap.layersTileIDs.push_back(std::move(tiles));
+        layerElement = layerElement->NextSiblingElement("layer"); // Chuyển sang layer tiếp theo
     }
 
-    XMLElement* dataElement = layerElement->FirstChildElement("data");
-    if (!dataElement || std::string(dataElement->Attribute("encoding")) != "csv") {
-        std::cerr << "Dữ liệu layer không ở dạng CSV" << std::endl;
-        return false;
-    }
+    // Gán texture cho tile (giả sử đã load từ trước bằng TextureManager)
+    newMap.tileTexture = TextureManager::getInstance().getTexture("c");
 
-    const char* csvText = dataElement->GetText();
-    if (!csvText) {
-        std::cerr << "Không có nội dung CSV" << std::endl;
-        return false;
-    }
-
-    // Parse CSV thành vector<int>
-    std::stringstream ss(csvText);
-    std::string item;
-    std::vector<int> tiles;
-
-    while (std::getline(ss, item, ',')) {
-        int gid = std::stoi(item);
-        tiles.push_back(gid);
-    }
-
-    // Lưu thông tin
-    //this->mapDatabase[mapname].width = mapWidth;
-    //this->mapDatabase[mapname].height = mapHeight;
-    //this->mapDatabase[mapname].tileSize.x = tileWidth;
-    //this->mapDatabase[mapname].tileSize.y = tileHeight;
-    //this->tileIDs = std::move(tiles);
+    // Lưu bản đồ vào mapDatabase
+    mapDatabase[mapname] = std::move(newMap);
+    currentMapName = mapname;
 
     return true;
 }

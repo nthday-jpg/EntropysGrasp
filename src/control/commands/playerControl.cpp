@@ -89,11 +89,12 @@ void MoveRight::execute(entt::registry& registry)
 
 void CastSpell::execute(entt::registry& registry)
 {
+	spellManager->castTimes[SpellID::Fireball];
 	ParticleProperties particleProperties;
 	particleProperties.startColor = sf::Color::Red;
 	particleProperties.endColor = sf::Color::Yellow;
 	particleProperties.sizeEnd = 0.0f;
-	particleProperties.sizeStart = 5.0f;
+	particleProperties.sizeStart = 0.5f;
 	particleProperties.lifetime = 5.0f;
 	particleProperties.velocity = { 0.0f, 0.f };
 	particleProperties.velocityVariation = { -2.0f, 2.0f };
@@ -203,8 +204,8 @@ void LookAtMouse::execute(entt::registry& registry)
 		{
 			(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Walking, newDirection });
 
-			registry.emplace_or_replace<LookingDirection>(playerEntity, lookingDirection);
-			registry.emplace_or_replace<Direction>(playerEntity, newDirection);
 		}
 	}
+	registry.emplace_or_replace<LookingDirection>(playerEntity, lookingDirection);
+	registry.emplace_or_replace<Direction>(playerEntity, newDirection);
 }

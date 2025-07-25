@@ -51,6 +51,7 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
             30.0f
         )
 	);
+    MapManager::getInstance().loadMap();
 }
 
 GameplayScene::~GameplayScene() {

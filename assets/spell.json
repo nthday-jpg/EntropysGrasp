@@ -1,6 +1,6 @@
 {
   "Fireball": {
-    "stat": {
+    "stats": {
       "damage": 100,
       "manaCost": 50,
       "castTime": 2,
@@ -16,8 +16,8 @@
       "size": "medium"
     }
   },
-  "Ice Shard": {
-    "stat": {
+  "IceSpike": {
+    "stats": {
       "damage": 80,
       "manaCost": 40,
       "castTime": 1.5,

@@ -7,7 +7,7 @@
 
 class SpellLibrary 
 {
-	std::string path = "src/resources/spell.json";
+	std::string path = "assets/spell.json";
 public:
 	std::unordered_map<SpellID, SpellData> spellDatabase;
 

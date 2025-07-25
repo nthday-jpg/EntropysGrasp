@@ -46,6 +46,7 @@ enum class SpellID
 	PenetratingShot,
 	KnockbackBlast,
 	ExplosionWave,
+	Unknown
 };
 
 inline const std::unordered_map<std::string, SpellID> stringToSpellIDMap = 
@@ -67,7 +68,7 @@ inline SpellID stringToSpellID(const std::string& str)
 	auto it = stringToSpellIDMap.find(str);
 	if (it != stringToSpellIDMap.end())
 		return it->second;
-	throw std::runtime_error("Unknown SpellID: " + str);
+	return SpellID::Unknown; // Default case if not found
 }
 
 inline SpellEffect stringToSpellEffect(const std::string& str) 

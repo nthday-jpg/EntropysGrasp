@@ -22,41 +22,58 @@ const SpellData& SpellLibrary::getSpell(SpellID spellName) const
 
 bool SpellLibrary::loadSpells() 
 {
-	//ifstream file(path);
-	//if (!file.is_open()) 
-	//{
-	//	cerr << "Failed to open spells.json" << endl;
-	//	return false;
-	//}
-	//json spells;
-	//file >> spells;
-	//try 
-	//{
-	//	for (const auto& [name, stat] : spells.items()) 
-	//  {
-	//		SpellID spellID = stringToSpellID(name);
-	//		SpellData data;
-	//		data.damage = stat.value("damage", 1.0f);
-	//		data.manaCost = stat.value("manaCost", 1.0f);
-	//		data.castTime = stat.value("castTime", 1.0f);
-	//		data.cooldowns = stat.value("cooldowns", 1.0f);
-	//		data.speed = stat.value("speed", 1.0f);
-	//		data.size = stat.value("size", 1.0f);
-	//		data.duration = stat.value("duration", 1.0f);
-	//		data.radius = stat.value("radius", 1.0f);
-	//		string effectStr = stat.value("effect", "None");
-	//		data.effect = stringToSpellEffect(effectStr);
-	//		string behaviorStr = stat.value("behaviorType", "HomingEnemy");
-	//		data.behaviorType = stringToBehaviorType(behaviorStr);
-	//		spellDatabase[spellID] = data;
-	//	}
-	//} 
-	//catch (const std::exception& e) 
-	//{
-	//	cerr << "Error parsing spells.json: " << e.what() << endl;
-	//	return false;
-	//}
-	//file.close();
+	std::cout << "Loading spell data from: " << path << std::endl;
+	std::ifstream file(path);
+
+	if (!file.is_open()) {
+		std::cerr << "Failed to open spell.json" << std::endl;
+		return false;
+	}
+
+	json spell;
+	try {
+		file >> spell;
+
+		for (const auto& [name, spell] : spell.items()) {
+			SpellID spellID = stringToSpellID(name);
+
+			if (spellID == SpellID::Unknown) {
+				std::cerr << "Unknown spell spellID: " << name << std::endl;
+				continue;
+			}
+
+			if (!spell.contains("stats")) {
+				std::cerr << "Missing 'stats' section for spell: " << name << std::endl;
+				continue;
+			}
+
+			const auto& stats = spell["stats"];
+
+			SpellData data;
+			data.damage = stats.value("damage", 1.0f);
+			data.manaCost = stats.value("manaCost", 1.0f);
+			data.castTime = stats.value("castTime", 1.0f);
+			data.cooldowns = stats.value("cooldowns", 1.0f);
+			data.speed = stats.value("speed", 1.0f);
+			data.size = stats.value("size", 1.0f);
+			data.duration = stats.value("duration", 1.0f);
+			data.radius = stats.value("radius", 1.0f);
+			string effectStr = stats.value("effect", "None");
+			data.effect = stringToSpellEffect(effectStr);
+			string behaviorStr = stats.value("behaviorType", "HomingEnemy");
+			data.behaviorType = stringToBehaviorType(behaviorStr);
+			spellDatabase[spellID] = data;
+
+			spellDatabase[spellID] = data;
+
+		}
+	}
+	catch (const std::exception& e) {
+		std::cerr << "Error parsing spell.json: " << e.what() << std::endl;
+		return false;
+	}
+
+	file.close();
 	return true;
 }
 

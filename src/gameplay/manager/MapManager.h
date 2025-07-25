@@ -9,14 +9,15 @@
 #include <unordered_map>
 
 class MapManager {
+	std::string pathToMaps = "assets/map/full.tmx";
 	std::unordered_map<std::string, Map>mapDatabase;
-	std::string currentMapName;
 
-	bool loadMap(const std::string& mapFilePath);
 	MapManager();
 	MapManager(const MapManager&) = delete;
 	MapManager& operator=(const MapManager&) = delete;
 public:
+	std::string currentMapName = "map";
+	bool loadMap();
 	static MapManager& getInstance();
 	Map& getMap(const std::string& mapName);
     void transitionToMap(const std::string& newMapName);

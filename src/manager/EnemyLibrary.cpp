@@ -1,4 +1,4 @@
-#include "EnemyLibrary.h"
+﻿#include "EnemyLibrary.h"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -8,47 +8,51 @@ using namespace std;
 using json = nlohmann::json;
 
 bool EnemyLibrary::loadFromFile() {
+    std::cout << "Loading enemy data from: " << path << std::endl;
+    std::ifstream file(path);
 
-	cout << "Loading enemy data from: " << path << std::endl;
-	ifstream file(path);
+    if (!file.is_open()) {
+        std::cerr << "Failed to open enemy.json" << std::endl;
+        return false;
+    }
 
-	if (!file.is_open()) {
-		cerr << "Failed to open enemies.json" << std::endl;
-		return false;
-	}
+    json enemy;
+    try {
+        file >> enemy;
 
-	json enemies;
-	file >> enemies;
+        for (const auto& [name, enemy] : enemy.items()) {
+            EnemyType type = stringToEnemyType(name);
 
-	try 
-	{
-		for (const auto& [name, stat] : enemies.items()) 
-		{
-			EnemyType type = stringToEnemyType(name);
+            if (type == EnemyType::Unknown) {
+                std::cerr << "Unknown enemy type: " << name << std::endl;
+                continue;
+            }
 
-			if (type == EnemyType::Unknown) {
-				cerr << "Unknown enemy type: " << name << std::endl;
-				continue; // Skip unknown types
-			}
+            if (!enemy.contains("stats")) {
+                std::cerr << "Missing 'stats' section for enemy: " << name << std::endl;
+                continue;
+            }
 
-			EnemyData data;
-			data.health.max = data.health.current = stat.value("health", 100.0f);
-			data.attack.value = stat.value("attack", 10.0f);
-			data.mana.value = stat.value("mana", 50.0f);
-			data.resistance.value = stat.value("resistance", 5.0f);
-			data.speed.value = stat.value("speed", 50.0f);
+            const auto& stats = enemy["stats"];
 
-			enemyDatabase[type] = data;
-			// load animation data
-		}
-	}
-	catch (const std::exception& e) 
-	{
-		cerr << "Error parsing enemy.json: " << e.what() << std::endl;
-		return false;
-	}
-	file.close();
-	return true;
+            EnemyData data;
+            data.health.max = data.health.current = stats.value("health", 100.0f);
+            data.attack.value = stats.value("attack", 10.0f);
+            data.mana.value = stats.value("mana", 50.0f);
+            data.resistance.value = stats.value("resistance", 5.0f);
+            data.speed.value = stats.value("speed", 2.0f);
+
+            enemyDatabase[type] = data;
+
+        }
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error parsing enemy.json: " << e.what() << std::endl;
+        return false;
+    }
+
+    file.close();
+    return true;
 }
 
 EnemyLibrary::EnemyLibrary()
