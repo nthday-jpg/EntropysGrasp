@@ -19,20 +19,15 @@ void CombatSystem::handleEvent(const CollisionEvent& event)
 		handlePlayerEnemyCollision(event.entity1, event.entity2);
 		applyDamage(event.entity1, event.entity2);
 	}
-	else if (event.type2 == CollisionType::Player && event.type1 == CollisionType::Enemy)
-	{
-		handlePlayerEnemyCollision(event.entity2, event.entity1);
-		applyDamage(event.entity2, event.entity1);
-	}
 	else if (event.type1 == CollisionType::Enemy && event.type2 == CollisionType::Spell)
 	{
 		handleEnemySpellCollision(event.entity1, event.entity2);
 		applyDamage(event.entity1, event.entity2);
-	}
-	else if (event.type2 == CollisionType::Enemy && event.type1 == CollisionType::Spell)
-	{
-		handleEnemySpellCollision(event.entity2, event.entity1);
-		applyDamage(event.entity2, event.entity1);
+		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+			(*dispatcher)->enqueue<SpellReduction>(event.entity2);
+		} else {
+			std::cerr << "Dispatcher not found in registry context." << std::endl;
+		}
 	}
 }
 

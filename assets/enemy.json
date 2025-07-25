@@ -1,7 +1,7 @@
 {
   "Goblin": {
     "stats": {
-      "health": 30,
+      "health": 3000,
       "mana": 10,
       "attack": 5,
       "defense": 2,
@@ -15,7 +15,7 @@
   },
   "Orc": {
     "stats": {
-      "health": 50,
+      "health": 5000,
       "mana": 5,
       "attack": 10,
       "defense": 5,

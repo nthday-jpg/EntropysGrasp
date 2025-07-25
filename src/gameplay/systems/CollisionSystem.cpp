@@ -140,13 +140,18 @@ void CollisionSystem::resolvePhysicalOverlap(const CollisionEvent& event)
 {
 	entt::entity e1 = event.entity1;
 	entt::entity e2 = event.entity2;
-	auto type1 = getCollisionType(e1);
-	auto type2 = getCollisionType(e2);
+	CollisionType type1 = event.type1;
+	CollisionType type2 = event.type2;
 
 	if (type1 == CollisionType::None || type2 == CollisionType::None)
 	{
 		cerr << "Cannot resolve overlap for entities with no collision type." << endl;
 		return; // Cannot resolve overlap if one of the entities has no collision type
+	}
+
+	if (type1 == CollisionType::Spell && type1 == type2)
+	{ 
+		return; // Do not resolve overlap for spells, they are not physical entities
 	}
 
 	if (!registry.all_of<Hitbox, Position, RepelResistance>(e1) || !registry.all_of<Hitbox, Position, RepelResistance>(e2))
@@ -185,7 +190,6 @@ void CollisionSystem::resolveRR(entt::entity e1, entt::entity e2)
 
 	if (hitbox.type != HitboxType::Rectangle || otherHitbox.type != HitboxType::Rectangle)
 	{
-		cerr << "Currently only rectangle hitboxes are supported for resolving overlap." << endl;
 		return;
 	};
 
@@ -214,7 +218,6 @@ void CollisionSystem::resolveRR(entt::entity e1, entt::entity e2)
 
 	if (overlapX < 0 || overlapY < 0)
 	{
-		cerr << "No overlap detected, cannot resolve." << endl;
 		return; // No overlap to resolve
 	}
 

@@ -132,7 +132,7 @@ void RenderSystem::renderEnemies() {
     for (auto entity : view1) {
         if (!registry.all_of<sf::Sprite>(entity)) {
             sf::Texture* texture = TextureManager::getInstance().getTexture("test");
-            sf::IntRect rect({ 0, 0 }, { 32, 48 });
+            sf::IntRect rect({ 0, 0 }, { 15, 15 });
             sf::Sprite sprite(*texture);
             sprite.setTextureRect(rect);
             registry.emplace<sf::Sprite>(entity, sprite);

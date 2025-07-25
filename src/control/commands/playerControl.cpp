@@ -15,6 +15,7 @@
 #include "../../gameplay/systems/AnimationSystem.h"
 
 #include "../../utils/VectorMath.h"
+#include "../../utils/Random.h"
 
 
 const MovementDirection down = MovementDirection(0, 1);
@@ -91,20 +92,6 @@ void CastSpell::execute(entt::registry& registry)
 {
 	
 	spellManager->castTimes[SpellID::Fireball] = SpellLibrary::getInstance().getSpell(SpellID::Fireball).castTime;
-	ParticleProperties particleProperties;
-	particleProperties.startColor = sf::Color::Red;
-	particleProperties.endColor = sf::Color::Yellow;
-	particleProperties.sizeEnd = 0.0f;
-	particleProperties.sizeStart = 0.5f;
-	particleProperties.lifetime = 5.0f;
-	particleProperties.velocity = { 0.0f, 0.f };
-	particleProperties.velocityVariation = { -2.0f, 2.0f };
-	particleProperties.behaviorType = ParticleBehaviorType::Floating;
-
-	for (int i = 0; i < 10; i++)
-	{
-		particleSystem->emit(particleProperties);
-	}
 
 	// Trigger casting animation based on looking direction
 	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {

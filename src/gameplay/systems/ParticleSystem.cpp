@@ -2,6 +2,7 @@
 #include "../../utils/Random.h"
 #include "../components/MovementComponents.h" // For Position component
 #include <SFML/Graphics/VertexArray.hpp>
+#include "../components/EntityTags.h"
 
 ParticleSystem::ParticleSystem(entt::registry& registry)
     : registry(registry)
@@ -76,5 +77,19 @@ void ParticleSystem::update(float dt)
 		if (behaviorFunc) {
 			behaviorFunc(entity, particle, position, velocity, dt);
 		}
+	}
+	auto view1 = registry.view<Position, SpellTag>();
+	for (auto [entity, position] : view1.each()) {
+		ParticleProperties particleProperties;
+		particleProperties.position = position;
+		particleProperties.startColor = sf::Color::Red;
+		particleProperties.endColor = sf::Color::Yellow;
+		particleProperties.sizeEnd = 0.0f;
+		particleProperties.sizeStart = 1.0f;
+		particleProperties.lifetime = 1.0f;
+		particleProperties.velocity = { 0.0f, 0.f };
+		particleProperties.velocityVariation = { -25.0f, 25.0f };
+		particleProperties.behaviorType = ParticleBehaviorType::Floating;
+		emit(particleProperties);
 	}
 }

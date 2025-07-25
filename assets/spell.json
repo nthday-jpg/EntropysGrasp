@@ -3,12 +3,12 @@
     "stats": {
       "damage": 100,
       "manaCost": 1,
-      "castTime": 0.5,
-      "cooldowns": 10,
+      "castTime": 1,
+      "cooldowns": 1,
       "speed": 500,
-      "size": 3,
+      "size": 1,
       "duration": 100,
-      "radius": 50,
+      "radius": 1,
       "count": 10
     },
     "appearance": {

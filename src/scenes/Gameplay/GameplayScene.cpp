@@ -178,7 +178,7 @@ entt::entity GameplayScene::createPlayer() {
 	std::cout << "Creating player entity with ID: " << static_cast<unsigned int>(player) << std::endl;
     registry.emplace<PlayerTag>(player);
     registry.emplace<Position>(player, 0.0f, 0.0f);
-    registry.emplace<Speed>(player, 800.0f);
+    registry.emplace<Speed>(player, 200.0f);
 	registry.emplace<Health>(player, 100.0f, 100.0f);
     registry.emplace<Hitbox>(player, 50.0f, 50.0f, 0.0f, 0.0f);
     registry.emplace<MovementDirection>(player, 0.0f, 0.0f);

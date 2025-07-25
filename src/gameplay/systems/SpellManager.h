@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include "../../manager/SpellLibrary.h"
 #include "../components/MovementComponents.h"
+#include "../components/CollisionEvent.h"
 
 class SpellManager
 {
@@ -19,5 +20,7 @@ public:
     void updateCastingSystem(float dt);
     void updateCooldownSystem(float dt);
     void updateDurationSystem(float dt);
+	void handleSpellCollision(const SpellReduction& event);
     void update(float dt);
+	void sinkEvents();
 };
