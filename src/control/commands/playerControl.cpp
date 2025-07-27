@@ -90,9 +90,8 @@ void MoveRight::execute(entt::registry& registry)
 
 void CastSpell::execute(entt::registry& registry)
 {
-	
-	spellManager->castTimes[SpellID::Fireball] = SpellLibrary::getInstance().getSpell(SpellID::Fireball).castTime;
-
+	spellManager->castSpell(SpellID::Fireball);
+	std::cout << "cast" << std::endl;
 	// Trigger casting animation based on looking direction
 	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
 		Direction castDirection = Direction::Down; // Default

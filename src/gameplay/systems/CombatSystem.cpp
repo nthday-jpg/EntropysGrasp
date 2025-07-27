@@ -24,7 +24,7 @@ void CombatSystem::handleEvent(const CollisionEvent& event)
 		handleEnemySpellCollision(event.entity1, event.entity2);
 		applyDamage(event.entity1, event.entity2);
 		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-			(*dispatcher)->enqueue<SpellReduction>(event.entity2);
+			(*dispatcher)->enqueue<SpellReduction>(SpellReduction{ event.entity2 });
 		} else {
 			std::cerr << "Dispatcher not found in registry context." << std::endl;
 		}
@@ -56,9 +56,9 @@ void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity sp
 	EnemyHealth.current -= damage;
 
 	// Optionally trigger death animation using dispatcher
-	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-		// (*dispatcher)->enqueue<EnemyDeathEvent>(enemy);
-	}
+	//if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+	//	 (*dispatcher)->enqueue<EnemyDeathEvent>(enemy);
+	//}
 }
 
 void CombatSystem::applyDamage(entt::entity entityA, entt::entity entityB) 

@@ -156,6 +156,63 @@ void CollisionSystem::resolvePhysicalOverlap(const CollisionEvent& event)
 
 	if (!registry.all_of<Hitbox, Position, RepelResistance>(e1) || !registry.all_of<Hitbox, Position, RepelResistance>(e2))
 	{
+		if(!registry.all_of<Hitbox, Position, RepelResistance>(e1))
+		{
+			cerr << "Entity " << static_cast<uint32_t>(e1) << " is missing Hitbox, Position, or RepelResistance components." << endl;
+			cerr << "Entity " << static_cast<uint32_t>(e2) << " is missing Hitbox, Position, or RepelResistance components." << endl;
+			if (!registry.any_of<Hitbox>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << " has Hitbox component but is missing Position or RepelResistance." << endl;
+			}
+			if (!registry.any_of<Position>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << " has Position component but is missing Hitbox or RepelResistance." << endl;
+			}
+			if (!registry.any_of<RepelResistance>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << " has RepelResistance component but is missing Hitbox or Position." << endl;
+			}
+			if (!registry.any_of<SpellTag>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << " has SpellTag component, which is not a physical entity." << endl;
+			}
+			if (!registry.any_of<EnemyTag>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << " has EnemyTag component, which is not a physical entity." << endl;
+			}
+			if (registry.any_of<PlayerTag>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << " has PlayerTag component, which is not a physical entity." << endl;
+			}
+		}
+		if(!registry.all_of<Hitbox, Position, RepelResistance>(e2))
+		{
+			cerr << "Entity " << static_cast<uint32_t>(e2) << " is missing Hitbox, Position, or RepelResistance components." << endl;
+			if (!registry.any_of<Hitbox>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << " has Hitbox component but is missing Position or RepelResistance." << endl;
+			}
+			if (!registry.any_of<Position>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << " has Position component but is missing Hitbox or RepelResistance." << endl;
+			}
+			if (!registry.any_of<RepelResistance>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << " has RepelResistance component but is missing Hitbox or Position." << endl;
+			}
+			if (!registry.any_of<SpellTag>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << " has SpellTag component, which is not a physical entity." << endl;
+			}
+			if (!registry.any_of<EnemyTag>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << " has EnemyTag component, which is not a physical entity." << endl;
+			}
+			if (registry.any_of<PlayerTag>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << " has PlayerTag component, which is not a physical entity." << endl;
+			}
+		}
 		throw std::runtime_error("Both entities must have Hitbox, Position, and RepelResistance components to resolve overlap.");
 	}
 

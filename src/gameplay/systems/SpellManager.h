@@ -4,6 +4,7 @@
 #include "../../manager/SpellLibrary.h"
 #include "../components/MovementComponents.h"
 #include "../components/CollisionEvent.h"
+#include <iostream>
 
 class SpellManager
 {
@@ -21,6 +22,7 @@ public:
     void updateCooldownSystem(float dt);
     void updateDurationSystem(float dt);
 	void handleSpellCollision(const SpellReduction& event);
+    void castSpell(SpellID spellID);
     void update(float dt);
 	void sinkEvents();
 };

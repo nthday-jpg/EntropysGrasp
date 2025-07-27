@@ -23,11 +23,6 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	particleSystem(registry),
 	animationSystem(registry)
 {
-    // Store dispatcher in registry context for all systems to access
-    registry.ctx().emplace<entt::dispatcher*>(dispatcher);
-	combatSystem.sinkEvents();
-    animationSystem.sinkEvents();
-    collisionSystem.sinkEvents();
     
 	gameplayCommandManager = new GameplayCommandManager(registry);
 	entt::entity playerEntity = createPlayer();
@@ -51,6 +46,12 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
             30.0f
         )
 	);
+    // Store dispatcher in registry context for all systems to access
+    registry.ctx().emplace<entt::dispatcher*>(dispatcher);
+    collisionSystem.sinkEvents();
+	combatSystem.sinkEvents();
+	spellManager.sinkEvents();
+    animationSystem.sinkEvents();
     MapManager::getInstance().loadMap();
 }
 
@@ -122,10 +123,9 @@ void GameplayScene::update(float deltaTime) {
     // - etc.
 	collisionSystem.update(deltaTime);
     movementPipeline.update(deltaTime);
-    //combatSystem.update(deltaTime);
+    physicsSystem.updateVelocity(deltaTime);
     spellManager.update(deltaTime);
     enemyManager.update(deltaTime);
-    physicsSystem.updateVelocity(deltaTime);
 	particleSystem.update(deltaTime);
 	animationSystem.update(deltaTime);
 
@@ -183,7 +183,7 @@ entt::entity GameplayScene::createPlayer() {
     registry.emplace<Hitbox>(player, 50.0f, 50.0f, 0.0f, 0.0f);
     registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
     registry.emplace<LookingDirection>(player, 0.0f, 0.0f);
-    registry.emplace<Mana>(player, 100.0f);
+    registry.emplace<Mana>(player, 1000.0f);
     registry.emplace<RepelResistance>(player, 0.5f);
 
     TextureManager::getInstance().loadTexture("Mage-Sheet", "assets/texture/Mage-Sheet.png");

@@ -115,6 +115,10 @@ void SpellManager::updateCastingSystem(float dt)
                     ++it;
                 }
             }
+            else 
+            {
+                ++it; // Skip to the next spell if it's on cooldown
+			}
         }
     }
 }
@@ -157,7 +161,11 @@ void SpellManager::handleSpellCollision(const SpellReduction& event)
 {
     entt::entity spellEntity = event.spell;
 	durations[spellEntity] -= 10000.0f; // Reduce the duration of the spell by 0.5 seconds
+}
 
+void SpellManager::castSpell(SpellID spellID) 
+{
+    castTimes[spellID] = SpellLibrary::getInstance().getSpell(spellID).castTime;
 }
 
 void SpellManager::update(float dt) 
