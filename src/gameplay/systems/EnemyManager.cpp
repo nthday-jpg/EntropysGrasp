@@ -5,6 +5,7 @@
 #include "../components/EntityTags.h"
 #include "../components/Enemy.h"
 #include "../components/MovementComponents.h"
+#include "../components/lookingDirection.h"
 #include "../../scenes/Gameplay/Camera.h"
 #include "../../utils/Random.h"
 #include "../components/Hitbox.h"
@@ -39,7 +40,8 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
     registry.emplace<EnemyType>(entity, type);
 	registry.emplace<BehaviorType>(entity, BehaviorType::HomingPlayer);
 	registry.emplace<MovementDirection>(entity, 0.0f, 0.0f);
-	registry.emplace<Hitbox>(entity, 32.0f, 48.0f, 0.0f, 0.0f); // Assuming a default hitbox size
+	registry.emplace<LookingDirection>(entity, 0.0f, 0.0f);
+	registry.emplace<Hitbox>(entity, 50.0f, 50.0f, 0.0f, 0.0f); // Assuming a default hitbox size
 	std::cout << "spawn position: " << position.x << ", " << position.y << std::endl;
     return entity;
 }
@@ -84,6 +86,7 @@ void EnemyManager::removing()
             }
             // Reset position to a far away place
             registry.replace<Position>(entity, -1000.0f, -1000.0f);
+			registry.replace<Speed>(entity, 0.0f); // Reset speed to prevent movement
         }
     }
 }

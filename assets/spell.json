@@ -9,6 +9,8 @@
       "size": 1,
       "duration": 100,
       "radius": 1,
+      "effect": "Burn",
+      "behaviorType": "Orbit",
       "count": 10
     },
     "appearance": {

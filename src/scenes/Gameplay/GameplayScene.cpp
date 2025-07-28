@@ -24,6 +24,7 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	animationSystem(registry)
 {
     
+    MapManager::getInstance().loadMap();
 	gameplayCommandManager = new GameplayCommandManager(registry);
 	entt::entity playerEntity = createPlayer();
 
@@ -52,7 +53,6 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	combatSystem.sinkEvents();
 	spellManager.sinkEvents();
     animationSystem.sinkEvents();
-    MapManager::getInstance().loadMap();
 }
 
 GameplayScene::~GameplayScene() {
@@ -111,9 +111,6 @@ void GameplayScene::update(float deltaTime) {
     }
     
     // Process all queued events (including animation events)
-    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-        (*dispatcher)->update();
-    }
     
     // Update UI
     // Here you would typically run your game systems like:
@@ -128,6 +125,9 @@ void GameplayScene::update(float deltaTime) {
     enemyManager.update(deltaTime);
 	particleSystem.update(deltaTime);
 	animationSystem.update(deltaTime);
+    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+        (*dispatcher)->update();
+    }
 
     // Update camera
     camera.update(deltaTime);
@@ -175,12 +175,13 @@ void GameplayScene::exit()
 
 entt::entity GameplayScene::createPlayer() {
     auto player = registry.create();
-	std::cout << "Creating player entity with ID: " << static_cast<unsigned int>(player) << std::endl;
+    std::cout << "Creating player entity with ID: " << static_cast<unsigned int>(player) << std::endl;
     registry.emplace<PlayerTag>(player);
-    registry.emplace<Position>(player, 0.0f, 0.0f);
+    registry.emplace<Position>(player, 10.0f, 10.0f);
     registry.emplace<Speed>(player, 200.0f);
-	registry.emplace<Health>(player, 100.0f, 100.0f);
-    registry.emplace<Hitbox>(player, 50.0f, 50.0f, 0.0f, 0.0f);
+    registry.emplace<Health>(player, 10000.0f, 10000.0f);
+    registry.emplace<Attack>(player, 100.0f);
+    registry.emplace<Hitbox>(player, Hitbox{50.0f, 50.0f, 0.0f, 0.0f}); // Assuming a rectangle hitbox for the player
     registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
     registry.emplace<LookingDirection>(player, 0.0f, 0.0f);
     registry.emplace<Mana>(player, 1000.0f);
