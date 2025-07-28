@@ -121,10 +121,10 @@ void GameplayScene::update(float deltaTime) {
     // - Collision system
     // - Rendering system
     // - etc.
-	collisionSystem.update(deltaTime);
+    spellManager.update(deltaTime);
+    collisionSystem.update(deltaTime);
     movementPipeline.update(deltaTime);
     physicsSystem.updateVelocity(deltaTime);
-    spellManager.update(deltaTime);
     enemyManager.update(deltaTime);
 	particleSystem.update(deltaTime);
 	animationSystem.update(deltaTime);

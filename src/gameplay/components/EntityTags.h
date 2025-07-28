@@ -19,6 +19,7 @@ struct SpellTag
 {
 };
 
-struct InactiveEnemyTag 
+struct Inactive
 {
+	
 };

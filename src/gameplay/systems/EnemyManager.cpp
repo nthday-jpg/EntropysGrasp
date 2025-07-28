@@ -17,10 +17,10 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
     float speed = data.speed.value * (1.0f + gameClock.getElapsedTime().asSeconds() * 0.005f);
     float attack = data.attack.value * (1.0f + gameClock.getElapsedTime().asSeconds() * 0.005f);
 
-    auto view = registry.view<InactiveEnemyTag>();
+    auto view = registry.view<Inactive>();
     for (auto entity : view)
     {
-        registry.remove<InactiveEnemyTag>(entity);
+        registry.remove<Inactive>(entity);
         registry.emplace_or_replace<EnemyType>(entity, type);
         registry.replace<Position>(entity, position.x, position.y);
         registry.replace<Health>(entity, health, health);
@@ -79,9 +79,7 @@ void EnemyManager::removing()
         }
         if (health->current <= 0 || !isInLoadChunk(registry.get<Position>(entity)))
         {
-            if (!registry.all_of<InactiveEnemyTag>(entity)) {
-                registry.emplace<InactiveEnemyTag>(entity);
-            }
+			registry.emplace_or_replace<Inactive>(entity);
             // Reset position to a far away place
             registry.replace<Position>(entity, -1000.0f, -1000.0f);
         }
