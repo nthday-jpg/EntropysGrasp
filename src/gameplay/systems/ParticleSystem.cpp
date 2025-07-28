@@ -2,7 +2,12 @@
 #include "../../utils/Random.h"
 #include "../components/MovementComponents.h" // For Position component
 #include <SFML/Graphics/VertexArray.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Time.hpp>
 #include "../components/EntityTags.h"
+#include <iostream>
+
+sf::Clock mysteriousClock;
 
 ParticleSystem::ParticleSystem(entt::registry& registry)
     : registry(registry)
@@ -78,6 +83,14 @@ void ParticleSystem::update(float dt)
 			behaviorFunc(entity, particle, position, velocity, dt);
 		}
 	}
+
+	float time = mysteriousClock.getElapsedTime().asSeconds();
+	if (time < 0.3f) {
+		return; // Avoid too frequent updates
+	}
+	mysteriousClock.restart();
+	std::cout << "ParticleSystem update called at time: " << time << " seconds" << std::endl;
+
 	auto view1 = registry.view<Position, SpellTag>();
 	for (auto [entity, position] : view1.each()) {
 		ParticleProperties particleProperties;
