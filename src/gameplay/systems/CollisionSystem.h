@@ -23,7 +23,7 @@ public:
 
 private:
     void detectCollisions();
-    void resolvePhysicalOverlap(entt::entity e1, entt::entity e2);
+    void resolvePhysicalOverlap(const CollisionEvent& event);
     bool isIntersect(entt::entity e1, entt::entity e2) const;
     CollisionType getCollisionType(entt::entity e) const;
     void resolveRR(entt::entity e1, entt::entity e2);

@@ -23,7 +23,7 @@ void CollisionSystem::sinkEvents()
 {
 	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
 	{
-		(*dispatcher)->sink<CollisionEvent>().connect<&CollisionSystem::detectCollisions>(*this);
+		(*dispatcher)->sink<CollisionEvent>().connect<&CollisionSystem::resolvePhysicalOverlap>(*this);
 	}
 }
 
@@ -131,20 +131,23 @@ void CollisionSystem::detectCollisions()
 				if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
 					(*dispatcher)->enqueue<CollisionEvent>(CollisionEvent{ entity, otherEntity, type1, type2 });
 				}
-				
-				if (isSolid(type1, type2))
-				{
-					resolvePhysicalOverlap(entity, otherEntity);
-				}
 			}
 		}
 	}
 }
 
-void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
+void CollisionSystem::resolvePhysicalOverlap(const CollisionEvent& event)
 {
-	auto type1 = getCollisionType(e1);
-	auto type2 = getCollisionType(e2);
+	entt::entity e1 = event.entity1;
+	entt::entity e2 = event.entity2;
+	CollisionType type1 = event.type1;
+	CollisionType type2 = event.type2;
+	
+	if (!registry.valid(e1) || !registry.valid(e2))
+	{
+		cerr << "Invalid entities in collision event." << endl;
+		return; // Cannot resolve overlap if either entity is invalid
+	}
 
 	if (type1 == CollisionType::None || type2 == CollisionType::None)
 	{
@@ -152,8 +155,70 @@ void CollisionSystem::resolvePhysicalOverlap(entt::entity e1, entt::entity e2)
 		return; // Cannot resolve overlap if one of the entities has no collision type
 	}
 
+	if (type1 == CollisionType::Spell && type1 == type2)
+	{ 
+		return; // Do not resolve overlap for spells, they are not physical entities
+	}
+
 	if (!registry.all_of<Hitbox, Position, RepelResistance>(e1) || !registry.all_of<Hitbox, Position, RepelResistance>(e2))
 	{
+		if(!registry.all_of<Hitbox, Position, RepelResistance>(e1))
+		{
+			cerr << "Entity " << static_cast<uint32_t>(e1) << " is missing Hitbox, Position, or RepelResistance components." << endl;
+			cerr << "Entity " << static_cast<uint32_t>(e2) << " is missing Hitbox, Position, or RepelResistance components." << endl;
+			if (!registry.any_of<Hitbox>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << "dont has Hitbox component but is missing Position or RepelResistance." << endl;
+			}
+			if (!registry.any_of<Position>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << "dont has Position component but is missing Hitbox or RepelResistance." << endl;
+			}
+			if (!registry.any_of<RepelResistance>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << " dont has RepelResistance component but is missing Hitbox or Position." << endl;
+			}
+			if (registry.any_of<SpellTag>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << " has SpellTag component, which is not a physical entity." << endl;
+			}
+			if (registry.any_of<EnemyTag>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << " has EnemyTag component, which is not a physical entity." << endl;
+			}
+			if (registry.any_of<PlayerTag>(e1))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e1) << " has PlayerTag component, which is not a physical entity." << endl;
+			}
+		}
+		if(!registry.all_of<Hitbox, Position, RepelResistance>(e2))
+		{
+			cerr << "Entity " << static_cast<uint32_t>(e2) << " is missing Hitbox, Position, or RepelResistance components." << endl;
+			if (!registry.any_of<Hitbox>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << "dont has Hitbox component but is missing Position or RepelResistance." << endl;
+			}
+			if (!registry.any_of<Position>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << "dont has Position component but is missing Hitbox or RepelResistance." << endl;
+			}
+			if (!registry.any_of<RepelResistance>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << "dont has RepelResistance component but is missing Hitbox or Position." << endl;
+			}
+			if (registry.any_of<SpellTag>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << " has SpellTag component, which is not a physical entity." << endl;
+			}
+			if (registry.any_of<EnemyTag>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << " has EnemyTag component, which is not a physical entity." << endl;
+			}
+			if (registry.any_of<PlayerTag>(e2))
+			{
+				cerr << "Entity " << static_cast<uint32_t>(e2) << " has PlayerTag component, which is not a physical entity." << endl;
+			}
+		}
 		throw std::runtime_error("Both entities must have Hitbox, Position, and RepelResistance components to resolve overlap.");
 	}
 
@@ -188,7 +253,6 @@ void CollisionSystem::resolveRR(entt::entity e1, entt::entity e2)
 
 	if (hitbox.type != HitboxType::Rectangle || otherHitbox.type != HitboxType::Rectangle)
 	{
-		cerr << "Currently only rectangle hitboxes are supported for resolving overlap." << endl;
 		return;
 	};
 
@@ -217,7 +281,6 @@ void CollisionSystem::resolveRR(entt::entity e1, entt::entity e2)
 
 	if (overlapX < 0 || overlapY < 0)
 	{
-		cerr << "No overlap detected, cannot resolve." << endl;
 		return; // No overlap to resolve
 	}
 
@@ -306,6 +369,12 @@ void CollisionSystem::resolveCC(entt::entity e1, entt::entity e2)
 
 CollisionType CollisionSystem::getCollisionType(entt::entity e) const
 {
+	if (!registry.valid(e))
+	{
+		std::cerr << "Invalid entity in getCollisionType." << std::endl;
+		return CollisionType::None; // Return None if entity is invalid
+	}
+
 	if (registry.all_of<PlayerTag>(e))
 	{
 		return CollisionType::Player;

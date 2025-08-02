@@ -2,6 +2,12 @@
 #include "../../utils/Random.h"
 #include "../components/MovementComponents.h" // For Position component
 #include <SFML/Graphics/VertexArray.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Time.hpp>
+#include "../components/EntityTags.h"
+#include <iostream>
+
+sf::Clock mysteriousClock;
 
 ParticleSystem::ParticleSystem(entt::registry& registry)
     : registry(registry)
@@ -76,5 +82,27 @@ void ParticleSystem::update(float dt)
 		if (behaviorFunc) {
 			behaviorFunc(entity, particle, position, velocity, dt);
 		}
+	}
+
+	float time = mysteriousClock.getElapsedTime().asSeconds();
+	if (time < 0.3f) {
+		return; // Avoid too frequent updates
+	}
+	mysteriousClock.restart();
+	std::cout << "ParticleSystem update called at time: " << time << " seconds" << std::endl;
+
+	auto view1 = registry.view<Position, SpellTag>();
+	for (auto [entity, position] : view1.each()) {
+		ParticleProperties particleProperties;
+		particleProperties.position = position;
+		particleProperties.startColor = sf::Color::Red;
+		particleProperties.endColor = sf::Color::Yellow;
+		particleProperties.sizeEnd = 0.0f;
+		particleProperties.sizeStart = 1.0f;
+		particleProperties.lifetime = 1.0f;
+		particleProperties.velocity = { 0.0f, 0.f };
+		particleProperties.velocityVariation = { -25.0f, 25.0f };
+		particleProperties.behaviorType = ParticleBehaviorType::Floating;
+		emit(particleProperties);
 	}
 }

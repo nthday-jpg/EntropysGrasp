@@ -30,7 +30,9 @@ private:
 	std::unordered_map<EnemyType, float> spawnTimer;
 
 	// const MapManager to query spawn information
-	const std::vector<EnemySpawnInfo> spawnInfos;
+	const std::vector<EnemySpawnInfo> spawnInfos = {
+		EnemySpawnInfo{EnemyType::Goblin, {Position(100, 100), Position(200, 200)}, 5.0f}
+	};
 
 	// Handle spawning of enemies based on spawn information and time delta
 	// Check the conditions for spawning enemies

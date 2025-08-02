@@ -22,8 +22,16 @@ void Game::run()
 {
 	while (windowManager->isOpen())
 	{
+		float frameTime = clock.restart().asSeconds();
+		if (frameTime > 0.05f) 
+			frameTime = 0.05f; // giới hạn khi lag nặng
+		accumulator += frameTime;
 		processEvents();
-		update(deltaTime);
+		while (accumulator >= deltaTime)
+		{
+			accumulator -= deltaTime;
+			update(frameTime);
+		}
 		render();
 	}
 }

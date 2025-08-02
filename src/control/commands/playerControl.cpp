@@ -15,6 +15,7 @@
 #include "../../gameplay/systems/AnimationSystem.h"
 
 #include "../../utils/VectorMath.h"
+#include "../../utils/Random.h"
 
 
 const MovementDirection down = MovementDirection(0, 1);
@@ -32,11 +33,11 @@ Direction getDirectionFromLooking(const LookingDirection& lookingDir) {
 
 // Helper function to check if player is currently moving
 bool isPlayerMoving(entt::registry& registry, entt::entity playerEntity) {
-    if (registry.all_of<MovementDirection>(playerEntity)) {
-        const MovementDirection& moveDir = registry.get<MovementDirection>(playerEntity);
-        return (std::abs(moveDir.x) > 0.01f || std::abs(moveDir.y) > 0.01f);
-    }
-    return false;
+	if (registry.all_of<MovementDirection>(playerEntity)) {
+		const MovementDirection& moveDir = registry.get<MovementDirection>(playerEntity);
+		return (std::abs(moveDir.x) > 0.01f || std::abs(moveDir.y) > 0.01f);
+	}
+	return false;
 }
 
 void MoveDown::execute(entt::registry& registry)
@@ -89,21 +90,8 @@ void MoveRight::execute(entt::registry& registry)
 
 void CastSpell::execute(entt::registry& registry)
 {
-	ParticleProperties particleProperties;
-	particleProperties.startColor = sf::Color::Red;
-	particleProperties.endColor = sf::Color::Yellow;
-	particleProperties.sizeEnd = 0.0f;
-	particleProperties.sizeStart = 5.0f;
-	particleProperties.lifetime = 5.0f;
-	particleProperties.velocity = { 0.0f, 0.f };
-	particleProperties.velocityVariation = { -2.0f, 2.0f };
-	particleProperties.behaviorType = ParticleBehaviorType::Floating;
-
-	for (int i = 0; i < 10; i++)
-	{
-		particleSystem->emit(particleProperties);
-	}
-	
+	spellManager->castSpell(SpellID::Fireball);
+	std::cout << "cast" << std::endl;
 	// Trigger casting animation based on looking direction
 	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
 		Direction castDirection = Direction::Down; // Default
@@ -111,7 +99,7 @@ void CastSpell::execute(entt::registry& registry)
 			LookingDirection& lookDir = registry.get<LookingDirection>(playerEntity);
 			castDirection = getDirectionFromLooking(lookDir);
 		}
-		
+
 		(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Attacking, castDirection });
 	}
 }
@@ -125,7 +113,7 @@ void Dash::execute(entt::registry& registry)
 			LookingDirection& lookDir = registry.get<LookingDirection>(playerEntity);
 			dashDirection = getDirectionFromLooking(lookDir);
 		}
-		
+
 		(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Dashing, dashDirection });
 	}
 }
@@ -203,8 +191,8 @@ void LookAtMouse::execute(entt::registry& registry)
 		{
 			(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Walking, newDirection });
 
-			registry.emplace_or_replace<LookingDirection>(playerEntity, lookingDirection);
-			registry.emplace_or_replace<Direction>(playerEntity, newDirection);
 		}
 	}
+	registry.emplace_or_replace<LookingDirection>(playerEntity, lookingDirection);
+	registry.emplace_or_replace<Direction>(playerEntity, newDirection);
 }

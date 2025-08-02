@@ -1,11 +1,13 @@
 #include <SFML/System/Time.hpp>
 #include <random>           
+#include <iostream>
 #include "../systems/EnemyManager.h"
 #include "../components/EntityTags.h"
 #include "../components/Enemy.h"
 #include "../components/MovementComponents.h"
 #include "../../scenes/Gameplay/Camera.h"
 #include "../../utils/Random.h"
+#include "../components/Hitbox.h"
 
 entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 {
@@ -15,10 +17,10 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
     float speed = data.speed.value * (1.0f + gameClock.getElapsedTime().asSeconds() * 0.005f);
     float attack = data.attack.value * (1.0f + gameClock.getElapsedTime().asSeconds() * 0.005f);
 
-    auto view = registry.view<InactiveEnemyTag>();
+    auto view = registry.view<Inactive>();
     for (auto entity : view)
     {
-        registry.remove<InactiveEnemyTag>(entity);
+        registry.remove<Inactive>(entity);
         registry.emplace_or_replace<EnemyType>(entity, type);
         registry.replace<Position>(entity, position.x, position.y);
         registry.replace<Health>(entity, health, health);
@@ -35,6 +37,10 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
     registry.emplace<Attack>(entity, attack);
     registry.emplace<RepelResistance>(entity, data.resistance);
     registry.emplace<EnemyType>(entity, type);
+	registry.emplace<BehaviorType>(entity, BehaviorType::HomingPlayer);
+	registry.emplace<MovementDirection>(entity, 0.0f, 0.0f);
+	registry.emplace<Hitbox>(entity, 32.0f, 48.0f, 0.0f, 0.0f); // Assuming a default hitbox size
+	std::cout << "spawn position: " << position.x << ", " << position.y << std::endl;
     return entity;
 }
 
@@ -51,7 +57,7 @@ void EnemyManager::spawning(float dt)
                 if (isInLoadChunk(position))
                 {
                     Position randomPosition = randomizeOffScreenPosition(position);
-                    spawnEnemy(info.type, randomPosition);
+					std::cout << (int)spawnEnemy(info.type, randomPosition) << std::endl;
                 }
             }
             timer = 0.0f; // Reset timer after spawning all positions for this type
@@ -73,9 +79,7 @@ void EnemyManager::removing()
         }
         if (health->current <= 0 || !isInLoadChunk(registry.get<Position>(entity)))
         {
-            if (!registry.all_of<InactiveEnemyTag>(entity)) {
-                registry.emplace<InactiveEnemyTag>(entity);
-            }
+			registry.emplace_or_replace<Inactive>(entity);
             // Reset position to a far away place
             registry.replace<Position>(entity, -1000.0f, -1000.0f);
         }

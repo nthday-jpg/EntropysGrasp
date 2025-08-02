@@ -36,6 +36,7 @@ private:
 
 	entt::dispatcher dispatcher;
 
+	float accumulator = 0.0f;
 	sf::Clock clock;
 
 	void processEvents();

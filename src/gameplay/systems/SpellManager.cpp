@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include "../components/CollisionEvent.h"
 
 using namespace std;
 
@@ -32,7 +33,7 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
 
         registry.emplace<SpellTag>(spellEntity);
         registry.emplace<SpellID>(spellEntity, spellID); // Pass spellID directly without creating a temporary object
-        registry.emplace<Position>(spellEntity, position);
+        registry.emplace<Position>(spellEntity, position.x + Random::getFloat(-50.0f, 50.0f), position.y + Random::getFloat(-50.0f, 50.0f));
         registry.emplace<Attack>(spellEntity, spellData.damage);
         registry.emplace<Mana>(spellEntity, spellData.manaCost);
         registry.emplace<Speed>(spellEntity, spellData.speed);
@@ -104,7 +105,7 @@ void SpellManager::updateCastingSystem(float dt)
                     vector<entt::entity> spell = createSpell(player, it->first);
                     for (size_t i = 0; i < spell.size(); ++i)
                     {
-                        durations[spell[i]] = spellData.duration + Random::getFloat(-0.3f, 0.3f); // Set the duration for the spell
+                        durations[spell[i]] = spellData.duration + Random::getFloat(-0.5f, 0.5f); // Set the duration for the spell
                     }
                     cooldowns[it->first] = spellData.cooldowns; // Set the cooldown for the spell
                     it = castTimes.erase(it);
@@ -114,6 +115,10 @@ void SpellManager::updateCastingSystem(float dt)
                     ++it;
                 }
             }
+            else 
+            {
+                ++it; // Skip to the next spell if it's on cooldown
+			}
         }
     }
 }
@@ -152,9 +157,34 @@ void SpellManager::updateDurationSystem(float dt)
     }
 }
 
+void SpellManager::handleSpellCollision(const SpellReduction& event)
+{
+    entt::entity spellEntity = event.spell;
+	durations[spellEntity] -= 10000.0f; // Reduce the duration of the spell by 0.5 seconds
+}
+
+void SpellManager::castSpell(SpellID spellID) 
+{
+    castTimes[spellID] = SpellLibrary::getInstance().getSpell(spellID).castTime;
+}
+
 void SpellManager::update(float dt) 
 {
     updateCastingSystem(dt);
     updateCooldownSystem(dt);
     updateDurationSystem(dt);
+}
+
+void SpellManager::sinkEvents() 
+{
+    // Access dispatcher from registry context and connect to events
+    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
+    {
+        (*dispatcher)->sink<SpellReduction>().connect<&SpellManager::handleSpellCollision>(*this);
+    }
+    else
+    {
+        std::cerr << "Dispatcher not found in registry context!" << std::endl;
+        assert(false); // Handle error appropriately
+    }
 }

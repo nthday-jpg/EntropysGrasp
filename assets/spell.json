@@ -1,23 +1,23 @@
 {
   "Fireball": {
-    "stat": {
+    "stats": {
       "damage": 100,
-      "manaCost": 50,
-      "castTime": 2,
-      "cooldowns": 10,
-      "speed": 5,
-      "size": 5,
-      "duration": 10,
-      "rasius": 4,
-      "count": 1
+      "manaCost": 1,
+      "castTime": 1,
+      "cooldowns": 1,
+      "speed": 500,
+      "size": 1,
+      "duration": 100,
+      "radius": 1,
+      "count": 10
     },
     "appearance": {
       "color": "red",
       "size": "medium"
     }
   },
-  "Ice Shard": {
-    "stat": {
+  "IceSpike": {
+    "stats": {
       "damage": 80,
       "manaCost": 40,
       "castTime": 1.5,
@@ -25,7 +25,7 @@
       "speed": 6,
       "size": 3,
       "duration": 8,
-      "rasius": 3,
+      "radius": 3,
       "count": 1
     },
     "appearance": {
@@ -33,4 +33,4 @@
       "size": "small"
     }
   }
- }
+}

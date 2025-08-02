@@ -23,14 +23,10 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	particleSystem(registry),
 	animationSystem(registry)
 {
-    // Store dispatcher in registry context for all systems to access
-    registry.ctx().emplace<entt::dispatcher*>(dispatcher);
-	combatSystem.sinkEvents();
-    animationSystem.sinkEvents();
-    collisionSystem.sinkEvents();
     
 	gameplayCommandManager = new GameplayCommandManager(registry);
 	entt::entity playerEntity = createPlayer();
+
     inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
 	camera.followEntity(playerEntity);
 
@@ -50,6 +46,13 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
             30.0f
         )
 	);
+    // Store dispatcher in registry context for all systems to access
+    registry.ctx().emplace<entt::dispatcher*>(dispatcher);
+    collisionSystem.sinkEvents();
+	combatSystem.sinkEvents();
+	spellManager.sinkEvents();
+    animationSystem.sinkEvents();
+    MapManager::getInstance().loadMap();
 }
 
 GameplayScene::~GameplayScene() {
@@ -107,12 +110,9 @@ void GameplayScene::update(float deltaTime) {
         gameplayCommandManager->executeCommands();
     }
     
-    int i = 0;
     // Process all queued events (including animation events)
     if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
         (*dispatcher)->update();
-        i++;
-		std::cout << "Processed " << i << " events in GameplayScene." << std::endl;
     }
     
     // Update UI
@@ -121,12 +121,11 @@ void GameplayScene::update(float deltaTime) {
     // - Collision system
     // - Rendering system
     // - etc.
-	collisionSystem.update(deltaTime);
-    movementPipeline.update(deltaTime);
-    //combatSystem.update(deltaTime);
     spellManager.update(deltaTime);
-    enemyManager.update(deltaTime);
+    collisionSystem.update(deltaTime);
+    movementPipeline.update(deltaTime);
     physicsSystem.updateVelocity(deltaTime);
+    enemyManager.update(deltaTime);
 	particleSystem.update(deltaTime);
 	animationSystem.update(deltaTime);
 
@@ -176,13 +175,15 @@ void GameplayScene::exit()
 
 entt::entity GameplayScene::createPlayer() {
     auto player = registry.create();
+	std::cout << "Creating player entity with ID: " << static_cast<unsigned int>(player) << std::endl;
     registry.emplace<PlayerTag>(player);
     registry.emplace<Position>(player, 0.0f, 0.0f);
-    registry.emplace<Speed>(player, 800.0f);
+    registry.emplace<Speed>(player, 200.0f);
+	registry.emplace<Health>(player, 100.0f, 100.0f);
     registry.emplace<Hitbox>(player, 50.0f, 50.0f, 0.0f, 0.0f);
     registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
     registry.emplace<LookingDirection>(player, 0.0f, 0.0f);
-    registry.emplace<Mana>(player, 100.0f);
+    registry.emplace<Mana>(player, 1000.0f);
     registry.emplace<RepelResistance>(player, 0.5f);
 
     TextureManager::getInstance().loadTexture("Mage-Sheet", "assets/texture/Mage-Sheet.png");

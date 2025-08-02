@@ -13,6 +13,7 @@
 #include "Camera.h"
 #include "../../gameplay/systems/ParticleSystem.h"
 #include <entt/entity/registry.hpp>
+#include "../../gameplay/manager/MapManager.h"
 
 class GameplayScene : public Scene {
 private:
