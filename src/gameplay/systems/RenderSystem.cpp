@@ -79,13 +79,10 @@ void RenderSystem::render() {
 }
 
 void RenderSystem::renderParticles() {
-    auto view = registry.view<ParticleComponent, Position>();
+    auto view = registry.view<ParticleComponent, Position>(entt::exclude<Inactive>);
 	// Use vertex array for efficient rendering
-    for (auto [entity, particle, position] : view.each()) {
-
-        if (registry.any_of<InactiveParticle>(entity)) {
-            continue;
-        }
+    for (auto [entity, particle, position] : view.each()) 
+    {
 
         sf::VertexArray* particleArray;
         if (auto* existing = registry.try_get<sf::VertexArray>(entity)) {
