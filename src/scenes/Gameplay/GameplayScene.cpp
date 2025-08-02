@@ -17,7 +17,7 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
     combatSystem(registry),
     spellManager(registry),
 	camera(&registry),
-	enemyManager(registry, camera.getView(), gameClock),
+	enemyManager(registry, camera, gameClock),
 	physicsSystem(registry),
     renderSystem(registry), 
 	particleSystem(registry),
