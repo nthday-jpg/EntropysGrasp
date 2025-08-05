@@ -39,7 +39,7 @@ void RewardSystem::increaseGold(int amount)
 	totalGold += amount;
 }
 
-void RewardSystem::giveMana(entt::entity target, int amount)
+void RewardSystem::giveMana(entt::entity target, float amount)
 {
 	if (registry.valid(target))
 	{
