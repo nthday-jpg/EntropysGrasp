@@ -2,16 +2,16 @@
   "Fireball": {
     "stats": {
       "damage": 100,
-      "manaCost": 1,
-      "castTime": 1,
-      "cooldowns": 1,
+      "manaCost": 0.1,
+      "castTime": 0,
+      "cooldowns": 0.5,
       "speed": 500,
       "size": 1,
       "duration": 100,
       "radius": 1,
       "effect": "Burn",
-      "behaviorType": "Orbit",
-      "count": 10
+      "behaviorType": "Straight",
+      "count": 1
     },
     "appearance": {
       "color": "red",

@@ -107,7 +107,7 @@ void CollisionSystem::detectCollisions()
 	auto view = registry.view<Position, Hitbox>();
 	for (auto [entity, position, hitbox] : view.each())
 	{
-		if (registry.any_of<InactiveEnemyTag>(entity))
+		if (registry.any_of<Inactive>(entity))
 		{
 			continue;
 		}

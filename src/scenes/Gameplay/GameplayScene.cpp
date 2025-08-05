@@ -25,6 +25,7 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 {
     
     MapManager::getInstance().loadMap();
+	TextureManager::getInstance().loadFromAssetFile();
 	gameplayCommandManager = new GameplayCommandManager(registry);
 	entt::entity playerEntity = createPlayer();
 
@@ -175,7 +176,6 @@ void GameplayScene::exit()
 
 entt::entity GameplayScene::createPlayer() {
     auto player = registry.create();
-    std::cout << "Creating player entity with ID: " << static_cast<unsigned int>(player) << std::endl;
     registry.emplace<PlayerTag>(player);
     registry.emplace<Position>(player, 10.0f, 10.0f);
     registry.emplace<Speed>(player, 200.0f);
@@ -187,11 +187,7 @@ entt::entity GameplayScene::createPlayer() {
     registry.emplace<Mana>(player, 1000.0f);
     registry.emplace<RepelResistance>(player, 0.5f);
 
-    TextureManager::getInstance().loadTexture("Mage-Sheet", "assets/texture/Mage-Sheet.png");
-
-    sf::Texture* mageTexture = TextureManager::getInstance().getTexture("Mage-Sheet");
-
-    AnimationManager::getInstance().loadAnimationData("Mage", "assets/texture/Mage-Sheet.png", mageTexture);
+    sf::Texture* mageTexture = TextureManager::getInstance().getTexture("Mage");
 
     AnimationComponent animComp;
     animComp.name = "Mage";

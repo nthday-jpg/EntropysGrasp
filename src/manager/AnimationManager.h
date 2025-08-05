@@ -14,9 +14,12 @@ private:
 public:
 	std::unordered_map<std::string, AnimationData> animationDatabase;
 
-	AnimationManager() = default;
+	AnimationManager();
 	static AnimationManager& getInstance();
-	void loadAnimationData(const std::string& name, const std::string& spritePath, sf::Texture* texture);
+	void loadAnimationData();
 	AnimationData* getAnimationData(const std::string& name);
-	AnimationData loadMageAnimations(const std::string& spritePath, sf::Texture& textureOut);
+	AnimationData loadMageAnimations();
+	AnimationData loadOrcAnimations(int a);
+	AnimationData loadSlimeAnimations(int a);
+	AnimationData loadSpellAnimations();
 };

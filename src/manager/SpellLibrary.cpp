@@ -60,7 +60,7 @@ bool SpellLibrary::loadSpells()
 			data.radius = stats.value("radius", 1.0f);
 			string effectStr = stats.value("effect", "None");
 			data.effect = stringToSpellEffect(effectStr);
-			string behaviorStr = stats.value("behaviorType", "Orbit");
+			string behaviorStr = stats.value("behaviorType", "Straight");
 			data.behaviorType = stringToBehaviorType(behaviorStr);
 			data.count = stats.value("count", 1);
 
