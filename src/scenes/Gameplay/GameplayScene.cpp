@@ -21,7 +21,8 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	physicsSystem(registry),
     renderSystem(registry), 
 	particleSystem(registry),
-	animationSystem(registry)
+	animationSystem(registry),
+	rewardSystem(registry)
 {
     
 	gameplayCommandManager = new GameplayCommandManager(registry);
@@ -51,7 +52,10 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
     collisionSystem.sinkEvents();
 	combatSystem.sinkEvents();
 	spellManager.sinkEvents();
+	enemyManager.sinkEvents();
     animationSystem.sinkEvents();
+    rewardSystem.sinkEvents();
+    
     MapManager::getInstance().loadMap();
 }
 

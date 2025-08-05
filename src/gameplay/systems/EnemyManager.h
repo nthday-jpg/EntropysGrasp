@@ -6,6 +6,9 @@
 #include "../components/MovementComponents.h"
 #include "../components/EnemySpawnInfo.h"
 #include "../../scenes/Gameplay/Camera.h"
+#include "../components/statComponent.h"
+#include "../components/Reward.h"
+
 
 // This file defines the EnemyManager class which handles enemy spawning, updating,
 // and removing in the game. 
@@ -20,6 +23,8 @@ class EnemyManager
 public:
 	EnemyManager(entt::registry& registry, const Camera& camera, sf::Clock& gameClock);
 	void update(float dt);
+	void sinkEvents();
+
 private:
 	entt::registry& registry;
 	const EnemyLibrary& enemyLibrary = EnemyLibrary::getInstance();
@@ -55,4 +60,8 @@ private:
 	Position randomizeOffScreenPosition(const Position& position) const;
 
 	bool isPositionInScreen(const Position& position) const;
+
+	int getBaseExp(EnemyType type);
+	int getBaseGold(EnemyType type);
+	Mana getBaseMana(EnemyType type);
 };

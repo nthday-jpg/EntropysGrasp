@@ -68,7 +68,7 @@ void EnemyManager::spawning(float dt)
 
 void EnemyManager::removing()
 {
-    auto view = registry.view<EnemyTag>();
+    auto view = registry.view<EnemyTag>(entt::exclude<Inactive>);
     for (auto entity : view) {
         auto health = registry.try_get<Health>(entity);
 		auto position = registry.try_get<Position>(entity);
@@ -77,11 +77,26 @@ void EnemyManager::removing()
         {
             continue;
         }
-        if (health->current <= 0 || !isInLoadChunk(*position))
+        if (health->current <= 0)
         {
 			registry.emplace_or_replace<Inactive>(entity);
             // Reset position to a far away place
             registry.replace<Position>(entity, -1000.0f, -1000.0f);
+            if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
+            {
+
+				// Assuming there is only one player entity
+				auto playerView = registry.view<PlayerTag>();
+                entt::entity playerEntity = playerView.front();
+
+                EnemyType enemyType = registry.get<EnemyType>(entity);
+                Reward gold = { RewardType::Gold, static_cast<float>(getBaseGold(enemyType)), entt::null };
+				Reward exp = { RewardType::Experience, static_cast<float>(getBaseExp(enemyType)), entt::null };
+				Reward mana = { RewardType::Mana, getBaseMana(enemyType).value, playerEntity };
+                (*dispatcher)->enqueue<Reward>(gold);
+                (*dispatcher)->enqueue<Reward>(exp);
+                (*dispatcher)->enqueue<Reward>(mana);
+            }
         }
     }
 }
@@ -176,4 +191,27 @@ bool EnemyManager::isPositionInScreen(const Position& position) const
 
     return (position.x >= centerX - halfWidth && position.x <= centerX + halfWidth &&
         position.y >= centerY - halfHeight && position.y <= centerY + halfHeight);
+}
+
+void EnemyManager::sinkEvents()
+{
+
+}
+
+int EnemyManager::getBaseExp(EnemyType type)
+{
+    const EnemyData& data = enemyLibrary.getEnemyData(type);
+    return data.exp;
+}
+
+int EnemyManager::getBaseGold(EnemyType type)
+{
+    const EnemyData& data = enemyLibrary.getEnemyData(type);
+    return data.gold;
+}
+
+Mana EnemyManager::getBaseMana(EnemyType type)
+{
+    const EnemyData& data = enemyLibrary.getEnemyData(type);
+    return data.mana;
 }

@@ -40,6 +40,7 @@
     <ClInclude Include="src\gameplay\components\LookingDirection.h" />
     <ClInclude Include="src\gameplay\components\MovementComponents.h" />
     <ClInclude Include="src\gameplay\components\Particle.h" />
+    <ClInclude Include="src\gameplay\components\Reward.h" />
     <ClInclude Include="src\gameplay\components\Spell.h" />
     <ClInclude Include="src\gameplay\components\StatComponent.h" />
     <ClInclude Include="src\gameplay\components\Tile.h" />
@@ -59,6 +60,7 @@
     <ClInclude Include="src\gameplay\systems\PlayerVelocitySystem.h" />
     <ClInclude Include="src\gameplay\systems\PositionIntegrator.h" />
     <ClInclude Include="src\gameplay\systems\RenderSystem.h" />
+    <ClInclude Include="src\gameplay\systems\RewardSystem.h" />
     <ClInclude Include="src\gameplay\systems\SpellManager.h" />
     <ClInclude Include="src\manager\AnimationManager.h" />
     <ClInclude Include="src\manager\EnemyLibrary.h" />
@@ -105,6 +107,7 @@
     <ClCompile Include="src\gameplay\systems\PlayerVelocitySystem.cpp" />
     <ClCompile Include="src\gameplay\systems\PositionIntegrator.cpp" />
     <ClCompile Include="src\gameplay\systems\RenderSystem.cpp" />
+    <ClCompile Include="src\gameplay\systems\RewardSystem.cpp" />
     <ClCompile Include="src\gameplay\systems\SpellManager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\manager\AnimationManager.cpp" />
