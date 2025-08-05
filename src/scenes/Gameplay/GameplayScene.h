@@ -10,6 +10,7 @@
 #include "../../gameplay/systems/PhysicsSystem.h"
 #include "../../gameplay/systems/RenderSystem.h"
 #include "../../gameplay/systems/AnimationSystem.h"
+#include "../../gameplay/systems/RewardSystem.h"  
 #include "Camera.h"
 #include "../../gameplay/systems/ParticleSystem.h"
 #include <entt/entity/registry.hpp>
@@ -38,6 +39,7 @@ private:
     RenderSystem renderSystem;
 	ParticleSystem particleSystem;
 	AnimationSystem animationSystem;
+	RewardSystem rewardSystem;
 
     // UI
 	bool isLoaded = false;

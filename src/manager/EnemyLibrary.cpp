@@ -32,6 +32,10 @@ bool EnemyLibrary::loadFromFile() {
                 std::cerr << "Missing 'stats' section for enemy: " << name << std::endl;
                 continue;
             }
+            if (!enemy.contains("reward")) {
+                std::cerr << "Missing 'reward' section for enemy: " << name << std::endl;
+                continue;
+			}
 
             const auto& stats = enemy["stats"];
 
@@ -41,6 +45,10 @@ bool EnemyLibrary::loadFromFile() {
             data.mana.value = stats.value("mana", 50.0f);
             data.resistance.value = stats.value("resistance", 5.0f);
             data.speed.value = stats.value("speed", 2.0f);
+            
+            const auto& reward = enemy["reward"];
+            data.exp = reward.value("experience", 100.f);
+            data.gold = reward.value("gold", 100.f);
 
             enemyDatabase[type] = data;
 

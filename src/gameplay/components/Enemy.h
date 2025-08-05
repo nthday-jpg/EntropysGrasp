@@ -23,6 +23,9 @@ struct EnemyData
 	RepelResistance resistance;
 	BehaviorType behaviorType = BehaviorType::HomingPlayer; // Assuming BehaviorType is an enum defined elsewhere
 	// Behavior behavior; // Placeholder for behavior component
+
+	int exp;
+	int gold;
 };
 
 // String to enum map

@@ -267,6 +267,12 @@
     <ClInclude Include="src\manager\AnimationManager.h">
       <Filter>Header Files\manager</Filter>
     </ClInclude>
+    <ClInclude Include="src\gameplay\systems\RewardSystem.h">
+      <Filter>Header Files\gameplay\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\Reward.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\control\GameplayCommandManager.cpp">
@@ -400,6 +406,9 @@
     </ClCompile>
     <ClCompile Include="src\manager\AnimationManager.cpp">
       <Filter>Source Files\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\RewardSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

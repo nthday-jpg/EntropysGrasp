@@ -30,7 +30,10 @@ public:
 	~Camera() = default;
 
 	void setPosition(const sf::Vector2f& position);
+	float getbaseX() const;
+	float getbaseY() const;
 	void setSize(sf::Vector2f size);
+	sf::Vector2f getSize() const;
 	void move(sf::Vector2f offset);
 
 	void startShake(float intensity, float duration);

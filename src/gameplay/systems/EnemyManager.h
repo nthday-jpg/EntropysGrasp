@@ -2,10 +2,13 @@
 #include <entt/entt.hpp>
 #include <unordered_map>
 #include <SFML/System/Clock.hpp>
-#include <SFML/Graphics/View.hpp>
 #include "../../manager/EnemyLibrary.h"
 #include "../components/MovementComponents.h"
 #include "../components/EnemySpawnInfo.h"
+#include "../../scenes/Gameplay/Camera.h"
+#include "../components/statComponent.h"
+#include "../components/Reward.h"
+
 
 // This file defines the EnemyManager class which handles enemy spawning, updating,
 // and removing in the game. 
@@ -18,13 +21,16 @@
 class EnemyManager
 {
 public:
-	EnemyManager(entt::registry& registry, const sf::View& view, sf::Clock& gameClock);
+	EnemyManager(entt::registry& registry, const Camera& camera, sf::Clock& gameClock);
 	void update(float dt);
+	void sinkEvents();
+
 private:
 	entt::registry& registry;
 	const EnemyLibrary& enemyLibrary = EnemyLibrary::getInstance();
-	const sf::View& view;
+	const Camera& camera;
 	const sf::Clock& gameClock;
+	const float loadChunkRadius = 10000000.0f; //Here's square radius
 
 	// spawn timers keep track of time since last spawn for each enemy type
 	std::unordered_map<EnemyType, float> spawnTimer;
@@ -52,4 +58,10 @@ private:
 
 	// Method to spawn enemy randomly beyond the view
 	Position randomizeOffScreenPosition(const Position& position) const;
+
+	bool isPositionInScreen(const Position& position) const;
+
+	int getBaseExp(EnemyType type);
+	int getBaseGold(EnemyType type);
+	Mana getBaseMana(EnemyType type);
 };

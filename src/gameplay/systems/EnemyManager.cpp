@@ -68,38 +68,46 @@ void EnemyManager::spawning(float dt)
     }
 }
 
-
 void EnemyManager::removing()
 {
-    auto view = registry.view<EnemyTag>();
+    auto view = registry.view<EnemyTag>(entt::exclude<Inactive>);
     for (auto entity : view) {
         auto health = registry.try_get<Health>(entity);
+		auto position = registry.try_get<Position>(entity);
         // Use for some entities that may not have health
-        if (!health)
+        if (!health || !position)
         {
             continue;
         }
-        if (health->current <= 0 || !isInLoadChunk(registry.get<Position>(entity)))
+        if (health->current <= 0)
         {
 			registry.emplace_or_replace<Inactive>(entity);
             // Reset position to a far away place
             registry.replace<Position>(entity, -1000.0f, -1000.0f);
-			registry.replace<Speed>(entity, 0.0f); // Reset speed to prevent movement
+            if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
+            {
+
+				// Assuming there is only one player entity
+				auto playerView = registry.view<PlayerTag>();
+                entt::entity playerEntity = playerView.front();
+
+                EnemyType enemyType = registry.get<EnemyType>(entity);
+                Reward gold = { RewardType::Gold, static_cast<float>(getBaseGold(enemyType)), entt::null };
+				Reward exp = { RewardType::Experience, static_cast<float>(getBaseExp(enemyType)), entt::null };
+				Reward mana = { RewardType::Mana, getBaseMana(enemyType).value, playerEntity };
+                (*dispatcher)->enqueue<Reward>(gold);
+                (*dispatcher)->enqueue<Reward>(exp);
+                (*dispatcher)->enqueue<Reward>(mana);
+            }
         }
     }
 }
 
 bool EnemyManager::isInLoadChunk(const Position& position) const
 {
-    if (position.x < view.getCenter().x - view.getSize().x ||
-        position.x > view.getCenter().x + view.getSize().x ||
-        position.y < view.getCenter().y - view.getSize().y ||
-        position.y > view.getCenter().y + view.getSize().y)
-    {
-        return false;
-    }
+	float dist = pow(camera.getbaseX() - position.x, 2) + pow(camera.getbaseY() - position.y, 2);
 
-    return true;
+    return dist < loadChunkRadius;
 }
 
 void EnemyManager::update(float dt)
@@ -110,52 +118,102 @@ void EnemyManager::update(float dt)
     removing();
 }
 
-EnemyManager::EnemyManager(entt::registry& registry, const sf::View& view, sf::Clock& gameClock)
-    : registry(registry), gameClock(gameClock), view(view) {}
+EnemyManager::EnemyManager(entt::registry& registry, const Camera& camera, sf::Clock& gameClock)
+    : registry(registry), gameClock(gameClock), camera(camera) {}
 
 Position EnemyManager::randomizeOffScreenPosition(const Position& position) const
 {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_int_distribution<> dist(0, 199);
-    static std::uniform_real_distribution<float> angleDist(0.0f, 2.0f * 3.14159f);
-
     Position randomPosition = position;
 
-    // If position is inside the view/load chunk, spawn outside the screen at a random angle
-    if (isInLoadChunk(position)) {
-        float angle = angleDist(gen);
-        float offsetX = std::cos(angle) * (view.getSize().x * 0.55f); // Slightly beyond screen edge
-        float offsetY = std::sin(angle) * (view.getSize().y * 0.55f);
+    // Check if position is inside the screen bounds
+    bool isInsideScreen = isPositionInScreen(position);
 
-        // Position relative to screen center
-        randomPosition.x = view.getCenter().x + offsetX;
-        randomPosition.y = view.getCenter().y + offsetY;
-
-        // Add some randomness to prevent enemies from spawning in a perfect circle
-        randomPosition.x += dist(gen) * 0.5f - 50.0f;
-        randomPosition.y += dist(gen) * 0.5f - 50.0f;
+    if (isInsideScreen) {
+        // Position is inside screen, move it outside at a random edge
+        float halfWidth = camera.getSize().x * 0.5f;
+        float halfHeight = camera.getSize().y * 0.5f;
+        float centerX = camera.getbaseX();
+        float centerY = camera.getbaseY();
+        
+        // Choose random edge: 0=top, 1=right, 2=bottom, 3=left
+        int edge = static_cast<int>(Random::getFloat(0.0f, 4.0f));
+        float spawnOffset = 100.0f + Random::getFloat(0.0f, 200.0f); // Distance beyond screen edge
+        
+        switch (edge) {
+            case 0: // Top edge
+                randomPosition.x = centerX + Random::getFloat(-halfWidth, halfWidth);
+                randomPosition.y = centerY - halfHeight - spawnOffset;
+                break;
+            case 1: // Right edge
+                randomPosition.x = centerX + halfWidth + spawnOffset;
+                randomPosition.y = centerY + Random::getFloat(-halfHeight, halfHeight);
+                break;
+            case 2: // Bottom edge
+                randomPosition.x = centerX + Random::getFloat(-halfWidth, halfWidth);
+                randomPosition.y = centerY + halfHeight + spawnOffset;
+                break;
+            case 3: // Left edge
+                randomPosition.x = centerX - halfWidth - spawnOffset;
+                randomPosition.y = centerY + Random::getFloat(-halfHeight, halfHeight);
+                break;
+        }
 
         return randomPosition;
     }
 
-    // Original logic for positions already outside the view
-    if (position.x < view.getCenter().x - view.getSize().x)
-    {
-        randomPosition.x = position.x - 100.0f - static_cast<float>(dist(gen));
+    // Position is already outside screen, apply original logic to move it further out
+    float halfWidth = camera.getSize().x * 0.5f;
+    float halfHeight = camera.getSize().y * 0.5f;
+    float centerX = camera.getbaseX();
+    float centerY = camera.getbaseY();
+
+    if (position.x < centerX - halfWidth) {
+        randomPosition.x = position.x - 100.0f - Random::getFloat(0.0f, 200.0f);
     }
-    else if (position.x > view.getCenter().x + view.getSize().x)
-    {
-        randomPosition.x = position.x + 100.0f + static_cast<float>(dist(gen));
+    else if (position.x > centerX + halfWidth) {
+        randomPosition.x = position.x + 100.0f + Random::getFloat(0.0f, 200.0f);
     }
-    if (position.y < view.getCenter().y - view.getSize().y)
-    {
-        randomPosition.y = position.y - 100.0f - static_cast<float>(dist(gen));
+
+    if (position.y < centerY - halfHeight) {
+        randomPosition.y = position.y - 100.0f - Random::getFloat(0.0f, 200.0f);
     }
-    else if (position.y > view.getCenter().y + view.getSize().y)
-    {
-        randomPosition.y = position.y + 100.0f + static_cast<float>(dist(gen));
+    else if (position.y > centerY + halfHeight) {
+        randomPosition.y = position.y + 100.0f + Random::getFloat(0.0f, 200.0f);
     }
 
     return randomPosition;
+}
+
+bool EnemyManager::isPositionInScreen(const Position& position) const
+{
+    float halfWidth = camera.getSize().x * 0.5f;
+    float halfHeight = camera.getSize().y * 0.5f;
+    float centerX = camera.getbaseX();
+    float centerY = camera.getbaseY();
+
+    return (position.x >= centerX - halfWidth && position.x <= centerX + halfWidth &&
+        position.y >= centerY - halfHeight && position.y <= centerY + halfHeight);
+}
+
+void EnemyManager::sinkEvents()
+{
+
+}
+
+int EnemyManager::getBaseExp(EnemyType type)
+{
+    const EnemyData& data = enemyLibrary.getEnemyData(type);
+    return data.exp;
+}
+
+int EnemyManager::getBaseGold(EnemyType type)
+{
+    const EnemyData& data = enemyLibrary.getEnemyData(type);
+    return data.gold;
+}
+
+Mana EnemyManager::getBaseMana(EnemyType type)
+{
+    const EnemyData& data = enemyLibrary.getEnemyData(type);
+    return data.mana;
 }

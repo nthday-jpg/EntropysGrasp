@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "../../GameConfig.h"
 #include "../../gameplay/components/MovementComponents.h"
+#include <iostream>
 
 Camera::Camera(entt::registry* registry) : registry(registry)
 {
@@ -20,10 +21,25 @@ void Camera::setPosition(const sf::Vector2f& position)
 	view.setCenter(basePosition);
 }
 
+float Camera::getbaseX() const
+{
+	return basePosition.x;
+}
+
+float Camera::getbaseY() const
+{
+	return basePosition.y;
+}
+
 void Camera::setSize(sf::Vector2f newSize)
 {
 	size = newSize;
 	view.setSize(size);
+}
+
+sf::Vector2f Camera::getSize() const
+{
+	return size; 
 }
 
 void Camera::move(sf::Vector2f offset)
@@ -51,6 +67,10 @@ void Camera::update(float dt)
 	{
 		Position& targetPos = registry->get<Position>(followTarget);
 		sf::Vector2f diff = targetPos - basePosition + followOffset;
+		if (abs(diff.x) < 0.001f && abs(diff.y) < 0.001f)
+		{
+			diff = sf::Vector2f(0.0f, 0.0f);
+		}
 		basePosition += diff * followSmoothness;
 	}
 	else

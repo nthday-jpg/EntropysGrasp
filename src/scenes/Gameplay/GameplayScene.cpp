@@ -17,11 +17,12 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
     combatSystem(registry),
     spellManager(registry),
 	camera(&registry),
-	enemyManager(registry, camera.getView(), gameClock),
+	enemyManager(registry, camera, gameClock),
 	physicsSystem(registry),
     renderSystem(registry), 
 	particleSystem(registry),
-	animationSystem(registry)
+	animationSystem(registry),
+	rewardSystem(registry)
 {
     
     MapManager::getInstance().loadMap();
@@ -53,7 +54,11 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
     collisionSystem.sinkEvents();
 	combatSystem.sinkEvents();
 	spellManager.sinkEvents();
+	enemyManager.sinkEvents();
     animationSystem.sinkEvents();
+    rewardSystem.sinkEvents();
+    
+    MapManager::getInstance().loadMap();
 }
 
 GameplayScene::~GameplayScene() {

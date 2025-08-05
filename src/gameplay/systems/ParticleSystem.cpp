@@ -89,7 +89,6 @@ void ParticleSystem::update(float dt)
 		return; // Avoid too frequent updates
 	}
 	mysteriousClock.restart();
-	std::cout << "ParticleSystem update called at time: " << time << " seconds" << std::endl;
 
 	auto view1 = registry.view<Position, SpellTag>();
 	for (auto [entity, position] : view1.each()) {
