@@ -45,6 +45,11 @@ void MainMenu::load()
 	}
 }
 
+void MainMenu::unload()
+{
+
+}
+
 void MainMenu::render()
 {
 	uiManager->draw(window);

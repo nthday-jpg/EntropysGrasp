@@ -11,6 +11,8 @@
 #include "Command.h"
 #include "gameplayCommandManager.h"
 #include "../GameConfig.h"
+#include "../gameplay/systems/ParticleSystem.h"
+#include "../gameplay/systems/SpellManager.h"
 
 class GameplayInputHandler {
 	entt::entity playerEntity;
@@ -33,6 +35,8 @@ class GameplayInputHandler {
 	Command* createCommand(const std::string& action);
 
 public:
+	ParticleSystem* particleSystem;
+	SpellManager* spellManager;
 	GameplayInputHandler(entt::entity playerEntity, GameplayCommandManager* commandManager);
 	~GameplayInputHandler();
 

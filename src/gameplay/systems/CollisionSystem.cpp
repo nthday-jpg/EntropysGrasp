@@ -1,16 +1,27 @@
 #include <iostream>
 #include "../systems/CollisionSystem.h"
 #include "../components/EntityTags.h"
-#include "../components/statComponent.h"
-#include "../components/hitbox.h"
-#include "../components/movementComponents.h"
+#include "../components/StatComponent.h"
+#include "../components/Hitbox.h"
+#include "../components/MovementComponents.h"
 #include "../../utils/VectorMath.h"
 
 using namespace std;
 
-CollisionSystem::CollisionSystem(entt::registry& registry) : registry(registry)
+CollisionSystem::CollisionSystem(entt::registry& registry, entt::dispatcher* dispatcher)
+	: registry(registry), dispatcher(dispatcher)
 {
+
 	collisionEvents.reserve(200);
+}
+
+void CollisionSystem::update(float dt)
+{
+	detectCollisions();
+	for (const auto& event : getCollisionEvents())
+	{
+		resolvePhysicalOverlap(event.entity1, event.entity2);
+	}
 }
 
 bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2) const
@@ -113,8 +124,11 @@ void CollisionSystem::detectCollisions()
 			{
 				CollisionType type1 = getCollisionType(entity);
 				CollisionType type2 = getCollisionType(otherEntity);
-
-				collisionEvents.emplace_back(entity, otherEntity, type1, type2);
+				dispatcher->trigger<CollisionEvent>(CollisionEvent{ entity, otherEntity, type1, type2 });
+				if (isSolid(type1, type2))
+				{
+					resolvePhysicalOverlap(entity, otherEntity);
+				}
 			}
 		}
 	}

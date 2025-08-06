@@ -6,6 +6,9 @@
 #include <fstream>
 #include <iostream>
 
+UIManager::UIManager() : background(nullptr), backgroundTexture(nullptr)
+{
+}
 
 UIManager::~UIManager()
 {
@@ -14,6 +17,7 @@ UIManager::~UIManager()
 		delete element; 
 	}
 }
+
 
 UIElement* UIManager::parseElement(const nlohmann::json& elemJson, sf::Font* font) {
 	std::string type = elemJson["type"];

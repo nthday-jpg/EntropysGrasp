@@ -1,13 +1,49 @@
-#include "GameplayScene.h"
+﻿#include "GameplayScene.h"
 #include "../../gameplay/components/MovementComponents.h"
 #include "../../gameplay/components/LookingDirection.h"
 #include "../../gameplay/components/EntityTags.h"
 #include "../../gameplay/components/StatComponent.h"
+#include "../../control/commands/GameControl.h"
+#include "../../gameplay/components/Hitbox.h"
+#include "../../ui/Button.h"
+#include "../../manager/FontManager.h"
+#include "../../manager/TextureManager.h"
+#include "../../manager/AnimationManager.h"
 
-GameplayScene::GameplayScene(sf::RenderWindow& window) : Scene(window) {
-    inputHandler = nullptr;
-	gameplayCommandManager = nullptr;
+GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatcher) 
+	: Scene(window), dispatcher(dispatcher),
+    collisionSystem(registry, dispatcher),
+    movementPipeline(registry),
+    combatSystem(registry, dispatcher),
+    spellManager(registry),
+	camera(&registry),
+	enemyManager(registry, camera.getView(), gameClock),
+	physicsSystem(registry),
+    renderSystem(registry), 
+	particleSystem(registry),
+	animationSystem(registry, dispatcher)
+{
+	gameplayCommandManager = new GameplayCommandManager(registry);
+	entt::entity playerEntity = createPlayer();
+    inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
+	camera.followEntity(playerEntity);
 
+	pausedUI = new UIManager();
+    pausedUI->load();
+
+    inputHandler->particleSystem = &particleSystem;
+	inputHandler->spellManager = &spellManager;
+
+	uiManager = new UIManager();
+    uiManager->addElement(
+        new Button(
+            "EXIT",
+            "Exit",
+            FontManager::getInstance().getFont("default"),
+            { 100, 100 },
+            30.0f
+        )
+	);
 }
 
 GameplayScene::~GameplayScene() {
@@ -19,8 +55,13 @@ GameplayScene::~GameplayScene() {
     }
 }
 
-void GameplayScene::load() {
+void GameplayScene::load() 
+{
+	isLoaded = true;    
+}
 
+void GameplayScene::unload() {
+    // Unload resources, reset state, etc.
 }
 
 bool GameplayScene::handleEvent(const std::optional<sf::Event>& event) {
@@ -46,6 +87,7 @@ void GameplayScene::update(float deltaTime) {
     }
 
     if (isPaused) {
+		pausedUI->draw(window);
         return;
 	}
     
@@ -60,21 +102,37 @@ void GameplayScene::update(float deltaTime) {
     }
     
     // Update UI
-    if (uiManager) {
-        uiManager->syncUIWithViewport();
-    }
-    
     // Here you would typically run your game systems like:
     // - Movement system
     // - Collision system
     // - Rendering system
     // - etc.
+	collisionSystem.update(deltaTime);
+    movementPipeline.update(deltaTime);
+    //combatSystem.update(deltaTime);
+    spellManager.update(deltaTime);
+    enemyManager.update(deltaTime);
+    physicsSystem.updateVelocity(deltaTime);
+	particleSystem.update(deltaTime);
+	animationSystem.update(deltaTime);
+
+    // Update camera
+    camera.update(deltaTime);
+    window.setView(camera.getView());
+	
+    if (uiManager) {
+        uiManager->syncUIWithViewport();
+    }
+    // Render the scene
+    this->render();
+
 }
 
 void GameplayScene::render() {
     // Render game objects
     // This is where you would typically render your sprites, entities, etc.
-    
+    renderSystem.render();
+
     // Render UI on top
     if (uiManager) {
         uiManager->draw(window);
@@ -93,11 +151,46 @@ void GameplayScene::resume()
 
 void GameplayScene::restart()
 {
-    // Logic to restart the game, e.g., reset player position, score, etc.
-    // This could also involve reloading the scene or resetting components.
+	this->unload();
+	this->load();
 }
 
 void GameplayScene::exit()
 {
-    // Logic to exit the game, e.g., navigate to main menu or quit application.
+	UICommandManager::getInstance().queueCommand(new ChangeScene("MainMenu"));
+}
+
+entt::entity GameplayScene::createPlayer() {
+    auto player = registry.create();
+    registry.emplace<PlayerTag>(player);
+    registry.emplace<Position>(player, 0.0f, 0.0f);
+    registry.emplace<Speed>(player, 800.0f);
+    registry.emplace<Hitbox>(player, 50.0f, 50.0f, 0.0f, 0.0f);
+    registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
+    registry.emplace<LookingDirection>(player, 0.0f, 0.0f);
+    registry.emplace<Mana>(player, 100.0f);
+    registry.emplace<RepelResistance>(player, 0.5f);
+
+    TextureManager::getInstance().loadTexture("Mage-Sheet", "assets/texture/Mage-Sheet.png");
+
+    sf::Texture* mageTexture = TextureManager::getInstance().getTexture("Mage-Sheet");
+
+    AnimationManager::getInstance().loadAnimationData("Mage", "assets/texture/Mage-Sheet.png", mageTexture);
+
+    AnimationComponent animComp;
+    animComp.data = AnimationManager::getInstance().getAnimationData("Mage");
+    animComp.currentState = AnimationState::Walking;
+    animComp.currentDirection = Direction::DownLeft;
+    animComp.currentFrame = { 0, 0 };
+    animComp.timer = 0.f;
+    registry.emplace<AnimationComponent>(player, animComp);
+
+    // sprite gắn vào để render
+    sf::IntRect textureRect({ 0, 0 }, { 32, 48}); // Assuming each frame is 50x50 pixels
+    sf::Sprite sprite(*mageTexture);
+	sprite.setTextureRect(textureRect);
+    sprite.setPosition({ 0.f, 0.f });
+
+    registry.emplace<sf::Sprite>(player, sprite);	
+    return player;
 }

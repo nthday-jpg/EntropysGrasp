@@ -42,8 +42,8 @@
     <ClInclude Include="src\gameplay\components\SoundEvent.h" />
     <ClInclude Include="src\gameplay\components\Spell.h" />
     <ClInclude Include="src\gameplay\components\StatComponent.h" />
-    <ClInclude Include="src\gameplay\components\tile.h" />
-    <ClInclude Include="src\gameplay\manager\map.h" />
+    <ClInclude Include="src\gameplay\components\Tile.h" />
+    <ClInclude Include="src\gameplay\manager\Map.h" />
     <ClInclude Include="src\gameplay\manager\MapManager.h" />
     <ClInclude Include="src\gameplay\manager\TileManager.h" />
     <ClInclude Include="src\gameplay\systems\AnimationSystem.h" />
@@ -53,11 +53,14 @@
     <ClInclude Include="src\gameplay\systems\EffectSystem.h" />
     <ClInclude Include="src\gameplay\systems\EnemyManager.h" />
     <ClInclude Include="src\gameplay\systems\MovementPipeline.h" />
+    <ClInclude Include="src\gameplay\systems\ParticleBehaviors.h" />
+    <ClInclude Include="src\gameplay\systems\ParticleSystem.h" />
     <ClInclude Include="src\gameplay\systems\PhysicsSystem.h" />
     <ClInclude Include="src\gameplay\systems\PlayerVelocitySystem.h" />
     <ClInclude Include="src\gameplay\systems\PositionIntegrator.h" />
     <ClInclude Include="src\gameplay\systems\RenderSystem.h" />
     <ClInclude Include="src\gameplay\systems\SpellManager.h" />
+    <ClInclude Include="src\manager\AnimationManager.h" />
     <ClInclude Include="src\manager\EnemyLibrary.h" />
     <ClInclude Include="src\manager\FontManager.h" />
     <ClInclude Include="src\manager\SceneManager.h" />
@@ -65,6 +68,7 @@
     <ClInclude Include="src\manager\SpellLibrary.h" />
     <ClInclude Include="src\manager\TextureManager.h" />
     <ClInclude Include="src\manager\WindowManager.h" />
+    <ClInclude Include="src\scenes\Gameplay\Camera.h" />
     <ClInclude Include="src\scenes\Gameplay\GameplayScene.h" />
     <ClInclude Include="src\scenes\MainMenu\MainMenu.h" />
     <ClInclude Include="src\scenes\Scene.h" />
@@ -73,6 +77,7 @@
     <ClInclude Include="src\ui\Text.h" />
     <ClInclude Include="src\ui\UIElement.h" />
     <ClInclude Include="src\ui\UIManager.h" />
+    <ClInclude Include="src\utils\Random.h" />
     <ClInclude Include="src\utils\SpatialHash.h" />
     <ClInclude Include="src\utils\VectorMath.h" />
   </ItemGroup>
@@ -84,7 +89,7 @@
     <ClCompile Include="src\control\UICommandManager.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameConfig.cpp" />
-    <ClCompile Include="src\gameplay\manager\map.cpp" />
+    <ClCompile Include="src\gameplay\manager\Map.cpp" />
     <ClCompile Include="src\gameplay\manager\MapManager.cpp" />
     <ClCompile Include="src\gameplay\manager\TileManager.cpp" />
     <ClCompile Include="src\gameplay\systems\AnimationSystem.cpp" />
@@ -94,12 +99,15 @@
     <ClCompile Include="src\gameplay\systems\EffectSystem.cpp" />
     <ClCompile Include="src\gameplay\systems\EnemyManager.cpp" />
     <ClCompile Include="src\gameplay\systems\MovementPipeline.cpp" />
+    <ClCompile Include="src\gameplay\systems\ParticleBehaviors.cpp" />
+    <ClCompile Include="src\gameplay\systems\ParticleSystem.cpp" />
     <ClCompile Include="src\gameplay\systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\gameplay\systems\PlayerVelocitySystem.cpp" />
     <ClCompile Include="src\gameplay\systems\PositionIntegrator.cpp" />
     <ClCompile Include="src\gameplay\systems\RenderSystem.cpp" />
     <ClCompile Include="src\gameplay\systems\SpellManager.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\manager\AnimationManager.cpp" />
     <ClCompile Include="src\manager\EnemyLibrary.cpp" />
     <ClCompile Include="src\manager\FontManager.cpp" />
     <ClCompile Include="src\manager\SceneManager.cpp" />
@@ -107,6 +115,7 @@
     <ClCompile Include="src\manager\SpellLibrary.cpp" />
     <ClCompile Include="src\manager\TextureManager.cpp" />
     <ClCompile Include="src\manager\WindowManager.cpp" />
+    <ClCompile Include="src\scenes\Gameplay\Camera.cpp" />
     <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp" />
     <ClCompile Include="src\scenes\MainMenu\MainMenu.cpp" />
     <ClCompile Include="src\scenes\Scene.cpp" />
@@ -114,6 +123,7 @@
     <ClCompile Include="src\ui\Panel.cpp" />
     <ClCompile Include="src\ui\Text.cpp" />
     <ClCompile Include="src\ui\UIManager.cpp" />
+    <ClCompile Include="src\utils\Random.cpp" />
     <ClCompile Include="src\utils\SpatialHash.cpp" />
     <ClCompile Include="src\utils\VectorMath.cpp" />
   </ItemGroup>
@@ -203,7 +213,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -218,7 +228,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

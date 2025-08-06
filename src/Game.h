@@ -8,9 +8,11 @@
 
 
 //Hằng số
-const int windowHeight = 600;
-const int windowWidth = 800;
-const int FPS = 60;
+constexpr int windowHeight = 600;
+constexpr int windowWidth = 800;
+constexpr int FPS = 60;
+constexpr float deltaTime = 1.0f / FPS;
+
 
 class Game {
 public:
@@ -35,9 +37,9 @@ private:
 	entt::dispatcher dispatcher;
 
 	sf::Clock clock;
-	float deltaTime = 0.0f;
 
 	void processEvents();
 	void update(float deltaTime);
 	void render();
+
 };

@@ -1,6 +1,41 @@
 #include "CombatSystem.h"
-#include "../components/statComponent.h"
+#include "../components/StatComponent.h"
 #include "../components/Behavior.h"
+#include "../components/EntityTags.h"
+#include "CollisionSystem.h"
+
+CombatSystem::CombatSystem(entt::registry& registry, entt::dispatcher* dispatcher)
+	: registry(registry), dispatcher(dispatcher)
+{
+	// Register collision handlers
+	std::cout << "CombatSystem initialized." << std::endl;
+	if (!dispatcher) {
+		std::cerr << "Dispatcher is null in CombatSystem constructor." << std::endl;
+		return;
+	}
+	dispatcher->sink<CollisionEvent>().connect<&CombatSystem::handleEvent>(this);
+}
+
+void CombatSystem::handleEvent(const CollisionEvent& event)
+{
+	if (event.type1 == CollisionType::Player && event.type2 == CollisionType::Enemy)
+	{
+		handlePlayerEnemyCollision(event.entity1, event.entity2);
+	}
+	else if (event.type2 == CollisionType::Player && event.type1 == CollisionType::Enemy)
+	{
+		handlePlayerEnemyCollision(event.entity2, event.entity1);
+	}
+	else if (event.type1 == CollisionType::Enemy && event.type2 == CollisionType::Spell)
+	{
+		handleEnemySpellCollision(event.entity1, event.entity2);
+	}
+	else if (event.type2 == CollisionType::Enemy && event.type1 == CollisionType::Spell)
+	{
+		handleEnemySpellCollision(event.entity2, event.entity1);
+	}
+}
+
 
 void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity enemy) 
 {

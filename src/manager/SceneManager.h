@@ -6,6 +6,8 @@
 #include <SFML/Window/Event.hpp>
 #include <entt/signal/dispatcher.hpp>  // Add this include
 
+//CHANGE NAVIGATETO FUNCTION
+
 class SceneManager
 {
 	// Use dynamic casting when use scene in scenes to ensure type safety
@@ -14,7 +16,7 @@ class SceneManager
 	Scene* currentScene = nullptr;
 	Scene* nextScene = nullptr;
 
-	entt::dispatcher* dispatcher = nullptr;  // Add dispatcher pointer
+	entt::dispatcher* dispatcher;
 
 	//implement transition between scenes
 	SceneManager();
@@ -40,7 +42,7 @@ public:
 	void addScene(std::string name, Scene* scene);
 	//load and unload scenes
 
-	void navigateTo(std::string name);
+	void navigateTo(const std::string& name);
 
 	Scene* getCurrentScene() const { return currentScene; }
 

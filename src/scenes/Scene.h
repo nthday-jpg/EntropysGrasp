@@ -32,7 +32,7 @@ public:
 	void setDispatcher(entt::dispatcher* dispatcher) { this->dispatcher = dispatcher; }
 	
 	virtual void load() = 0;
-	//virtual void unload() = 0;
+	virtual void unload() = 0;
 	virtual bool handleEvent(const std::optional <sf::Event>& event) = 0;
 	virtual void update(float deltaTime) = 0;
 	virtual void render() = 0;

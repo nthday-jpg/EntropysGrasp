@@ -9,6 +9,7 @@
 // multiple specialized movement systems
 class MovementPipeline {
 private:
+	BehaviorSystem behaviorSystem;
     entt::registry& registry;
 public:
     MovementPipeline(entt::registry& registry);

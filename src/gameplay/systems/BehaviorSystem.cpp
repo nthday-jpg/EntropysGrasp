@@ -10,12 +10,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 
-BehaviorSystem& BehaviorSystem::getInstance() 
-{
-	static BehaviorSystem instance;
-	return instance;
-}
-
 BehaviorSystem::BehaviorSystem()
 {
 	initializeBehaviorMap();

@@ -4,6 +4,8 @@
 #include "../components/EntityTags.h"
 #include "../components/Enemy.h"
 #include "../components/MovementComponents.h"
+#include "../../scenes/Gameplay/Camera.h"
+#include "../../utils/Random.h"
 
 entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 {
@@ -101,8 +103,8 @@ void EnemyManager::update(float dt)
     removing();
 }
 
-EnemyManager::EnemyManager(entt::registry& registry, sf::View& view, sf::Clock& gameClock)
-    : registry(registry), view(view), gameClock(gameClock) {};
+EnemyManager::EnemyManager(entt::registry& registry, const sf::View& view, sf::Clock& gameClock)
+    : registry(registry), gameClock(gameClock), view(view) {}
 
 Position EnemyManager::randomizeOffScreenPosition(const Position& position) const
 {

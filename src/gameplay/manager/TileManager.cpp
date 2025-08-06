@@ -23,10 +23,6 @@ entt::entity TileManager::createTile(entt::registry& registry, TileType tileType
 	return tileEntity;
 }
 
-bool TileManager::loadTiles(const std::string& tileFilePath) {
-	return true;
-}
-
 void TileManager::setTileIntRect(TileType type, const sf::IntRect& rect) {
 	tileDatabase[type] = rect;
 }

@@ -8,6 +8,9 @@
 #include "../../gameplay/components/MovementComponents.h"
 #include "../../gameplay/components/LookingDirection.h"
 #include "../../gameplay/components/EntityTags.h"
+#include "../../gameplay/components/Spell.h"
+#include "../../gameplay/systems/SpellManager.h"
+#include "../../manager/SpellLibrary.h"
 
 #include "../../utils/VectorMath.h"
 
@@ -26,8 +29,7 @@ void MoveDown::execute(entt::registry& registry)
 	}
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += down;
-
-	std::cout << "Moving down: " << std::endl;
+	
 }
 
 void MoveUp::execute(entt::registry& registry)
@@ -40,7 +42,6 @@ void MoveUp::execute(entt::registry& registry)
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += up;
 
-	std::cout << "Moving up: " << std::endl;
 }
 
 void MoveLeft::execute(entt::registry& registry)
@@ -53,7 +54,6 @@ void MoveLeft::execute(entt::registry& registry)
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += left;
 
-	std::cout << "Moving left: " << std::endl;
 }
 
 void MoveRight::execute(entt::registry& registry)
@@ -66,12 +66,26 @@ void MoveRight::execute(entt::registry& registry)
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += right;
 	
-	std::cout << "Moving right: " << std::endl;
 }
 
 void CastSpell::execute(entt::registry& registry)
 {
+	
+	ParticleProperties particleProperties;
+	particleProperties.startColor = sf::Color::Red;
+	particleProperties.endColor = sf::Color::Yellow;
+	particleProperties.sizeEnd = 0.0f;
+	particleProperties.sizeStart = 5.0f;
+	particleProperties.lifetime = 5.0f;
+	particleProperties.velocity = { 0.0f, 0.f };
+	particleProperties.velocityVariation = { -2.0f, 2.0f };
+	particleProperties.behaviorType = ParticleBehaviorType::Floating;
 
+	for (int i = 0; i < 10; i++)
+	{
+		particleSystem->emit(particleProperties);
+	}
+	
 }
 
 void Dash::execute(entt::registry& registry)

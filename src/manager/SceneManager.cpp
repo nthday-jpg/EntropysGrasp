@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "../scenes/MainMenu/MainMenu.h"
 #include "../manager/WindowManager.h"
+#include "../scenes/Gameplay/GameplayScene.h"
 
 SceneManager::SceneManager()
 {
@@ -26,11 +27,15 @@ void SceneManager::addScene(std::string name, Scene* scene) {
 	}
 }
 
-void SceneManager::navigateTo(std::string name) {
+void SceneManager::navigateTo(const std::string& name) {
 	auto it = scenes.find(name);
-	if (it != scenes.end()) {
-		currentScene = it->second;
+	if (it == scenes.end()) 
+	{
+		addScene(name, new GameplayScene(WindowManager::getInstance().getWindow(), dispatcher));
+		it = scenes.find(name);
 	}
+	currentScene = it->second;
+
 }
 
 void SceneManager::update(float deltaTime) {

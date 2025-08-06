@@ -5,14 +5,18 @@
 #include <unordered_map>
 
 class TextureManager {
+	std::string filePath = "assets/texture/allTexture.txt";
 public:
+	std::unordered_map<std::string, sf::Texture*> textureDatabase;
+	
 	static TextureManager& getInstance();
-	std::unordered_map<std::string, sf::Texture> textureDatabase;
-	bool loadTextures(const std::string& textureFilePath);
-	void setTexture(const std::string& name, const sf::Texture& texture);
-	const sf::Texture& getTexture(const std::string& name) const;
+	bool loadFromAssetFile(const std::string& filePath);
+	bool loadTexture(const std::string& name, const std::string& filePath);
+	void setTexture(const std::string& name, sf::Texture* texture);
+	sf::Texture* getTexture(const std::string& name) const;
+	TextureManager();
 private:
-	TextureManager() = default;
 	TextureManager(const TextureManager&) = delete;
 	TextureManager& operator=(const TextureManager&) = delete;
+	~TextureManager();
 };

@@ -21,14 +21,13 @@ class CollisionSystem
     entt::registry& registry;
 	entt::dispatcher* dispatcher; // Optional dispatcher for event handling
 public:
-    CollisionSystem(entt::registry& registry);
+    CollisionSystem(entt::registry& registry, entt::dispatcher* dispatcher);
     void detectCollisions();
 
-    // This method pushes two entities that overlaping away each other
-    void resolvePhysicalOverlap(entt::entity e1, entt::entity e2);
-    const std::vector<CollisionEvent>& getCollisionEvents() const;
-
+	void update(float dt);
 private:
+    const std::vector<CollisionEvent>& getCollisionEvents() const;
+    void resolvePhysicalOverlap(entt::entity e1, entt::entity e2);
     bool isIntersect(entt::entity e1, entt::entity e2) const;
     CollisionType getCollisionType(entt::entity e) const;
     void resolveRR(entt::entity e1, entt::entity e2);

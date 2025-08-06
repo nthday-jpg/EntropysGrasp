@@ -23,7 +23,7 @@ void Game::run()
 	while (windowManager->isOpen())
 	{
 		processEvents();
-		update(1.0f/60);
+		update(deltaTime);
 		render();
 	}
 }

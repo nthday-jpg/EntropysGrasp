@@ -76,6 +76,12 @@
     <Filter Include="Source Files\scenes\MainMenu">
       <UniqueIdentifier>{070cf6d2-64b0-432a-8ee7-b2c3b63a25dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\scenes\Gameplay">
+      <UniqueIdentifier>{dc484eef-613c-45ef-8981-462a77839cf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\scenes\Gameplay">
+      <UniqueIdentifier>{f7ccb12f-70c2-461a-aa56-ca2e24c3672e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\control\Command.h">
@@ -150,10 +156,10 @@
     <ClInclude Include="src\gameplay\components\statComponent.h">
       <Filter>Header Files\gameplay\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameplay\components\tile.h">
+    <ClInclude Include="src\gameplay\components\Tile.h">
       <Filter>Header Files\gameplay\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameplay\manager\map.h">
+    <ClInclude Include="src\gameplay\manager\Map.h">
       <Filter>Header Files\gameplay\manager</Filter>
     </ClInclude>
     <ClInclude Include="src\gameplay\manager\MapManager.h">
@@ -228,9 +234,6 @@
     <ClInclude Include="src\manager\FontManager.h">
       <Filter>Header Files\manager</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\Gameplay\GameplayScene.h">
-      <Filter>Header Files\scenes</Filter>
-    </ClInclude>
     <ClInclude Include="src\manager\SceneManager.h">
       <Filter>Header Files\manager</Filter>
     </ClInclude>
@@ -243,8 +246,26 @@
     <ClInclude Include="src\manager\SoundManager.h">
       <Filter>Header Files\manager</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameplay\components\SoundEvent.h">
+    <ClInclude Include="src\scenes\Gameplay\GameplayScene.h">
+      <Filter>Header Files\scenes\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Gameplay\Camera.h">
+      <Filter>Header Files\scenes\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\ParticleSystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Random.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\Particle.h">
       <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\ParticleBehaviors.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\manager\AnimationManager.h">
+      <Filter>Header Files\manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -275,7 +296,7 @@
     <ClCompile Include="src\control\commands\PlayerControl.cpp">
       <Filter>Source Files\control\commands</Filter>
     </ClCompile>
-    <ClCompile Include="src\gameplay\manager\map.cpp">
+    <ClCompile Include="src\gameplay\manager\Map.cpp">
       <Filter>Source Files\gameplay\manager</Filter>
     </ClCompile>
     <ClCompile Include="src\gameplay\manager\MapManager.cpp">
@@ -353,9 +374,6 @@
     <ClCompile Include="src\manager\FontManager.cpp">
       <Filter>Source Files\manager</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp">
-      <Filter>Source Files\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="src\manager\SceneManager.cpp">
       <Filter>Source Files\manager</Filter>
     </ClCompile>
@@ -363,6 +381,24 @@
       <Filter>Source Files\gameplay\systems</Filter>
     </ClCompile>
     <ClCompile Include="src\manager\SoundManager.cpp">
+      <Filter>Source Files\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp">
+      <Filter>Source Files\scenes\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Gameplay\Camera.cpp">
+      <Filter>Source Files\scenes\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\ParticleSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\Random.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\ParticleBehaviors.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\manager\AnimationManager.cpp">
       <Filter>Source Files\manager</Filter>
     </ClCompile>
   </ItemGroup>
