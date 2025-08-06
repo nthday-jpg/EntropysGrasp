@@ -52,7 +52,6 @@ void RenderSystem::renderBackGround() {
 
 void RenderSystem::render() {
     renderBackGround();
-	renderEnemies();
     auto group = registry.group<Position, sf::Sprite>();
 
     std::vector<entt::entity> entities;
@@ -71,7 +70,7 @@ void RenderSystem::render() {
     for (auto entity : entities) {
         const Position& pos = group.get<Position>(entity);
         sf::Sprite& sprite = group.get<sf::Sprite>(entity);
-        sprite.setPosition(pos);
+        sprite.setPosition({ pos.x - sprite.getTextureRect().size.x / 2, pos.y -  sprite.getTextureRect().size.y/ 2});
         WindowManager::getInstance().draw(sprite);
     }
 
@@ -112,17 +111,4 @@ void RenderSystem::renderParticles() {
         // Optionally, remove the particle if it has aged out
         
     }
-}
-
-void RenderSystem::renderEnemies() {
-	auto view = registry.view<EnemyTag>();
-    for (auto entity : view) {
-        if (!registry.all_of<sf::Sprite>(entity)) {
-			sf::Texture* texture = TextureManager::getInstance().getTexture("test");
-			sf::IntRect rect({0, 0}, {32, 48});
-			sf::Sprite sprite(*texture);
-			sprite.setTextureRect(rect);
-			registry.emplace<sf::Sprite>(entity, sprite);
-		}
-	}
 }

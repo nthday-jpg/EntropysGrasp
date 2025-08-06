@@ -11,7 +11,6 @@ public:
 	void renderBackGround();
     void render();
 	void renderParticles();
-	void renderEnemies();
 };
 
 //RenderSystem renderSystem;

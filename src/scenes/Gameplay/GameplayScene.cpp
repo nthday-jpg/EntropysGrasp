@@ -57,8 +57,6 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	enemyManager.sinkEvents();
     animationSystem.sinkEvents();
     rewardSystem.sinkEvents();
-    
-    MapManager::getInstance().loadMap();
 }
 
 GameplayScene::~GameplayScene() {
@@ -186,7 +184,7 @@ entt::entity GameplayScene::createPlayer() {
     registry.emplace<Speed>(player, 200.0f);
     registry.emplace<Health>(player, 10000.0f, 10000.0f);
     registry.emplace<Attack>(player, 100.0f);
-    registry.emplace<Hitbox>(player, Hitbox{50.0f, 50.0f, 0.0f, 0.0f}); // Assuming a rectangle hitbox for the player
+    registry.emplace<Hitbox>(player, Hitbox{32.0f, 30.0f, 0.0f, 0.0f}); // Assuming a rectangle hitbox for the player
     registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
     registry.emplace<LookingDirection>(player, 0.0f, 0.0f);
     registry.emplace<Mana>(player, 1000.0f);

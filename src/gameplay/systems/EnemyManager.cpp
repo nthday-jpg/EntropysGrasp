@@ -1,6 +1,7 @@
 #include <SFML/System/Time.hpp>
 #include <random>           
 #include <iostream>
+#include <string>
 #include "../systems/EnemyManager.h"
 #include "../components/EntityTags.h"
 #include "../components/Enemy.h"
@@ -9,6 +10,8 @@
 #include "../../scenes/Gameplay/Camera.h"
 #include "../../utils/Random.h"
 #include "../components/Hitbox.h"
+#include "../../manager/TextureManager.h"
+#include "../components/Animation.h"
 
 entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 {
@@ -42,6 +45,24 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 	registry.emplace<MovementDirection>(entity, 0.0f, 0.0f);
 	registry.emplace<LookingDirection>(entity, 0.0f, 0.0f);
 	registry.emplace<Hitbox>(entity, 50.0f, 50.0f, 0.0f, 0.0f); // Assuming a default hitbox size
+
+    int a = Random::getInt(1, 3);
+    
+    AnimationComponent animComp;
+	animComp.name = "orc" + std::to_string(a);
+	animComp.currentState = AnimationState::Walking;
+	animComp.currentDirection = Direction::Down;
+	animComp.currentFrame = { 0, 0 };
+    animComp.timer = 0.0f;
+	registry.emplace<AnimationComponent>(entity, animComp);
+
+	sf::Texture* texture = TextureManager::getInstance().getTexture("orc" + std::to_string(a) + "_walk");
+	sf::IntRect textureRect({ 0, 0 }, { 64, 64 });
+    sf::Sprite sprite(*texture);
+    sprite.setTextureRect(textureRect);
+    sprite.setPosition({ position.x, position.y });
+    registry.emplace<sf::Sprite>(entity, sprite);
+
 	std::cout << "spawn position: " << position.x << ", " << position.y << std::endl;
     return entity;
 }
