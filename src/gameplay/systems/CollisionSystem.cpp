@@ -35,11 +35,11 @@ bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2) const
 	Position& pos1 = registry.get<Position>(e1);
 	Position& pos2 = registry.get<Position>(e2);
 
-	// Calculate hitbox positions  
-	float hitbox1PosX = hitbox1.offsetX + pos1.x;
-	float hitbox1PosY = hitbox1.offsetY + pos1.y;
-	float hitbox2PosX = hitbox2.offsetX + pos2.x;
-	float hitbox2PosY = hitbox2.offsetY + pos2.y;
+	// Calculate hitbox center positions (Position is now the center + offset)
+	float hitbox1CenterX = pos1.x + hitbox1.offsetX;
+	float hitbox1CenterY = pos1.y + hitbox1.offsetY;
+	float hitbox2CenterX = pos2.x + hitbox2.offsetX;
+	float hitbox2CenterY = pos2.y + hitbox2.offsetY;
 
 	// Check if the hitboxes are the same  
 	if (hitbox1 == hitbox2)
@@ -49,21 +49,23 @@ bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2) const
 
 	if (hitbox1.type == HitboxType::Rectangle && hitbox2.type == HitboxType::Rectangle)
 	{
-		float left1 = hitbox1PosX;
-		float right1 = left1 + hitbox1.width;
-		float top1 = hitbox1PosY;
-		float bottom1 = top1 + hitbox1.height;
-		float left2 = hitbox2PosX;
-		float right2 = left2 + hitbox2.width;
-		float top2 = hitbox2PosY;
-		float bottom2 = top2 + hitbox2.height;
+		// For rectangles, calculate bounds from center
+		float left1 = hitbox1CenterX - hitbox1.width / 2.0f;
+		float right1 = hitbox1CenterX + hitbox1.width / 2.0f;
+		float top1 = hitbox1CenterY - hitbox1.height / 2.0f;
+		float bottom1 = hitbox1CenterY + hitbox1.height / 2.0f;
+		float left2 = hitbox2CenterX - hitbox2.width / 2.0f;
+		float right2 = hitbox2CenterX + hitbox2.width / 2.0f;
+		float top2 = hitbox2CenterY - hitbox2.height / 2.0f;
+		float bottom2 = hitbox2CenterY + hitbox2.height / 2.0f;
 		return !(left1 > right2 || right1 < left2 || top1 > bottom2 || bottom1 < top2);
 	}
 
 	else if (hitbox1.type == HitboxType::Circle && hitbox2.type == HitboxType::Circle)
 	{
-		float dx = hitbox1PosX - hitbox2PosX;
-		float dy = hitbox1PosY - hitbox2PosY;
+		// For circles, center positions are already calculated
+		float dx = hitbox1CenterX - hitbox2CenterX;
+		float dy = hitbox1CenterY - hitbox2CenterY;
 		float distanceSquared = dx * dx + dy * dy;
 		float radiusSum = hitbox1.radius + hitbox2.radius;
 		return distanceSquared <= (radiusSum * radiusSum);
@@ -74,16 +76,13 @@ bool CollisionSystem::isIntersect(entt::entity e1, entt::entity e2) const
 	{
 		if (hitbox1.type == HitboxType::Rectangle)
 		{
-			float circleX = hitbox2PosX;
-			float circleY = hitbox2PosY;
-			float rectLeft = hitbox1PosX;
-			float rectRight = rectLeft + hitbox1.width;
-			float rectTop = hitbox1PosY;
-			float rectBottom = rectTop + hitbox1.height;
-			if (circleX <= rectLeft || circleX >= rectRight || circleY <= rectTop || circleY >= rectBottom)
-			{
-				return false; // Circle is outside the rectangle  
-			}
+			float circleX = hitbox2CenterX;
+			float circleY = hitbox2CenterY;
+			float rectLeft = hitbox1CenterX - hitbox1.width / 2.0f;
+			float rectRight = hitbox1CenterX + hitbox1.width / 2.0f;
+			float rectTop = hitbox1CenterY - hitbox1.height / 2.0f;
+			float rectBottom = hitbox1CenterY + hitbox1.height / 2.0f;
+			
 			// Check distance from circle center to rectangle edges  
 			float closestX = std::max(rectLeft, std::min(circleX, rectRight));
 			float closestY = std::max(rectTop, std::min(circleY, rectBottom));
@@ -271,11 +270,12 @@ void CollisionSystem::resolveRR(entt::entity e1, entt::entity e2)
 	Position& pos = registry.get<Position>(e1);
 	Position& otherPos = registry.get<Position>(e2);
 
-	float centerX1 = pos.x + hitbox.offsetX + hitbox.width / 2.0f;
-	float centerY1 = pos.y + hitbox.offsetY + hitbox.height / 2.0f;
+	// Position is now the center, so calculate centers directly with offset
+	float centerX1 = pos.x + hitbox.offsetX;
+	float centerY1 = pos.y + hitbox.offsetY;
 
-	float centerX2 = otherPos.x + otherHitbox.offsetX + otherHitbox.width / 2.0f;
-	float centerY2 = otherPos.y + otherHitbox.offsetY + otherHitbox.height / 2.0f;
+	float centerX2 = otherPos.x + otherHitbox.offsetX;
+	float centerY2 = otherPos.y + otherHitbox.offsetY;
 
 	float deltaX = centerX2 - centerX1;
 	float deltaY = centerY2 - centerY1;
@@ -332,11 +332,12 @@ void CollisionSystem::resolveCC(entt::entity e1, entt::entity e2)
 	Position& pos = registry.get<Position>(e1);
 	Position& otherPos = registry.get<Position>(e2);
 
-	float centerX1 = pos.x + hitbox.offsetX + hitbox.radius;
-	float centerY1 = pos.y + hitbox.offsetY + hitbox.radius;
+	// Position is now the center, so calculate centers directly with offset
+	float centerX1 = pos.x + hitbox.offsetX;
+	float centerY1 = pos.y + hitbox.offsetY;
 
-	float centerX2 = otherPos.x + otherHitbox.offsetX + otherHitbox.radius;
-	float centerY2 = otherPos.y + otherHitbox.offsetY + otherHitbox.radius;
+	float centerX2 = otherPos.x + otherHitbox.offsetX;
+	float centerY2 = otherPos.y + otherHitbox.offsetY;
 
 	float deltaX = centerX2 - centerX1;
 	float deltaY = centerY2 - centerY1;
