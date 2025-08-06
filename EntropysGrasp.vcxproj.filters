@@ -243,6 +243,9 @@
     <ClInclude Include="src\manager\SoundManager.h">
       <Filter>Header Files\manager</Filter>
     </ClInclude>
+    <ClInclude Include="src\gameplay\components\SoundEvent.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\control\GameplayCommandManager.cpp">

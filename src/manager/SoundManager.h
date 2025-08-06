@@ -1,4 +1,5 @@
 #pragma once
+#include "../gameplay/components/SoundEvent.h"
 #include <SFML/Audio.hpp>
 #include <entt/signal/dispatcher.hpp>
 #include <unordered_map>
@@ -29,6 +30,11 @@ private:
     SoundManager(const SoundManager&) = delete;
 	SoundManager& operator=(const SoundManager&) = delete;
     
+	void onPlaySound(const PlaySoundEvent& event);
+	void onStopSound(const StopSoundEvent& event);
+	void onStopAllSounds(const StopAllSoundsEvent& event);
+	void onPlayMusic(const PlayMusicEvent& event);
+	void onStopMusic(const StopMusicEvent& event);
 public:
     static SoundManager& getInstance()
     {

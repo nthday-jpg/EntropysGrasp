@@ -66,6 +66,11 @@ void UIManager::loadFile(const std::string& filePath)
 	}
 }
 
+void UIManager::bindDispatcher(entt::dispatcher* dispatcher)
+{
+	this->dispatcher = dispatcher;
+}
+
 void UIManager::setBackground(sf::Texture* texture)
 {
 	this->backgroundTexture = texture;
@@ -117,6 +122,9 @@ bool UIManager::handleEvent(const std::optional<sf::Event>& event)
 	{
 		if (element->handleEvent(event))
 		{
+			//Play click sound when any UI element handles the event
+			if (dispatcher)
+				dispatcher->trigger<PlaySoundEvent>({ "click", false });
 			return true; // Event was handled by an element
 		}
 	}
