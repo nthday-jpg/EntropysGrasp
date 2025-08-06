@@ -23,5 +23,5 @@ private:
 	void onEvent(const Reward& reward);
 	void increaseExperience(int amount);
 	void increaseGold(int amount);
-	void giveMana(entt::entity target, int amount);
+	void giveMana(entt::entity target, float amount);
 };

@@ -184,7 +184,7 @@ entt::entity GameplayScene::createPlayer() {
     registry.emplace<Speed>(player, 200.0f);
     registry.emplace<Health>(player, 10000.0f, 10000.0f);
     registry.emplace<Attack>(player, 100.0f);
-    registry.emplace<Hitbox>(player, Hitbox{32.0f, 30.0f, 0.0f, 0.0f}); // Assuming a rectangle hitbox for the player
+    registry.emplace<Hitbox>(player, Hitbox{25.0f, 20.0f, 0.0f, 0.0f});
     registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
     registry.emplace<LookingDirection>(player, 0.0f, 0.0f);
     registry.emplace<Mana>(player, 1000.0f);
@@ -204,7 +204,6 @@ entt::entity GameplayScene::createPlayer() {
     sf::IntRect textureRect({ 0, 0 }, { 32, 48}); // Assuming each frame is 50x50 pixels
     sf::Sprite sprite(*mageTexture);
 	sprite.setTextureRect(textureRect);
-    sprite.setPosition({ 0.f, 0.f });
 
     registry.emplace<sf::Sprite>(player, sprite);	
     return player;

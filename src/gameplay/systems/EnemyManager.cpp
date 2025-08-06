@@ -44,7 +44,7 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 	registry.emplace<BehaviorType>(entity, BehaviorType::HomingPlayer);
 	registry.emplace<MovementDirection>(entity, 0.0f, 0.0f);
 	registry.emplace<LookingDirection>(entity, 0.0f, 0.0f);
-	registry.emplace<Hitbox>(entity, 50.0f, 50.0f, 0.0f, 0.0f); // Assuming a default hitbox size
+	registry.emplace<Hitbox>(entity, 50.0f, 40.0f, 0.0f, 0.0f); // Assuming a default hitbox size
 
     int a = Random::getInt(1, 3);
     
@@ -60,7 +60,6 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 	sf::IntRect textureRect({ 0, 0 }, { 64, 64 });
     sf::Sprite sprite(*texture);
     sprite.setTextureRect(textureRect);
-    sprite.setPosition({ position.x, position.y });
     registry.emplace<sf::Sprite>(entity, sprite);
 
 	std::cout << "spawn position: " << position.x << ", " << position.y << std::endl;

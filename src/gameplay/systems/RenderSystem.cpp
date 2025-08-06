@@ -70,7 +70,7 @@ void RenderSystem::render() {
     for (auto entity : entities) {
         const Position& pos = group.get<Position>(entity);
         sf::Sprite& sprite = group.get<sf::Sprite>(entity);
-        sprite.setPosition({ pos.x - sprite.getTextureRect().size.x / 2, pos.y -  sprite.getTextureRect().size.y/ 2});
+        sprite.setPosition(pos);
         WindowManager::getInstance().draw(sprite);
     }
 
