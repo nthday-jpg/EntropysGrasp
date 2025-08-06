@@ -36,14 +36,9 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
         registry.emplace<SpellTag>(spellEntity);
         registry.emplace<SpellID>(spellEntity, spellID); // Pass spellID directly without creating a temporary object
         registry.emplace<Position>(spellEntity, position.x, position.y);
-        registry.emplace<Attack>(spellEntity, spellData.damage);
-        registry.emplace<Mana>(spellEntity, spellData.manaCost);
         registry.emplace<Speed>(spellEntity, spellData.speed);
         registry.emplace<MovementDirection>(spellEntity, directions[i]);
-        registry.emplace<Size>(spellEntity, spellData.size);
-        registry.emplace<Radius>(spellEntity, spellData.radius);
         registry.emplace<BehaviorType>(spellEntity, spellData.behaviorType);
-        registry.emplace<SpellEffect>(spellEntity, spellData.effect);
         registry.emplace<Hitbox>(spellEntity, Hitbox(15.0f, 15.0f, 0.0f, 0.0f));
         registry.emplace<RepelResistance>(spellEntity, 0.5f); // Example resistance value
 
@@ -178,7 +173,8 @@ void SpellManager::updateDurationSystem(float dt)
 void SpellManager::handleSpellCollision(const SpellReduction& event)
 {
     entt::entity spellEntity = event.spell;
-	durations[spellEntity] -= 10000.0f; // Reduce the duration of the spell by 0.5 seconds
+	SpellID spellID = registry.get<SpellID>(spellEntity);
+	durations[spellEntity] -= SpellLibrary::getInstance().getSpell(spellID).timeDecreasePerHit; // Reduce the duration of the spell by 0.5 seconds
 }
 
 void SpellManager::castSpell(SpellID spellID) 
@@ -205,4 +201,25 @@ void SpellManager::sinkEvents()
         std::cerr << "Dispatcher not found in registry context!" << std::endl;
         assert(false); // Handle error appropriately
     }
+}
+
+SpellID SpellManager::currentSpell() const
+{
+	return currentSpellID;
+}
+
+void SpellManager::setCurrentSpell(SpellID spellID)
+{
+    currentSpellID = spellID;
+}
+
+SpellID SpellManager::getSpellID(int i) const
+{
+    if (i < 0 || i >= usableSpells.size())
+    {
+        std::cerr << "Index out of bounds: " << i << std::endl;
+        assert(false); // Handle error appropriately
+        return SpellID::Unknown; // Return a default value or handle the error as needed
+	}
+	return usableSpells[i - 1];
 }

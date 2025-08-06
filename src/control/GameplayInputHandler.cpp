@@ -13,8 +13,12 @@ void GameplayInputHandler::initCommandFactory()
     commandFactory["MOVERIGHT"] = [this]() { return new MoveRight(playerEntity); };
     commandFactory["MOVEUP"] = [this]() { return new MoveUp(playerEntity); };
     commandFactory["MOVEDOWN"] = [this]() { return new MoveDown(playerEntity); };
-    commandFactory["CAST"] = [this]() { return new CastSpell(playerEntity, particleSystem, spellManager); };
+    commandFactory["CAST"] = [this]() { return new CastSpell(playerEntity, spellManager); };
     commandFactory["DASH"] = [this]() { return new Dash(playerEntity); };
+	commandFactory["SPELL1"] = [this]() { return new ChangeSpell(spellManager->getSpellID(1), spellManager); };
+	commandFactory["SPELL2"] = [this]() { return new ChangeSpell(spellManager->getSpellID(2), spellManager); };
+	commandFactory["SPELL3"] = [this]() { return new ChangeSpell(spellManager->getSpellID(3), spellManager); };
+	commandFactory["SPELL4"] = [this]() { return new ChangeSpell(spellManager->getSpellID(4), spellManager); };
     // Add more commands as needed
 }
 
@@ -26,7 +30,7 @@ void GameplayInputHandler::initActionTypes()
     };
     
     discreteActions = {
-        "CAST", "DASH", "PAUSE"
+		"CAST", "DASH", "PAUSE", "SPELL1", "SPELL2", "SPELL3", "SPELL4"
     };
 }
 

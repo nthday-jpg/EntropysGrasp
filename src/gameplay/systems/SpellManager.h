@@ -9,6 +9,13 @@
 class SpellManager
 {
 	entt::registry& registry; // Reference to the entity registry
+	SpellID currentSpellID; // Current spell being cast
+    std::vector<SpellID> usableSpells = {
+        SpellID::Fireball,
+        SpellID::IceSpike,
+        SpellID::PoisonCloud,
+        SpellID::PenetratingShot,
+    };
 public:
     std::unordered_map<SpellID, float> castTimes; // Maps spell names to their cast times
     std::unordered_map<SpellID, float> cooldowns; // Maps spell names to their cooldown times
@@ -25,4 +32,7 @@ public:
     void castSpell(SpellID spellID);
     void update(float dt);
 	void sinkEvents();
+    SpellID currentSpell() const;
+    void setCurrentSpell(SpellID spellID);
+    SpellID getSpellID(int i) const;
 };

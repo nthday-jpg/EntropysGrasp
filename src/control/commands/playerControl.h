@@ -46,11 +46,20 @@ public:
 class CastSpell : public Command
 {
 	entt::entity playerEntity;
-	ParticleSystem* particleSystem;
 	SpellManager* spellManager;
 public:
-	CastSpell(entt::entity player, ParticleSystem* particleSystem, SpellManager* spellManager) 
-		: playerEntity(player), particleSystem(particleSystem), spellManager(spellManager) {}
+	CastSpell(entt::entity player, SpellManager* spellManager) 
+		: playerEntity(player), spellManager(spellManager) {}
+	void execute(entt::registry& registry) override;
+};
+
+class ChangeSpell : public Command
+{
+	SpellID spellID;
+	SpellManager* spellManager;
+public:
+	ChangeSpell(SpellID spellID, SpellManager* spellManager) 
+		: spellID(spellID), spellManager(spellManager) { }
 	void execute(entt::registry& registry) override;
 };
 

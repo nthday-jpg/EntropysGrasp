@@ -21,11 +21,6 @@ struct Attack
 	float value;
 };
 
-struct Size
-{
-	float value;
-};
-
 struct Radius
 {
 	float value;

@@ -55,7 +55,7 @@ bool SpellLibrary::loadSpells()
 			data.castTime = stats.value("castTime", 1.0f);
 			data.cooldowns = stats.value("cooldowns", 1.0f);
 			data.speed = stats.value("speed", 1.0f);
-			data.size = stats.value("size", 1.0f);
+			data.timeDecreasePerHit = stats.value("timeDecreasePerHit", 1.0f);
 			data.duration = stats.value("duration", 1.0f);
 			data.radius = stats.value("radius", 1.0f);
 			string effectStr = stats.value("effect", "None");

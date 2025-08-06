@@ -19,7 +19,7 @@ void AnimationManager::loadAnimationData() {
 	animationDatabase["slime1"] = loadSlimeAnimations(1);
 	animationDatabase["slime2"] = loadSlimeAnimations(2);
 	animationDatabase["slime3"] = loadSlimeAnimations(3);
-	animationDatabase["spell2"] = loadSpellAnimations();
+	animationDatabase["spell2"] = loadSpellAnimations("spell2", 0);
 }
 
 AnimationData* AnimationManager::getAnimationData(const std::string& name) {
@@ -137,9 +137,9 @@ AnimationData AnimationManager::loadSlimeAnimations(int a) {
 	return data;
 }
 
-AnimationData AnimationManager::loadSpellAnimations() {
+AnimationData AnimationManager::loadSpellAnimations(const std::string& name, int i) {
 	AnimationData data;
-	std::string name = "spell2";
+ 
 	sf::Texture* textureCast = TextureManager::getInstance().getTexture(name);
 	const sf::Vector2i frameSize = { 64, 64 };
 	const int framesPerRow = 14;
@@ -153,6 +153,6 @@ AnimationData AnimationManager::loadSpellAnimations() {
 		anim.frameDuration = frameDuration;
 		data.animations[{ state, dir }] = anim;
 		};
-	add(AnimationState::Attacking, Direction::Down, 0);
+	add(AnimationState::Attacking, Direction::Down, i);
 	return data;
 }

@@ -26,10 +26,10 @@ struct SpellData
     float castTime;
     float cooldowns;
     float speed;
-    float size;
     float duration;
     float radius;
 	int count;
+	float timeDecreasePerHit;
     SpellEffect effect;
     BehaviorType behaviorType;
 };

@@ -21,5 +21,5 @@ public:
 	AnimationData loadMageAnimations();
 	AnimationData loadOrcAnimations(int a);
 	AnimationData loadSlimeAnimations(int a);
-	AnimationData loadSpellAnimations();
+	AnimationData loadSpellAnimations(const std::string& name, int i);
 };

@@ -90,8 +90,8 @@ void MoveRight::execute(entt::registry& registry)
 
 void CastSpell::execute(entt::registry& registry)
 {
-	spellManager->castSpell(SpellID::IceSpike);
-	std::cout << "cast" << std::endl;
+	spellManager->castSpell(spellManager->currentSpell());
+	
 	// Trigger casting animation based on looking direction
 	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
 		Direction castDirection = Direction::Down; // Default
@@ -102,6 +102,11 @@ void CastSpell::execute(entt::registry& registry)
 
 		(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Attacking, castDirection });
 	}
+}
+
+void ChangeSpell::execute(entt::registry& registry)
+{
+	spellManager->setCurrentSpell(spellID);
 }
 
 void Dash::execute(entt::registry& registry)

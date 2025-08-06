@@ -68,6 +68,10 @@ private:
 		{sf::Keyboard::Scancode::D, "MOVERIGHT"},
 		{sf::Keyboard::Scancode::Space, "DASH"},
 		{sf::Keyboard::Scancode::F, "CAST"},
-		{sf::Keyboard::Scancode::Escape, "PAUSE"}
+		{sf::Keyboard::Scancode::Escape, "PAUSE"},
+		{sf::Keyboard::Scancode::Num1, "SPELL1"},
+		{sf::Keyboard::Scancode::Num2, "SPELL2"},
+		{sf::Keyboard::Scancode::Num3, "SPELL3"},
+		{sf::Keyboard::Scancode::Num4, "SPELL4"},
 	};
 };
