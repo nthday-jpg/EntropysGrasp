@@ -90,7 +90,7 @@ void MoveRight::execute(entt::registry& registry)
 
 void CastSpell::execute(entt::registry& registry)
 {
-	spellManager->castSpell(SpellID::Fireball);
+	spellManager->castSpell(SpellID::IceSpike);
 	std::cout << "cast" << std::endl;
 	// Trigger casting animation based on looking direction
 	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {

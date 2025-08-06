@@ -11,7 +11,6 @@ class CombatSystem
 public:
 	CombatSystem(entt::registry& registry);
 	void handleEvent(const CollisionEvent& event);
-	void applyDamage(entt::entity entityA, entt::entity entityB);
 	void sinkEvents();
 	void handlePlayerEnemyCollision(entt::entity player, entt::entity enemy);
 	void handleEnemySpellCollision(entt::entity enemy, entt::entity spell);

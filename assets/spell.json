@@ -2,35 +2,31 @@
   "Fireball": {
     "stats": {
       "damage": 100,
-      "manaCost": 1,
-      "castTime": 1,
-      "cooldowns": 1,
+      "manaCost": 0.1,
+      "castTime": 0.2,
+      "cooldowns": 0.5,
       "speed": 500,
       "size": 1,
       "duration": 100,
       "radius": 1,
-      "count": 10
-    },
-    "appearance": {
-      "color": "red",
-      "size": "medium"
+      "effect": "Burn",
+      "behaviorType": "Straight",
+      "count": 1
     }
   },
   "IceSpike": {
     "stats": {
       "damage": 80,
-      "manaCost": 40,
-      "castTime": 1.5,
-      "cooldowns": 8,
-      "speed": 6,
-      "size": 3,
-      "duration": 8,
-      "radius": 3,
-      "count": 1
-    },
-    "appearance": {
-      "color": "blue",
-      "size": "small"
+      "manaCost": 0.1,
+      "castTime": 0.2,
+      "cooldowns": 0.5,
+      "speed": 500,
+      "size": 1,
+      "duration": 100,
+      "radius": 1,
+      "effect": "Freeze",
+      "behaviorType": "Orbit",
+      "count": 10
     }
   }
 }

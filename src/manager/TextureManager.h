@@ -10,7 +10,7 @@ public:
 	std::unordered_map<std::string, sf::Texture*> textureDatabase;
 	
 	static TextureManager& getInstance();
-	bool loadFromAssetFile(const std::string& filePath);
+	bool loadFromAssetFile();
 	bool loadTexture(const std::string& name, const std::string& filePath);
 	void setTexture(const std::string& name, sf::Texture* texture);
 	sf::Texture* getTexture(const std::string& name) const;

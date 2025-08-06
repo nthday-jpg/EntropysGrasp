@@ -1,6 +1,7 @@
 ﻿#include "PositionIntegrator.h"
-#include "../components/MovementComponents.h" 
+#include "../components/MovementComponents.h"  
 #include "../components/EntityTags.h"
+#include "../components/Particle.h"
 
 void PositionIntegrator::update(entt::registry& registry, float dt)
 {

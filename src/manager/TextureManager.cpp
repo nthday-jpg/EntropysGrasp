@@ -4,7 +4,7 @@
 #include <cassert>
 
 TextureManager::TextureManager() {
-    if (!loadFromAssetFile(filePath)) {
+    if (!loadFromAssetFile()) {
         assert(false && "Failed to load textures from asset file");
 	}
 }
@@ -43,7 +43,7 @@ sf::Texture* TextureManager::getTexture(const std::string& name) const {
     return nullptr;
 }
 
-bool TextureManager::loadFromAssetFile(const std::string& filePath) {
+bool TextureManager::loadFromAssetFile() {
     std::ifstream file(filePath);
     if (!file.is_open()) {
         assert(false && "Failed to open asset file");

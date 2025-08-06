@@ -25,6 +25,8 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	rewardSystem(registry)
 {
     
+    MapManager::getInstance().loadMap();
+	TextureManager::getInstance().loadFromAssetFile();
 	gameplayCommandManager = new GameplayCommandManager(registry);
 	entt::entity playerEntity = createPlayer();
 
@@ -55,8 +57,6 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	enemyManager.sinkEvents();
     animationSystem.sinkEvents();
     rewardSystem.sinkEvents();
-    
-    MapManager::getInstance().loadMap();
 }
 
 GameplayScene::~GameplayScene() {
@@ -115,9 +115,6 @@ void GameplayScene::update(float deltaTime) {
     }
     
     // Process all queued events (including animation events)
-    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-        (*dispatcher)->update();
-    }
     
     // Update UI
     // Here you would typically run your game systems like:
@@ -132,6 +129,9 @@ void GameplayScene::update(float deltaTime) {
     enemyManager.update(deltaTime);
 	particleSystem.update(deltaTime);
 	animationSystem.update(deltaTime);
+    if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+        (*dispatcher)->update();
+    }
 
     // Update camera
     camera.update(deltaTime);
@@ -179,22 +179,18 @@ void GameplayScene::exit()
 
 entt::entity GameplayScene::createPlayer() {
     auto player = registry.create();
-	std::cout << "Creating player entity with ID: " << static_cast<unsigned int>(player) << std::endl;
     registry.emplace<PlayerTag>(player);
-    registry.emplace<Position>(player, 0.0f, 0.0f);
+    registry.emplace<Position>(player, 10.0f, 10.0f);
     registry.emplace<Speed>(player, 200.0f);
-	registry.emplace<Health>(player, 100.0f, 100.0f);
-    registry.emplace<Hitbox>(player, 32.0f, 24.0f, 0.0f, 0.0f);
+    registry.emplace<Health>(player, 10000.0f, 10000.0f);
+    registry.emplace<Attack>(player, 100.0f);
+    registry.emplace<Hitbox>(player, Hitbox{25.0f, 20.0f, 0.0f, 0.0f});
     registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
     registry.emplace<LookingDirection>(player, 0.0f, 0.0f);
     registry.emplace<Mana>(player, 1000.0f);
     registry.emplace<RepelResistance>(player, 0.5f);
 
-    TextureManager::getInstance().loadTexture("Mage-Sheet", "assets/texture/Mage-Sheet.png");
-
-    sf::Texture* mageTexture = TextureManager::getInstance().getTexture("Mage-Sheet");
-
-    AnimationManager::getInstance().loadAnimationData("Mage", "assets/texture/Mage-Sheet.png", mageTexture);
+    sf::Texture* mageTexture = TextureManager::getInstance().getTexture("Mage");
 
     AnimationComponent animComp;
     animComp.name = "Mage";

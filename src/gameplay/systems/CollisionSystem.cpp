@@ -106,6 +106,10 @@ void CollisionSystem::detectCollisions()
 	auto view = registry.view<Position, Hitbox>();
 	for (auto [entity, position, hitbox] : view.each())
 	{
+		if (registry.any_of<Inactive>(entity))
+		{
+			continue;
+		}
 		auto nearbyEntities = spatialHashGrid.queryNearby(position);
 
 		for (auto otherEntity : nearbyEntities)
@@ -185,7 +189,7 @@ void CollisionSystem::resolvePhysicalOverlap(const CollisionEvent& event)
 			{
 				cerr << "Entity " << static_cast<uint32_t>(e1) << " has EnemyTag component, which is not a physical entity." << endl;
 			}
-			if (registry.any_of<PlayerTag>(e1))
+			if (!registry.any_of<PlayerTag>(e1))
 			{
 				cerr << "Entity " << static_cast<uint32_t>(e1) << " has PlayerTag component, which is not a physical entity." << endl;
 			}
@@ -213,7 +217,7 @@ void CollisionSystem::resolvePhysicalOverlap(const CollisionEvent& event)
 			{
 				cerr << "Entity " << static_cast<uint32_t>(e2) << " has EnemyTag component, which is not a physical entity." << endl;
 			}
-			if (registry.any_of<PlayerTag>(e2))
+			if (!registry.any_of<PlayerTag>(e2))
 			{
 				cerr << "Entity " << static_cast<uint32_t>(e2) << " has PlayerTag component, which is not a physical entity." << endl;
 			}
