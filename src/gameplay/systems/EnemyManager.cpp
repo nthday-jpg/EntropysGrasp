@@ -44,7 +44,7 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 	registry.emplace<BehaviorType>(entity, BehaviorType::HomingPlayer);
 	registry.emplace<MovementDirection>(entity, 0.0f, 0.0f);
 	registry.emplace<LookingDirection>(entity, 0.0f, 0.0f);
-	registry.emplace<Hitbox>(entity, 50.0f, 40.0f, 0.0f, 0.0f); // Assuming a default hitbox size
+	registry.emplace<Hitbox>(entity, 40.0f, 35.0f, 0.0f, 0.0f); // Assuming a default hitbox size
 
     int a = Random::getInt(1, 3);
     
@@ -60,6 +60,7 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 	sf::IntRect textureRect({ 0, 0 }, { 64, 64 });
     sf::Sprite sprite(*texture);
     sprite.setTextureRect(textureRect);
+	sprite.setOrigin({ 32.0f, 32.0f }); 
     registry.emplace<sf::Sprite>(entity, sprite);
 
 	std::cout << "spawn position: " << position.x << ", " << position.y << std::endl;
@@ -79,7 +80,7 @@ void EnemyManager::spawning(float dt)
                 if (isInLoadChunk(position))
                 {
                     Position randomPosition = randomizeOffScreenPosition(position);
-					std::cout << (int)spawnEnemy(info.type, randomPosition) << std::endl;
+					spawnEnemy(info.type, randomPosition);
                 }
             }
             timer = 0.0f; // Reset timer after spawning all positions for this type

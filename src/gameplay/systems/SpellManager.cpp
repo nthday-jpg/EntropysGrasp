@@ -59,6 +59,7 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
         sf::IntRect textureRect({0, 0}, { 64, 64 });
 		sf::Sprite spellSprite(*texture);
 		spellSprite.setTextureRect(textureRect);
+		spellSprite.setOrigin({textureRect.size.x/2.0f, textureRect.size.y/2.0f}); // Set origin to center
         spellSprite.setPosition({ position.x, position.y });
 		registry.emplace<sf::Sprite>(spellEntity, spellSprite);
 
