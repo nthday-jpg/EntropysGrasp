@@ -69,8 +69,8 @@ void RenderSystem::render() {
     });
     
     for (auto entity : entities) {
-        const Position& pos = group.get<Position>(entity);
         sf::Sprite& sprite = group.get<sf::Sprite>(entity);
+		const Position& pos = group.get<Position>(entity);
         sprite.setPosition(pos);
         WindowManager::getInstance().draw(sprite);
     }
@@ -118,13 +118,14 @@ void RenderSystem::renderEnemies() {
 	auto view = registry.view<EnemyTag>();
     for (auto entity : view) {
         if (!registry.all_of<sf::Sprite>(entity)) {
-			sf::Texture* texture = TextureManager::getInstance().getTexture("test");
-			sf::IntRect rect({0, 0}, {32, 48});
-			sf::Sprite sprite(*texture);
-			sprite.setTextureRect(rect);
-			registry.emplace<sf::Sprite>(entity, sprite);
-		}
-	}
+            sf::Texture* texture = TextureManager::getInstance().getTexture("test");
+            sf::IntRect rect({ 0, 0 }, { 32, 48 });
+            sf::Sprite sprite(*texture);
+            sprite.setTextureRect(rect);
+            sprite.setOrigin({ rect.size.x / 2.0f, rect.size.y / 2.0f });
+            registry.emplace<sf::Sprite>(entity, sprite);
+        }
+    }
     auto view1 = registry.view<SpellTag>();
     for (auto entity : view1) {
         if (!registry.all_of<sf::Sprite>(entity)) {
