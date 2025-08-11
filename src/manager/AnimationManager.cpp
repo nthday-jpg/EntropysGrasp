@@ -11,6 +11,9 @@ AnimationManager::AnimationManager() {
 	loadAnimationData();
 }
 
+void AnimationManager::loadAnimationDatabase(const std::string& name, int i) {
+}
+
 void AnimationManager::loadAnimationData() {
 	animationDatabase["Mage"] = loadMageAnimations();
 	animationDatabase["orc1"] = loadOrcAnimations(1);
@@ -19,7 +22,20 @@ void AnimationManager::loadAnimationData() {
 	animationDatabase["slime1"] = loadSlimeAnimations(1);
 	animationDatabase["slime2"] = loadSlimeAnimations(2);
 	animationDatabase["slime3"] = loadSlimeAnimations(3);
-	animationDatabase["spell2"] = loadSpellAnimations("spell2", 0);
+	for (int i = 0; i < 9; ++i) {
+		std::string name1 = "spell1" + std::to_string(i);
+		std::string name2 = "spell2" + std::to_string(i);
+		std::string name3 = "spell3" + std::to_string(i);
+		animationDatabase[name1] = loadSpellAnimations("spell1", i);
+		animationDatabase[name2] = loadSpellAnimations("spell2", i);
+		animationDatabase[name3] = loadSpellAnimations("spell3", i);
+	}
+	animationDatabase["bolt"] = loadBoltSpellAnimations();
+	animationDatabase["charged"] = loadChargedSpellAnimations();
+	animationDatabase["cross"] = loadCrossSpellAnimations();
+	animationDatabase["pulse"] = loadPulseSpellAnimations();
+	animationDatabase["spark"] = loadSparkSpellAnimations();
+	animationDatabase["wave"] = loadWaveSpellAnimations();
 }
 
 AnimationData* AnimationManager::getAnimationData(const std::string& name) {
@@ -36,8 +52,8 @@ AnimationData AnimationManager::loadMageAnimations() {
 	sf::Texture* textureOut = TextureManager::getInstance().getTexture(name);
 
 	const sf::Vector2i frameSize = { 32, 48 };
-	const int framesPerRow = 6;
-	const float frameDuration = 0.03f;
+	const int framesPerRow = textureOut->getSize().x / frameSize.x;
+	const float frameDuration = 0.1f;
 
 	auto add = [&](AnimationState state, Direction dir, int row) {
 		Animation anim;
@@ -56,8 +72,6 @@ AnimationData AnimationManager::loadMageAnimations() {
 		add(AnimationState::Attacking, (Direction)i, 3*i + 2);
 	}
 
-	// (Có thể thêm các trạng thái khác như Attack, Cast...)
-
 	return data;
 }
 
@@ -69,29 +83,29 @@ AnimationData AnimationManager::loadOrcAnimations(int a) {
 	sf::Texture* textureWalk = TextureManager::getInstance().getTexture(name + "_walk");
 	sf::Texture* textureDeath = TextureManager::getInstance().getTexture(name + "_death");
 	const sf::Vector2i frameSize = { 64, 64 };
-	const float frameDuration = 0.03f;
-	auto add = [&](sf::Texture* texture,AnimationState state, Direction dir, int row, int framesPerRow = 8) {
+	const float frameDuration = 0.1f;
+	auto add = [&](sf::Texture* texture,AnimationState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = texture;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
-		anim.frameCount = sf::Vector2u(framesPerRow, 1);
+		anim.frameCount = sf::Vector2u(texture->getSize().x / frameSize.x, 1);
 		anim.startFrame = sf::Vector2u(0u, static_cast<unsigned int>(row));
 		anim.frameDuration = frameDuration;
 		data.animations[{ state, dir }] = anim;
 		};
-	add(textureIdle, AnimationState::Idle, (Direction)0, 0, 4);
+	add(textureIdle, AnimationState::Idle, (Direction)0, 0);
 	add(textureWalk, AnimationState::Walking, (Direction)0, 0);
 	add(textureAttack, AnimationState::Attacking, (Direction)0, 0);
 	add(textureDeath, AnimationState::Dead, (Direction)0, 0);
-	add(textureIdle, AnimationState::Idle, (Direction)4, 1, 4);
+	add(textureIdle, AnimationState::Idle, (Direction)4, 1);
 	add(textureWalk, AnimationState::Walking, (Direction)4, 1);
 	add(textureAttack, AnimationState::Attacking, (Direction)4, 1);
 	add(textureDeath, AnimationState::Dead, (Direction)4, 1);
-	add(textureIdle, AnimationState::Idle, (Direction)2, 2 , 4);
+	add(textureIdle, AnimationState::Idle, (Direction)2, 2);
 	add(textureWalk, AnimationState::Walking, (Direction)2, 2);
 	add(textureAttack, AnimationState::Attacking, (Direction)2, 2);
 	add(textureDeath, AnimationState::Dead, (Direction)2, 2);
-	add(textureIdle, AnimationState::Idle, (Direction)6, 3, 4);
+	add(textureIdle, AnimationState::Idle, (Direction)6, 3);
 	add(textureWalk, AnimationState::Walking, (Direction)6, 3);
 	add(textureAttack, AnimationState::Attacking, (Direction)6, 3);
 	add(textureDeath, AnimationState::Dead, (Direction)6, 3);
@@ -107,7 +121,7 @@ AnimationData AnimationManager::loadSlimeAnimations(int a) {
 	sf::Texture* textureWalk = TextureManager::getInstance().getTexture(name + "_walk");
 	sf::Texture* textureDeath = TextureManager::getInstance().getTexture(name + "_death");
 	const sf::Vector2i frameSize = { 64, 64 };
-	const float frameDuration = 0.03f;
+	const float frameDuration = 0.1f;
 	auto add = [&](sf::Texture* texture, AnimationState state, Direction dir, int row, int framesPerRow) {
 		Animation anim;
 		anim.texture = texture;
@@ -137,13 +151,13 @@ AnimationData AnimationManager::loadSlimeAnimations(int a) {
 	return data;
 }
 
-AnimationData AnimationManager::loadSpellAnimations(const std::string& name, int i) {
+AnimationData AnimationManager::loadSpellAnimations(const std::string& name, int color) {
 	AnimationData data;
  
 	sf::Texture* textureCast = TextureManager::getInstance().getTexture(name);
 	const sf::Vector2i frameSize = { 64, 64 };
-	const int framesPerRow = 14;
-	const float frameDuration = 0.03f;
+	const int framesPerRow = textureCast->getSize().x / frameSize.x;
+	const float frameDuration = 0.1f;
 	auto add = [&](AnimationState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = textureCast;
@@ -153,6 +167,139 @@ AnimationData AnimationManager::loadSpellAnimations(const std::string& name, int
 		anim.frameDuration = frameDuration;
 		data.animations[{ state, dir }] = anim;
 		};
-	add(AnimationState::Attacking, Direction::Down, i);
+	add(AnimationState::Attacking, Direction::Down, color);
+	return data;
+}
+
+AnimationData AnimationManager::loadBoltSpellAnimations() {
+	AnimationData data;
+	sf::Texture* textureCast = TextureManager::getInstance().getTexture("bolt");
+	const sf::Vector2i frameSize = { 58, 58 };
+	const int framesPerRow = textureCast->getSize().x / frameSize.x;
+	const float frameDuration = 0.1f;
+	auto add = [&](AnimationState state, Direction dir, int row) {
+		Animation anim;
+		anim.texture = textureCast;
+		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
+		anim.frameCount = sf::Vector2u(framesPerRow, 1);
+		anim.startFrame = sf::Vector2u(0u, static_cast<unsigned int>(row));
+		anim.frameDuration = frameDuration;
+		data.animations[{ state, dir }] = anim;
+		};
+	int a = 0;
+	for (int i = 10; i > 2; --i) {
+		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+	}
+	return data;
+}
+
+AnimationData AnimationManager::loadChargedSpellAnimations() {
+	AnimationData data;
+	sf::Texture* textureCast = TextureManager::getInstance().getTexture("charged");
+	const sf::Vector2i frameSize = { 79, 80 };
+	const int framesPerRow = textureCast->getSize().x / frameSize.x;
+	const float frameDuration = 0.1f;
+	auto add = [&](AnimationState state, Direction dir, int row) {
+		Animation anim;
+		anim.texture = textureCast;
+		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
+		anim.frameCount = sf::Vector2u(framesPerRow, 1);
+		anim.startFrame = sf::Vector2u(0u, static_cast<unsigned int>(row));
+		anim.frameDuration = frameDuration;
+		data.animations[{ state, dir }] = anim;
+		};
+	int a = 0;
+	for (int i = 14; i > 6; --i) {
+		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+	}
+	return data;
+}
+
+AnimationData AnimationManager::loadCrossSpellAnimations() {
+	AnimationData data;
+	sf::Texture* textureCast = TextureManager::getInstance().getTexture("cross");
+	const sf::Vector2i frameSize = { 46, 46 };
+	const int framesPerRow = textureCast->getSize().x / frameSize.x;
+	const float frameDuration = 0.1f;
+	auto add = [&](AnimationState state, Direction dir, int row) {
+		Animation anim;
+		anim.texture = textureCast;
+		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
+		anim.frameCount = sf::Vector2u(framesPerRow, 1);
+		anim.startFrame = sf::Vector2u(0u, static_cast<unsigned int>(row));
+		anim.frameDuration = frameDuration;
+		data.animations[{ state, dir }] = anim;
+		};
+	int a = 0;
+	for (int i = 14; i > 6; --i) {
+		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+	}
+	return data;
+}
+
+
+AnimationData AnimationManager::loadPulseSpellAnimations() {
+	AnimationData data;
+	sf::Texture* textureCast = TextureManager::getInstance().getTexture("pulse");
+	const sf::Vector2i frameSize = { 69, 68 };
+	const int framesPerRow = textureCast->getSize().x / frameSize.x;
+	const float frameDuration = 0.1f;
+	auto add = [&](AnimationState state, Direction dir, int row) {
+		Animation anim;
+		anim.texture = textureCast;
+		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
+		anim.frameCount = sf::Vector2u(framesPerRow, 1);
+		anim.startFrame = sf::Vector2u(0u, static_cast<unsigned int>(row));
+		anim.frameDuration = frameDuration;
+		data.animations[{ state, dir }] = anim;
+		};
+	int a = 0;
+	for (int i = 14; i > 6; --i) {
+		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+	}
+	return data;
+}
+
+AnimationData AnimationManager::loadSparkSpellAnimations() {
+	AnimationData data;
+	sf::Texture* textureCast = TextureManager::getInstance().getTexture("spark");
+	const sf::Vector2i frameSize = { 69, 68 };
+	const int framesPerRow = textureCast->getSize().x / frameSize.x;
+	const float frameDuration = 0.1f;
+	auto add = [&](AnimationState state, Direction dir, int row) {
+		Animation anim;
+		anim.texture = textureCast;
+		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
+		anim.frameCount = sf::Vector2u(framesPerRow, 1);
+		anim.startFrame = sf::Vector2u(0u, static_cast<unsigned int>(row));
+		anim.frameDuration = frameDuration;
+		data.animations[{ state, dir }] = anim;
+		};
+	int a = 0;
+	for (int i = 14; i > 6; --i) {
+		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+	}
+	return data;
+}
+
+AnimationData AnimationManager::loadWaveSpellAnimations() {
+	AnimationData data;
+	sf::Texture* textureCast = TextureManager::getInstance().getTexture("wave");
+	const sf::Vector2i frameSize = { 95, 95 };
+	const int framesPerRow = textureCast->getSize().x / frameSize.x;
+	const float frameDuration = 0.1f;
+	auto add = [&](AnimationState state, Direction dir, int row) {
+		Animation anim;
+		anim.texture = textureCast;
+		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
+		anim.frameCount = sf::Vector2u(framesPerRow, 1);
+		anim.startFrame = sf::Vector2u(0u, static_cast<unsigned int>(row));
+		anim.frameDuration = frameDuration;
+		data.animations[{ state, dir }] = anim;
+		};
+	int a = 0;
+	for (int i = 14; i > 6; --i) {
+		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+	}
 	return data;
 }

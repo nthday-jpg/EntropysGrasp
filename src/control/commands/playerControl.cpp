@@ -13,29 +13,53 @@
 #include "../../gameplay/systems/SpellManager.h"
 #include "../../manager/SpellLibrary.h"
 #include "../../gameplay/systems/AnimationSystem.h"
-
 #include "../../utils/VectorMath.h"
 #include "../../utils/Random.h"
 
+const float PI = 3.14159265358979323846f;
 
 const MovementDirection down = MovementDirection(0, 1);
 const MovementDirection up = MovementDirection(0, -1);
 const MovementDirection left = MovementDirection(-1, 0);
 const MovementDirection right = MovementDirection(1, 0);
 
+
 // Helper function to convert LookingDirection to Direction enum for animation
 Direction getDirectionFromLooking(const LookingDirection& lookingDir) {
 	float x = lookingDir.x;
 	float y = lookingDir.y;
-	// x axis is horizontal and 
-	return Direction::Down;
+	float angle = std::atan2(y, x) * 180.0f / static_cast<float>(PI); // Convert to degrees
+	if (angle <= 22.5 && angle >-22.5) {
+		return Direction::Right;
+	}
+	else if (angle > 22.5 && angle <= 67.5) {
+		return Direction::DownRight;
+	}
+	else if (angle > 67.5 && angle <= 112.5) {
+		return Direction::Down;
+	}
+	else if (angle > 112.5 && angle <= 157.5) {
+		return Direction::DownLeft;
+	}
+	else if (angle > 157.5 || angle <= -157.5) {
+		return Direction::Left;
+	}
+	else if (angle > -157.5 && angle <= -112.5) {
+		return Direction::UpLeft;
+	}
+	else if (angle > -112.5 && angle <= -67.5) {
+		return Direction::Up;
+	}
+	else {
+		return Direction::UpRight;
+	}
 }
 
 // Helper function to check if player is currently moving
 bool isPlayerMoving(entt::registry& registry, entt::entity playerEntity) {
 	if (registry.all_of<MovementDirection>(playerEntity)) {
 		const MovementDirection& moveDir = registry.get<MovementDirection>(playerEntity);
-		return (std::abs(moveDir.x) > 0.01f || std::abs(moveDir.y) > 0.01f);
+		return (moveDir.x != 0 || moveDir.y != 0);
 	}
 	return false;
 }
@@ -136,6 +160,16 @@ void ResetTempComponents::execute(entt::registry& registry)
 	if (registry.all_of<LookingDirection>(playerEntity)) {
 		currentLookingDir = registry.get<LookingDirection>(playerEntity);
 	}
+	
+	const AnimationState& currentState = registry.get<AnimationComponent>(playerEntity).currentState;
+
+	if (!isPlayerMoving(registry, playerEntity))
+	{
+		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
+			Direction idleDirection = getDirectionFromLooking(currentLookingDir);
+			(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Idle, idleDirection });
+		}
+	}
 
 	// Reset movement direction (this stops movement)
 	if (!registry.all_of<MovementDirection>(playerEntity))
@@ -150,11 +184,6 @@ void ResetTempComponents::execute(entt::registry& registry)
 	if (!registry.all_of<LookingDirection>(playerEntity))
 	{
 		registry.emplace<LookingDirection>(playerEntity, LookingDirection{ 0.0f,0.0f });
-	}
-
-	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-		Direction idleDirection = getDirectionFromLooking(currentLookingDir);
-		(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Idle, idleDirection });
 	}
 }
 
@@ -191,11 +220,10 @@ void LookAtMouse::execute(entt::registry& registry)
 	// Calculate the angle difference to avoid unnecessary animation updates
 
 	Direction newDirection = getDirectionFromLooking(lookingDirection);
-	if (newDirection != oldDirection) {
+	if (newDirection != oldDirection ) {
 		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
 		{
 			(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Walking, newDirection });
-
 		}
 	}
 	registry.emplace_or_replace<LookingDirection>(playerEntity, lookingDirection);

@@ -19,14 +19,14 @@ bool MapManager::loadMap() {
     std::string mapname = "map";
 
     if (doc.LoadFile(pathToMaps.c_str()) != XML_SUCCESS) {
-        std::cerr << "Lỗi khi mở file: " << pathToMaps << std::endl;
+        std::cerr << "Error when opening file: " << pathToMaps << std::endl;
         return false;
     }
 
     // Lấy thẻ <map>
     XMLElement* mapElement = doc.FirstChildElement("map");
     if (!mapElement) {
-        std::cerr << "Không tìm thấy thẻ <map>" << std::endl;
+        std::cerr << "Cannot find tag <map>" << std::endl;
         return false;
     }
 
@@ -36,7 +36,7 @@ bool MapManager::loadMap() {
     int tileWidth = mapElement->IntAttribute("tilewidth");
     int tileHeight = mapElement->IntAttribute("tileheight");
 
-    std::cout << "Kích thước map: " << mapWidth << "x" << mapHeight
+    std::cout << "Map size: " << mapWidth << "x" << mapHeight
         << " | Tile: " << tileWidth << "x" << tileHeight << std::endl;
 
     // Khởi tạo bản đồ mới
@@ -50,13 +50,13 @@ bool MapManager::loadMap() {
     while (layerElement) {
         XMLElement* dataElement = layerElement->FirstChildElement("data");
         if (!dataElement || std::string(dataElement->Attribute("encoding")) != "csv") {
-            std::cerr << "Dữ liệu layer không ở dạng CSV" << std::endl;
+            std::cerr << "Layer Data not in CSV type" << std::endl;
             return false;
         }
 
         const char* csvText = dataElement->GetText();
         if (!csvText) {
-            std::cerr << "Không có nội dung CSV" << std::endl;
+            std::cerr << "Not have content in CSV" << std::endl;
             return false;
         }
 

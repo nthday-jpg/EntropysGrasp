@@ -194,8 +194,8 @@ entt::entity GameplayScene::createPlayer() {
 
     AnimationComponent animComp;
     animComp.name = "Mage";
-    animComp.currentState = AnimationState::Walking;
-    animComp.currentDirection = Direction::DownLeft;
+    animComp.currentState = AnimationState::Idle;
+    animComp.currentDirection = Direction::Down;
     animComp.currentFrame = { 0, 0 };
     animComp.timer = 0.0f;
     registry.emplace<AnimationComponent>(player, animComp);

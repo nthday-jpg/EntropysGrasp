@@ -16,10 +16,17 @@ public:
 
 	AnimationManager();
 	static AnimationManager& getInstance();
+	void loadAnimationDatabase(const std::string& name, int i = 0);
 	void loadAnimationData();
 	AnimationData* getAnimationData(const std::string& name);
 	AnimationData loadMageAnimations();
 	AnimationData loadOrcAnimations(int a);
 	AnimationData loadSlimeAnimations(int a);
 	AnimationData loadSpellAnimations(const std::string& name, int i);
+	AnimationData loadBoltSpellAnimations();
+	AnimationData loadChargedSpellAnimations();
+	AnimationData loadCrossSpellAnimations();
+	AnimationData loadPulseSpellAnimations();
+	AnimationData loadSparkSpellAnimations();
+	AnimationData loadWaveSpellAnimations();
 };

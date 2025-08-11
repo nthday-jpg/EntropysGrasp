@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <string>
 #include "../components/CollisionEvent.h"
 #include "../../manager/TextureManager.h"
 #include "../components/Animation.h"
@@ -35,23 +36,25 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
 
         registry.emplace<SpellTag>(spellEntity);
         registry.emplace<SpellID>(spellEntity, spellID); // Pass spellID directly without creating a temporary object
-        registry.emplace<Position>(spellEntity, position.x, position.y);
+        registry.emplace<Position>(spellEntity, position.x + Random::getFloat(-5.0f, 5.0f), position.y + Random::getFloat(-5.0f, 5.0f));
         registry.emplace<Speed>(spellEntity, spellData.speed);
         registry.emplace<MovementDirection>(spellEntity, directions[i]);
         registry.emplace<BehaviorType>(spellEntity, spellData.behaviorType);
         registry.emplace<Hitbox>(spellEntity, Hitbox(15.0f, 15.0f, 0.0f, 0.0f));
         registry.emplace<RepelResistance>(spellEntity, 0.5f); // Example resistance value
 
+		std::string name = "pulse";
         AnimationComponent animComp;
-		animComp.name = "spell2";
+		int ID = (int)spellID;
+		animComp.name = name;
 		animComp.currentState = AnimationState::Attacking;
 		animComp.currentDirection = Direction::Down;
 		animComp.currentFrame = { 0, 0 };
 		animComp.timer = 0.0f;
 		registry.emplace<AnimationComponent>(spellEntity, animComp);
 
-        sf::Texture* texture = TextureManager::getInstance().getTexture("spell2");
-        sf::IntRect textureRect({0, 0}, { 64, 64 });
+        sf::Texture* texture = TextureManager::getInstance().getTexture(name);
+        sf::IntRect textureRect({0, 0}, {32, 32});
 		sf::Sprite spellSprite(*texture);
 		spellSprite.setTextureRect(textureRect);
 		spellSprite.setOrigin({textureRect.size.x/2.0f, textureRect.size.y/2.0f}); // Set origin to center

@@ -97,7 +97,7 @@ void ParticleSystem::update(float dt)
 		particleProperties.startColor = sf::Color::Red;
 		particleProperties.endColor = sf::Color::Yellow;
 		particleProperties.sizeEnd = 0.0f;
-		particleProperties.sizeStart = 1.0f;
+		particleProperties.sizeStart = 2.0f;
 		particleProperties.lifetime = 1.0f;
 		particleProperties.velocity = { 0.0f, 0.f };
 		particleProperties.velocityVariation = { -25.0f, 25.0f };
