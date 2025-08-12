@@ -82,6 +82,12 @@
     <Filter Include="Header Files\scenes\Gameplay">
       <UniqueIdentifier>{f7ccb12f-70c2-461a-aa56-ca2e24c3672e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\scenes\Transition">
+      <UniqueIdentifier>{c398c7b2-6953-4215-b799-850916618796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scenes\Transition">
+      <UniqueIdentifier>{7658a358-8ceb-4638-93e3-3c48dc55b745}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\control\Command.h">
@@ -273,6 +279,9 @@
     <ClInclude Include="src\gameplay\components\Reward.h">
       <Filter>Header Files\gameplay\components</Filter>
     </ClInclude>
+    <ClInclude Include="src\scenes\Transition\Transition.h">
+      <Filter>Header Files\scenes\Transition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\control\GameplayCommandManager.cpp">
@@ -409,6 +418,9 @@
     </ClCompile>
     <ClCompile Include="src\gameplay\systems\RewardSystem.cpp">
       <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Transition\Transition.cpp">
+      <Filter>Source Files\scenes\Transition</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

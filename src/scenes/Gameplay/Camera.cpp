@@ -11,7 +11,7 @@ Camera::Camera(entt::registry* registry) : registry(registry)
 	size = sf::Vector2f(config.getWindowWidth(), config.getWindowHeight());
 	view.setSize(size);
 
-	basePosition = sf::Vector2f(size.x / 2.0f, size.y / 2.0f);
+	basePosition = { 0,0 };
 	view.setCenter(basePosition);
 }
 
@@ -54,7 +54,6 @@ void Camera::startShake(float intensity, float duration)
 	shakeIntensity = intensity;
 	shakeTimer = 0.0f;
 }
-
 
 bool Camera::isShaking() const
 {
@@ -112,10 +111,11 @@ void Camera::followEntity(entt::entity entity)
 	if (followTarget != entt::null)
 	{
 		isFollowing = true;
-		if (!registry)
+		if (registry) 
 		{
 			Position* pos = registry->try_get<Position>(followTarget);
 			basePosition = pos ? sf::Vector2f(pos->x, pos->y) : basePosition;
+			view.setCenter(basePosition);
 		}
 	}
 	else

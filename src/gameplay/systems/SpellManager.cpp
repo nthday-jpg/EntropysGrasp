@@ -36,7 +36,7 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
 
         registry.emplace<SpellTag>(spellEntity);
         registry.emplace<SpellID>(spellEntity, spellID); // Pass spellID directly without creating a temporary object
-        registry.emplace<Position>(spellEntity, position.x + Random::getFloat(-5.0f, 5.0f), position.y + Random::getFloat(-5.0f, 5.0f));
+        registry.emplace<Position>(spellEntity, position);
         registry.emplace<Speed>(spellEntity, spellData.speed);
         registry.emplace<MovementDirection>(spellEntity, directions[i]);
         registry.emplace<BehaviorType>(spellEntity, spellData.behaviorType);
@@ -58,7 +58,6 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
 		sf::Sprite spellSprite(*texture);
 		spellSprite.setTextureRect(textureRect);
 		spellSprite.setOrigin({textureRect.size.x/2.0f, textureRect.size.y/2.0f}); // Set origin to center
-        spellSprite.setPosition({ position.x, position.y });
 		registry.emplace<sf::Sprite>(spellEntity, spellSprite);
 
         spellEntities.push_back(spellEntity);

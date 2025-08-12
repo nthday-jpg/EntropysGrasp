@@ -4,13 +4,10 @@
 #include <string>
 #include <optional>
 #include <SFML/Window/Event.hpp>
-#include <entt/signal/dispatcher.hpp>  // Add this include
-
-//CHANGE NAVIGATETO FUNCTION
+#include <entt/signal/dispatcher.hpp>
 
 class SceneManager
 {
-	// Use dynamic casting when use scene in scenes to ensure type safety
 	std::unordered_map<std::string, Scene*> scenes;
 
 	Scene* currentScene = nullptr;
@@ -18,7 +15,6 @@ class SceneManager
 
 	entt::dispatcher* dispatcher;
 
-	//implement transition between scenes
 	SceneManager();
 	SceneManager(const SceneManager&) = delete;
 	SceneManager& operator=(const SceneManager&) = delete;
@@ -36,23 +32,22 @@ public:
 		scenes.clear();
 	}
 
-	// Add method to bind dispatcher
 	void bindDispatcher(entt::dispatcher* dispatcher);
-
 	void addScene(std::string name, Scene* scene);
-	//load and unload scenes
-
+	
+	// Now calls transitionTo with default wait duration
 	void navigateTo(const std::string& name);
+	
+	// Direct navigation without transition (for internal use)
+	void navigateToImmediate(const std::string& name);
+	
+	// Transition with custom wait duration
+	void transitionTo(const std::string& targetScene, float waitDuration = 2.0f);
 
 	Scene* getCurrentScene() const { return currentScene; }
 
 	void update(float deltaTime);
-
 	void render();
-
-	// handle gameflow events
 	bool handleEvent(const std::optional<sf::Event>& event);
-	
-	// Add method to get dispatcher for scenes
 	entt::dispatcher* getDispatcher() const { return dispatcher; }
 };

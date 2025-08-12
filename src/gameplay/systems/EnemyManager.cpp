@@ -63,7 +63,6 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 	sprite.setOrigin({ 32.0f, 32.0f }); 
     registry.emplace<sf::Sprite>(entity, sprite);
 
-	std::cout << "spawn position: " << position.x << ", " << position.y << std::endl;
     return entity;
 }
 

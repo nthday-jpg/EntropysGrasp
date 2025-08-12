@@ -32,6 +32,7 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 
     inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
 	camera.followEntity(playerEntity);
+    window.setView(camera.getView());
 
 	pausedUI = new UIManager();
     pausedUI->load();
@@ -180,7 +181,7 @@ void GameplayScene::exit()
 entt::entity GameplayScene::createPlayer() {
     auto player = registry.create();
     registry.emplace<PlayerTag>(player);
-    registry.emplace<Position>(player, 10.0f, 10.0f);
+    registry.emplace<Position>(player, 0.0f, 0.0f);
     registry.emplace<Speed>(player, 200.0f);
     registry.emplace<Health>(player, 10000.0f, 10000.0f);
     registry.emplace<Attack>(player, 100.0f);

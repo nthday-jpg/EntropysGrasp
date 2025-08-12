@@ -16,7 +16,7 @@ inline std::unordered_map<std::string, std::function<UICommand* ()>> commandFact
 	{"RESTART", []() { return new Restart(); }},
 	{"MAINMENU", []() { return new ChangeScene("MainMenu"); }},
 	
-	{"GAMEPLAY", []() { return new ChangeScene("GamePlay"); }}
+	{"GAMEPLAY", []() { return new ChangeScene("Gameplay"); }}
 };
 
 class Button : public UIElement

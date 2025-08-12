@@ -74,6 +74,7 @@
     <ClInclude Include="src\scenes\Gameplay\GameplayScene.h" />
     <ClInclude Include="src\scenes\MainMenu\MainMenu.h" />
     <ClInclude Include="src\scenes\Scene.h" />
+    <ClInclude Include="src\scenes\Transition\Transition.h" />
     <ClInclude Include="src\ui\Button.h" />
     <ClInclude Include="src\ui\Panel.h" />
     <ClInclude Include="src\ui\Text.h" />
@@ -122,6 +123,7 @@
     <ClCompile Include="src\scenes\Gameplay\GameplayScene.cpp" />
     <ClCompile Include="src\scenes\MainMenu\MainMenu.cpp" />
     <ClCompile Include="src\scenes\Scene.cpp" />
+    <ClCompile Include="src\scenes\Transition\Transition.cpp" />
     <ClCompile Include="src\ui\Button.cpp" />
     <ClCompile Include="src\ui\Panel.cpp" />
     <ClCompile Include="src\ui\Text.cpp" />
