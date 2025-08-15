@@ -56,6 +56,8 @@ public:
 
     void close();
 
+	void reset();
+
     void clear(const sf::Color& color = sf::Color::Black);
 
 	void draw(const sf::Drawable& drawable);

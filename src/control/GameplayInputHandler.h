@@ -35,7 +35,6 @@ class GameplayInputHandler {
 	Command* createCommand(const std::string& action);
 
 public:
-	ParticleSystem* particleSystem;
 	SpellManager* spellManager;
 	GameplayInputHandler(entt::entity playerEntity, GameplayCommandManager* commandManager);
 	~GameplayInputHandler();

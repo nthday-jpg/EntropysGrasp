@@ -12,7 +12,6 @@ Camera::Camera(entt::registry* registry) : registry(registry)
 	view.setSize(size);
 
 	basePosition = { 0,0 };
-	view.setCenter(basePosition);
 }
 
 void Camera::setPosition(const sf::Vector2f& position)

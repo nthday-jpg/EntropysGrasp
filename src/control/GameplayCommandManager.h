@@ -14,4 +14,6 @@ public:
 	void executeCommands();
 
 	void queueCommand(Command* command);
+
+	void clear();
 };

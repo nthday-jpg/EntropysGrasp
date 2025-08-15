@@ -85,3 +85,9 @@ bool WindowManager::handleEvent(const std::optional<sf::Event>& event) {
     }
     return false;
 }
+
+void WindowManager::reset() {
+    if (window) {
+        window->setView(window->getDefaultView());
+    }
+}

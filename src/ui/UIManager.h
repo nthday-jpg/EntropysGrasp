@@ -27,6 +27,8 @@ public:
 
 	void load();
 
+	void clear();
+
 	void draw(sf::RenderTarget& target) const;
 
 	void addElement(UIElement* element);

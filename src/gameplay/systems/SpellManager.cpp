@@ -217,7 +217,7 @@ void SpellManager::setCurrentSpell(SpellID spellID)
 
 SpellID SpellManager::getSpellID(int i) const
 {
-    if (i < 0 || i >= usableSpells.size())
+    if (i <= 0 || i > usableSpells.size())
     {
         std::cerr << "Index out of bounds: " << i << std::endl;
         assert(false); // Handle error appropriately

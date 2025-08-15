@@ -24,32 +24,7 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	animationSystem(registry),
 	rewardSystem(registry)
 {
-    
-    MapManager::getInstance().loadMap();
-	TextureManager::getInstance().loadFromAssetFile();
-	gameplayCommandManager = new GameplayCommandManager(registry);
-	entt::entity playerEntity = createPlayer();
-
-    inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
-	camera.followEntity(playerEntity);
-    window.setView(camera.getView());
-
-	pausedUI = new UIManager();
-    pausedUI->load();
-
-    inputHandler->particleSystem = &particleSystem;
-	inputHandler->spellManager = &spellManager;
-
-	uiManager = new UIManager();
-    uiManager->addElement(
-        new Button(
-            "EXIT",
-            "Exit",
-            FontManager::getInstance().getFont("default"),
-            { 100, 100 },
-            30.0f
-        )
-	);
+    gameplayCommandManager = new GameplayCommandManager(registry);
     // Store dispatcher in registry context for all systems to access
     registry.ctx().emplace<entt::dispatcher*>(dispatcher);
     collisionSystem.sinkEvents();
@@ -71,11 +46,64 @@ GameplayScene::~GameplayScene() {
 
 void GameplayScene::load() 
 {
-	isLoaded = true;    
+	isLoaded = true;
+    MapManager::getInstance().loadMap();
+    TextureManager::getInstance().loadFromAssetFile();
+    entt::entity playerEntity = createPlayer();
+
+    inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
+    camera.followEntity(playerEntity);
+
+    pausedUI = new UIManager();
+    pausedUI->load();
+
+    inputHandler->spellManager = &spellManager;
+
+    uiManager = new UIManager();
+    uiManager->addElement(
+        new Button(
+            "EXIT",
+            "Exit",
+            FontManager::getInstance().getFont("default"),
+            { 100, 100 },
+            30.0f
+        )
+    );
+    window.setView(camera.getView());
+
 }
 
-void GameplayScene::unload() {
+void GameplayScene::unload() 
+{
     // Unload resources, reset state, etc.
+	WindowManager::getInstance().reset();
+    
+    if (uiManager) {
+		delete uiManager;
+		uiManager = nullptr;
+    }
+    
+    if (pausedUI) {
+		delete pausedUI;
+		pausedUI = nullptr;
+    }
+    
+    if (inputHandler) {
+        delete inputHandler;
+        inputHandler = nullptr;
+    }
+    
+    if (gameplayCommandManager) {
+		gameplayCommandManager->clear();
+    }
+
+    registry.clear();
+    camera.stopFollowing();
+    
+	isLoaded = false;
+    isPaused = false;
+
+
 }
 
 bool GameplayScene::handleEvent(const std::optional<sf::Event>& event) {
@@ -181,7 +209,7 @@ void GameplayScene::exit()
 entt::entity GameplayScene::createPlayer() {
     auto player = registry.create();
     registry.emplace<PlayerTag>(player);
-    registry.emplace<Position>(player, 0.0f, 0.0f);
+    registry.emplace<Position>(player, 400.0f, 300.0f);
     registry.emplace<Speed>(player, 200.0f);
     registry.emplace<Health>(player, 10000.0f, 10000.0f);
     registry.emplace<Attack>(player, 100.0f);

@@ -9,14 +9,26 @@ UIManager::UIManager() : background(nullptr), backgroundTexture(nullptr)
 
 UIManager::~UIManager()
 {
-	for (auto& element : elements)
-	{
-		delete element; 
-	}
+	clear();
 }
 
 void UIManager::load()
 {
+}
+
+void UIManager::clear()
+{
+	for (auto& element : elements)
+	{
+		delete element; 
+	}
+	elements.clear();
+	if (background)
+	{
+		delete background;
+		background = nullptr;
+		backgroundTexture = nullptr;
+	}
 }
 
 void UIManager::setBackground(sf::Texture* texture)

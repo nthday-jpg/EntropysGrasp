@@ -25,3 +25,11 @@ void GameplayCommandManager::executeCommands() {
 		delete command;
 	}
 }
+
+void GameplayCommandManager::clear() {
+	while (!commandQueue.empty()) {
+		Command* command = commandQueue.front();
+		commandQueue.pop();
+		delete command;
+	}
+}
