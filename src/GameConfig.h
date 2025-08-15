@@ -14,6 +14,7 @@ public:
 
 	// Performance settings (const - set at initialization)
 	const int maxFPS = 60;
+	const float timeStep = 1.0f / maxFPS;
 	const bool vsyncEnabled = true;  // Controls vertical synchronization
 
 	// Graphics settings (const - set at initialization)
