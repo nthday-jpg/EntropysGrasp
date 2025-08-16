@@ -117,15 +117,6 @@ void CastSpell::execute(entt::registry& registry)
 	spellManager->castSpell(spellManager->currentSpell());
 	
 	// Trigger casting animation based on looking direction
-	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-		Direction castDirection = Direction::Down; // Default
-		if (registry.all_of<LookingDirection>(playerEntity)) {
-			LookingDirection& lookDir = registry.get<LookingDirection>(playerEntity);
-			castDirection = getDirectionFromLooking(lookDir);
-		}
-
-		(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Attacking, castDirection });
-	}
 }
 
 void ChangeSpell::execute(entt::registry& registry)
@@ -136,15 +127,6 @@ void ChangeSpell::execute(entt::registry& registry)
 void Dash::execute(entt::registry& registry)
 {
 	// Trigger dash animation based on looking direction
-	if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-		Direction dashDirection = Direction::Down; // Default
-		if (registry.all_of<LookingDirection>(playerEntity)) {
-			LookingDirection& lookDir = registry.get<LookingDirection>(playerEntity);
-			dashDirection = getDirectionFromLooking(lookDir);
-		}
-
-		(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Dashing, dashDirection });
-	}
 }
 
 void ResetTempComponents::execute(entt::registry& registry)
@@ -159,16 +141,6 @@ void ResetTempComponents::execute(entt::registry& registry)
 	LookingDirection currentLookingDir(0.0f, 0.0f);
 	if (registry.all_of<LookingDirection>(playerEntity)) {
 		currentLookingDir = registry.get<LookingDirection>(playerEntity);
-	}
-	
-	const AnimationState& currentState = registry.get<AnimationComponent>(playerEntity).currentState;
-
-	if (!isPlayerMoving(registry, playerEntity))
-	{
-		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
-			Direction idleDirection = getDirectionFromLooking(currentLookingDir);
-			(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Idle, idleDirection });
-		}
 	}
 
 	// Reset movement direction (this stops movement)
@@ -218,14 +190,6 @@ void LookAtMouse::execute(entt::registry& registry)
 	normalize(lookingDirection);
 
 	// Calculate the angle difference to avoid unnecessary animation updates
-
 	Direction newDirection = getDirectionFromLooking(lookingDirection);
-	if (newDirection != oldDirection ) {
-		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
-		{
-			(*dispatcher)->enqueue<AnimationChangeEvent>({ playerEntity, AnimationState::Walking, newDirection });
-		}
-	}
 	registry.emplace_or_replace<LookingDirection>(playerEntity, lookingDirection);
-	registry.emplace_or_replace<Direction>(playerEntity, newDirection);
 }

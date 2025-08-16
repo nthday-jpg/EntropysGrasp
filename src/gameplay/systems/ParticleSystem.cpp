@@ -24,10 +24,10 @@ void ParticleSystem::initializeBehaviorMap()
 
 entt::entity ParticleSystem::createOrGetEntity()
 {
-	entt::entity entity = registry.view<InactiveParticle>().front();
+	entt::entity entity = registry.view<Inactive>().front();
 	if (entity != entt::null)
 	{
-		registry.remove<InactiveParticle>(entity);
+		registry.remove<Inactive>(entity);
 		return entity;
 	}
 	return registry.create();
@@ -65,14 +65,14 @@ void ParticleSystem::update(float dt)
 		auto& particle = view.get<ParticleComponent>(entity);
 		auto& position = registry.get<Position>(entity);
 		auto& velocity = registry.get<Velocity>(entity);
-		if (registry.any_of<InactiveParticle>(entity)) {
+		if (registry.any_of<Inactive>(entity)) {
 			continue;
 		}
 
 		// Update age and check lifetime
 		particle.age += dt;
 		if (particle.age >= particle.lifetime) {
-			registry.emplace<InactiveParticle>(entity);
+			registry.emplace<Inactive>(entity);
 			registry.remove<sf::VertexArray>(entity);
 			continue;
 		}

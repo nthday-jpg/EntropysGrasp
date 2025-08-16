@@ -28,6 +28,7 @@
     <ClInclude Include="src\control\UICommandManager.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameConfig.h" />
+    <ClInclude Include="src\gameplay\components\Account.h" />
     <ClInclude Include="src\gameplay\components\Animation.h" />
     <ClInclude Include="src\gameplay\components\Behavior.h" />
     <ClInclude Include="src\gameplay\components\CollisionEvent.h" />
@@ -53,6 +54,7 @@
     <ClInclude Include="src\gameplay\systems\CombatSystem.h" />
     <ClInclude Include="src\gameplay\systems\EffectSystem.h" />
     <ClInclude Include="src\gameplay\systems\EnemyManager.h" />
+    <ClInclude Include="src\gameplay\systems\AccountManager.h" />
     <ClInclude Include="src\gameplay\systems\MovementPipeline.h" />
     <ClInclude Include="src\gameplay\systems\ParticleBehaviors.h" />
     <ClInclude Include="src\gameplay\systems\ParticleSystem.h" />
@@ -95,6 +97,7 @@
     <ClCompile Include="src\gameplay\manager\Map.cpp" />
     <ClCompile Include="src\gameplay\manager\MapManager.cpp" />
     <ClCompile Include="src\gameplay\manager\TileManager.cpp" />
+    <ClCompile Include="src\gameplay\systems\AccountManager.cpp" />
     <ClCompile Include="src\gameplay\systems\AnimationSystem.cpp" />
     <ClCompile Include="src\gameplay\systems\BehaviorSystem.cpp" />
     <ClCompile Include="src\gameplay\systems\CollisionSystem.cpp" />
@@ -131,6 +134,107 @@
     <ClCompile Include="src\utils\Random.cpp" />
     <ClCompile Include="src\utils\SpatialHash.cpp" />
     <ClCompile Include="src\utils\VectorMath.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\accounts\mduy.json" />
+    <None Include="assets\accounts\test.json" />
+    <None Include="assets\enemy.json" />
+    <None Include="assets\maps\c.tsx" />
+    <None Include="assets\maps\full.tmx" />
+    <None Include="assets\maps\MAP.tmx" />
+    <None Include="assets\maps\map1.tsx" />
+    <None Include="assets\maps\objects.tsx" />
+    <None Include="assets\maps\terrain.tsx" />
+    <None Include="assets\spell.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\textures\allTexture.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\fonts\default.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\sounds\test.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\bolt_rotated_rows.png" />
+    <Image Include="assets\textures\c.png" />
+    <Image Include="assets\textures\charged_rotated_rows.png" />
+    <Image Include="assets\textures\cross_rotated_rows.png" />
+    <Image Include="assets\textures\hits-1-1.png" />
+    <Image Include="assets\textures\hits-1-2.png" />
+    <Image Include="assets\textures\hits-1-3.png" />
+    <Image Include="assets\textures\hits-1-4.png" />
+    <Image Include="assets\textures\hits-1-5.png" />
+    <Image Include="assets\textures\hits-2-1.png" />
+    <Image Include="assets\textures\hits-2-2.png" />
+    <Image Include="assets\textures\hits-2-3.png" />
+    <Image Include="assets\textures\hits-2-4.png" />
+    <Image Include="assets\textures\hits-2-5.png" />
+    <Image Include="assets\textures\hits-2-6.png" />
+    <Image Include="assets\textures\hits-2-7.png" />
+    <Image Include="assets\textures\hits-3-1.png" />
+    <Image Include="assets\textures\hits-3-2.png" />
+    <Image Include="assets\textures\hits-3-3.png" />
+    <Image Include="assets\textures\hits-3-4.png" />
+    <Image Include="assets\textures\hits-3-5.png" />
+    <Image Include="assets\textures\hits-4-1.png" />
+    <Image Include="assets\textures\hits-4-2.png" />
+    <Image Include="assets\textures\hits-4-3.png" />
+    <Image Include="assets\textures\hits-4-4.png" />
+    <Image Include="assets\textures\hits-4-5.png" />
+    <Image Include="assets\textures\hits-4-6.png" />
+    <Image Include="assets\textures\hits-4-7.png" />
+    <Image Include="assets\textures\hits-5-1.png" />
+    <Image Include="assets\textures\hits-5-2.png" />
+    <Image Include="assets\textures\hits-5-3.png" />
+    <Image Include="assets\textures\hits-5-4.png" />
+    <Image Include="assets\textures\hits-5-5.png" />
+    <Image Include="assets\textures\hits-5-6.png" />
+    <Image Include="assets\textures\hits-5-7.png" />
+    <Image Include="assets\textures\hits-6-1.png" />
+    <Image Include="assets\textures\hits-6-2.png" />
+    <Image Include="assets\textures\hits-6-3.png" />
+    <Image Include="assets\textures\hits-6-4.png" />
+    <Image Include="assets\textures\hits-6-5.png" />
+    <Image Include="assets\textures\hits-6-6.png" />
+    <Image Include="assets\textures\hits-6-7.png" />
+    <Image Include="assets\textures\Mage-Sheet.png" />
+    <Image Include="assets\textures\map1.png" />
+    <Image Include="assets\textures\objects.png" />
+    <Image Include="assets\textures\orc1_attack.png" />
+    <Image Include="assets\textures\orc1_death.png" />
+    <Image Include="assets\textures\orc1_idle.png" />
+    <Image Include="assets\textures\orc1_walk.png" />
+    <Image Include="assets\textures\orc2_attack.png" />
+    <Image Include="assets\textures\orc2_death.png" />
+    <Image Include="assets\textures\orc2_idle.png" />
+    <Image Include="assets\textures\orc2_walk.png" />
+    <Image Include="assets\textures\orc3_attack.png" />
+    <Image Include="assets\textures\orc3_death.png" />
+    <Image Include="assets\textures\orc3_idle.png" />
+    <Image Include="assets\textures\orc3_walk.png" />
+    <Image Include="assets\textures\pulse_rotated_rows.png" />
+    <Image Include="assets\textures\Slime1_Attack.png" />
+    <Image Include="assets\textures\Slime1_Death.png" />
+    <Image Include="assets\textures\Slime1_Idle.png" />
+    <Image Include="assets\textures\Slime1_Walk.png" />
+    <Image Include="assets\textures\Slime2_Attack.png" />
+    <Image Include="assets\textures\Slime2_Death.png" />
+    <Image Include="assets\textures\Slime2_Idle.png" />
+    <Image Include="assets\textures\Slime2_Walk.png" />
+    <Image Include="assets\textures\Slime3_Attack.png" />
+    <Image Include="assets\textures\Slime3_Death.png" />
+    <Image Include="assets\textures\Slime3_Idle.png" />
+    <Image Include="assets\textures\Slime3_Walk.png" />
+    <Image Include="assets\textures\spark_rotated_rows.png" />
+    <Image Include="assets\textures\spell1.png" />
+    <Image Include="assets\textures\spell2.png" />
+    <Image Include="assets\textures\spell3.png" />
+    <Image Include="assets\textures\spell_circle.png" />
+    <Image Include="assets\textures\terrain.png" />
+    <Image Include="assets\textures\test.png" />
+    <Image Include="assets\textures\wave_rotated_rows.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

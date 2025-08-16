@@ -17,3 +17,10 @@ inline BehaviorType stringToBehaviorType(const std::string& str)
     if (str == "HomingPlayer") return BehaviorType::HomingPlayer;
     throw std::runtime_error("Unknown BehaviorType: " + str);
 }
+
+struct State {
+	bool isWalking = false;
+	bool isAttacking = false;
+	bool isCasting = false;
+	bool isDead = false;
+};

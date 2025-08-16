@@ -34,8 +34,38 @@ void AnimationSystem::update(float deltaTime) {
 
         Animation* currentAnimation = &it->second;
         sprite.setTexture(*currentAnimation->texture);
-        animation.timer += deltaTime;
 
+        if (animation.duration > 0.f) {
+            animation.duration -= deltaTime;
+            if (animation.duration <= 0.f) {
+                // hết thời gian -> revert về state trước đó
+                animation.currentState = animation.prevState;
+                animation.currentFrame = { 0, 0 };
+                animation.timer = 0.f;
+
+                // load lại animation cũ
+                auto prevIt = AnimationManager::getInstance().getAnimationData(animation.name)->animations.find({ animation.currentState, animation.currentDirection });
+                if (prevIt != AnimationManager::getInstance().getAnimationData(animation.name)->animations.end()) {
+                    Animation* prevAnim = &prevIt->second;
+                    int frameWidth = static_cast<int>(prevAnim->frameSize.x);
+                    int frameHeight = static_cast<int>(prevAnim->frameSize.y);
+
+                    sprite.setTexture(*prevAnim->texture);
+                    sf::IntRect frameRect(
+                        sf::Vector2i(
+                            static_cast<int>(prevAnim->startFrame.x * frameWidth),
+                            static_cast<int>(prevAnim->startFrame.y * frameHeight)
+                        ),
+                        sf::Vector2i(frameWidth, frameHeight)
+                    );
+
+                    sprite.setTextureRect(frameRect);
+                }
+                continue; // bỏ qua update frame lần này
+            }
+        }
+
+        animation.timer += deltaTime;
         if (animation.timer >= currentAnimation->frameDuration) {
             animation.timer -= currentAnimation->frameDuration;
             animation.currentFrame.x++;
@@ -83,10 +113,21 @@ void AnimationSystem::changeAnimation(const AnimationChangeEvent& event) {
     animComp.currentFrame = { 0, 0 };
     animComp.timer = 0.f;
 
+    if (event.duration > 0.f) {
+        animComp.prevState = animComp.currentState;
+        animComp.duration = event.duration;
+    }
+    else {
+        animComp.duration = 0.f;
+    }
+
     int frameWidth = static_cast<int>(animation.frameSize.x);
     int frameHeight = static_cast<int>(animation.frameSize.y);
 
-    sf::IntRect frameRect({ 0, static_cast<int>(animation.startFrame.y * frameHeight) }, { frameWidth, frameHeight });
+    sf::IntRect frameRect(
+        { static_cast<int>(animation.startFrame.x * frameWidth)
+        , static_cast<int>(animation.startFrame.y * frameHeight) },
+        { frameWidth, frameHeight });
 
     sprite.setTexture(*animation.texture);
     sprite.setTextureRect(frameRect);

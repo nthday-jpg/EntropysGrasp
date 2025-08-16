@@ -88,6 +88,21 @@
     <Filter Include="Source Files\scenes\Transition">
       <UniqueIdentifier>{7658a358-8ceb-4638-93e3-3c48dc55b745}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\fonts">
+      <UniqueIdentifier>{1aa88593-c6ad-4dd6-9716-5134ba17b95a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\sounds">
+      <UniqueIdentifier>{c62617bb-15ab-43bd-8a32-cd793901201c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\maps">
+      <UniqueIdentifier>{fdd48d27-5b23-4e64-b190-cef295790aea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures">
+      <UniqueIdentifier>{a96e5c0f-d445-472a-8bed-e410a43e93a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\accounts">
+      <UniqueIdentifier>{0ecf6d59-5688-4ba9-9e36-4bba2c2509fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\control\Command.h">
@@ -282,6 +297,12 @@
     <ClInclude Include="src\scenes\Transition\Transition.h">
       <Filter>Header Files\scenes\Transition</Filter>
     </ClInclude>
+    <ClInclude Include="src\gameplay\components\Account.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\AccountManager.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\control\GameplayCommandManager.cpp">
@@ -422,5 +443,291 @@
     <ClCompile Include="src\scenes\Transition\Transition.cpp">
       <Filter>Source Files\scenes\Transition</Filter>
     </ClCompile>
+    <ClCompile Include="src\gameplay\systems\AccountManager.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\enemy.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\spell.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\maps\c.tsx">
+      <Filter>Resource Files\maps</Filter>
+    </None>
+    <None Include="assets\maps\full.tmx">
+      <Filter>Resource Files\maps</Filter>
+    </None>
+    <None Include="assets\maps\MAP.tmx">
+      <Filter>Resource Files\maps</Filter>
+    </None>
+    <None Include="assets\maps\map1.tsx">
+      <Filter>Resource Files\maps</Filter>
+    </None>
+    <None Include="assets\maps\objects.tsx">
+      <Filter>Resource Files\maps</Filter>
+    </None>
+    <None Include="assets\maps\terrain.tsx">
+      <Filter>Resource Files\maps</Filter>
+    </None>
+    <None Include="assets\accounts\test.json">
+      <Filter>Resource Files\accounts</Filter>
+    </None>
+    <None Include="assets\accounts\mduy.json">
+      <Filter>Resource Files\accounts</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\textures\allTexture.txt">
+      <Filter>Resource Files\textures</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\fonts\default.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\sounds\test.mp3">
+      <Filter>Resource Files\sounds</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\bolt_rotated_rows.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\c.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\charged_rotated_rows.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\cross_rotated_rows.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-1-1.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-1-2.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-1-3.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-1-4.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-1-5.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-2-1.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-2-2.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-2-3.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-2-4.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-2-5.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-2-6.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-2-7.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-3-1.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-3-2.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-3-3.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-3-4.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-3-5.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-4-1.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-4-2.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-4-3.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-4-4.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-4-5.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-4-6.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-4-7.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-5-1.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-5-2.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-5-3.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-5-4.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-5-5.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-5-6.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-5-7.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-6-1.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-6-2.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-6-3.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-6-4.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-6-5.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-6-6.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\hits-6-7.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Mage-Sheet.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\map1.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\objects.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc1_attack.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc1_death.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc1_idle.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc1_walk.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc2_attack.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc2_death.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc2_idle.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc2_walk.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc3_attack.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc3_death.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc3_idle.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\orc3_walk.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\pulse_rotated_rows.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime1_Attack.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime1_Death.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime1_Idle.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime1_Walk.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime2_Attack.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime2_Death.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime2_Idle.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime2_Walk.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime3_Attack.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime3_Death.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime3_Idle.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\Slime3_Walk.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\spark_rotated_rows.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\spell_circle.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\spell1.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\spell2.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\spell3.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\terrain.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\test.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="assets\textures\wave_rotated_rows.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

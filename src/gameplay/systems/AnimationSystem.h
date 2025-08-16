@@ -10,6 +10,7 @@ struct AnimationChangeEvent {
 	entt::entity entity;
 	AnimationState newState;
 	Direction newDirection;
+	float duration = 0.f;
 };
 
 class AnimationSystem {

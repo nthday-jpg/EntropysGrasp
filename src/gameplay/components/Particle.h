@@ -3,8 +3,6 @@
 #include <SFML/Graphics/Color.hpp>
 #include "MovementComponents.h"
 
-struct InactiveParticle {}; 
-
 enum class ParticleBehaviorType
 {
 	Linear,          // Straight line movement

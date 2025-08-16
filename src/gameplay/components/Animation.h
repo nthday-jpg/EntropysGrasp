@@ -41,4 +41,7 @@ struct AnimationComponent { // được gắn vào entity
 	Direction currentDirection;
 	sf::Vector2u currentFrame;
 	float timer;
+
+	AnimationState prevState; // Lưu trạng thái trước đó
+	float duration; // Thời gian tồn tại của trạng thái hiện tại
 };

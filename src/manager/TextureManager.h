@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 class TextureManager {
-	std::string filePath = "assets/texture/allTexture.txt";
+	std::string filePath = "assets/textures/allTexture.txt";
 public:
 	std::unordered_map<std::string, sf::Texture*> textureDatabase;
 	

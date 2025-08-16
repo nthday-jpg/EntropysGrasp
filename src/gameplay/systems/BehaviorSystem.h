@@ -4,6 +4,7 @@
 #include <functional>
 #include "../../manager/SpellLibrary.h"
 #include "../../manager/EnemyLibrary.h"
+#include "../../gameplay/components/Behavior.h"
 
 using BehaviorFunction = std::function<void(entt::entity, entt::entity, entt::registry&, float)>;
 

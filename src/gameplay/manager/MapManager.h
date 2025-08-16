@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 class MapManager {
-	std::string pathToMaps = "assets/map/full.tmx";
+	std::string pathToMaps = "assets/maps/full.tmx";
 	std::unordered_map<std::string, Map>mapDatabase;
 
 	MapManager();
