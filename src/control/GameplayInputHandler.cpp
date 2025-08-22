@@ -2,6 +2,8 @@
 #include "commands/playerControl.h"
 #include "../gameplay/components/MovementComponents.h"
 #include "../gameplay/components/LookingDirection.h"
+#include "../control/commands/gameControl.h"
+#include "../control/UICommandManager.h"
 
 using namespace sf;
 using namespace std;
@@ -19,6 +21,11 @@ void GameplayInputHandler::initCommandFactory()
 	commandFactory["SPELL2"] = [this]() { return new ChangeSpell(spellManager->getSpellID(2), spellManager); };
 	commandFactory["SPELL3"] = [this]() { return new ChangeSpell(spellManager->getSpellID(3), spellManager); };
 	commandFactory["SPELL4"] = [this]() { return new ChangeSpell(spellManager->getSpellID(4), spellManager); };
+	commandFactory["PAUSE"] = [this]() { 
+        // Queue the pause command to UICommandManager instead of GameplayCommandManager
+        UICommandManager::getInstance().queueCommand(new Pause());
+        return nullptr; // Return nullptr since we're not queuing to gameplayCommandManager
+    };
     // Add more commands as needed
 }
 
@@ -99,10 +106,17 @@ bool GameplayInputHandler::handleEvent(const std::optional<sf::Event>& event)
                 
                 // Only process discrete actions in this method
                 if (discreteActions.find(action) != discreteActions.end()) {
-                    Command* cmd = createCommand(action);
-                    if (cmd && commandManager) {
-                        commandManager->queueCommand(cmd);
+                    if (action == "PAUSE") {
+                        // Special handling for pause - directly queue to UICommandManager
+                        createCommand(action); // This will queue the pause command
                         handled = true;
+                    } else {
+                        // Regular gameplay commands go to GameplayCommandManager
+                        Command* cmd = createCommand(action);
+                        if (cmd && commandManager) {
+                            commandManager->queueCommand(cmd);
+                            handled = true;
+                        }
                     }
                 }
                 break;
@@ -112,7 +126,7 @@ bool GameplayInputHandler::handleEvent(const std::optional<sf::Event>& event)
 
     // Handle discrete mouse button events if needed
     else if (const auto mousePressed = event->getIf<sf::Event::MouseButtonPressed>()) {
-		handled = true;
+        handled = true;
     }
 
     return handled;

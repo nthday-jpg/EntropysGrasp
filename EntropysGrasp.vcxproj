@@ -40,6 +40,7 @@
     <ClInclude Include="src\gameplay\components\Hitbox.h" />
     <ClInclude Include="src\gameplay\components\LookingDirection.h" />
     <ClInclude Include="src\gameplay\components\MovementComponents.h" />
+    <ClInclude Include="src\gameplay\components\SoundEvent.h" />
     <ClInclude Include="src\gameplay\components\Particle.h" />
     <ClInclude Include="src\gameplay\components\Reward.h" />
     <ClInclude Include="src\gameplay\components\Spell.h" />

@@ -1,0 +1,12 @@
+{
+  "font": "CarrotFlower",
+  "elements": [
+    {
+      "type": "button",
+      "command": "PAUSE",
+      "text": "Pause",
+      "position": [ 10, 130 ],
+      "characterSize": 30
+    }
+  ]
+}

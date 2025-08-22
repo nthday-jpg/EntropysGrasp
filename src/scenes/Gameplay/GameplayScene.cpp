@@ -6,6 +6,7 @@
 #include "../../control/commands/GameControl.h"
 #include "../../gameplay/components/Hitbox.h"
 #include "../../ui/Button.h"
+#include "../../ui/Text.h"
 #include "../../manager/FontManager.h"
 #include "../../manager/TextureManager.h"
 #include "../../manager/AnimationManager.h"
@@ -54,21 +55,43 @@ void GameplayScene::load()
     inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
     camera.followEntity(playerEntity);
 
-    pausedUI = new UIManager();
-    pausedUI->load();
-
     inputHandler->spellManager = &spellManager;
 
     uiManager = new UIManager();
-    uiManager->addElement(
-        new Button(
-            "EXIT",
-            "Exit",
-            FontManager::getInstance().getFont("default"),
-            { 100, 100 },
-            30.0f
-        )
-    );
+	uiManager->loadFile(uiFilePath);
+
+    // Add dynamic text elements for real-time state
+	uiManager->addDynamicText("rewardText", 
+		new Text(
+			*FontManager::getInstance().getFont("default"), 
+			"Rewards: 0", 
+			{10.0f, 10.0f}, 
+			20
+		),
+		[this]() -> std::string {
+			// Get current reward from your reward system
+			int currentReward = rewardSystem.getCurrentReward(); // You'll need to implement this
+			return "Rewards: " + std::to_string(currentReward);
+		}
+	);
+	
+	uiManager->addDynamicText("timeText",
+		new Text(
+			*FontManager::getInstance().getFont("default"), 
+			"Time: 00:00", 
+			{10.0f, 40.0f}, 
+			20
+		),
+		[this]() -> std::string {
+			// Get current playing time
+			int totalSeconds = static_cast<int>(gameClock.getElapsedTime().asSeconds()); // You'll need to implement this
+			int minutes = totalSeconds / 60;
+			int seconds = totalSeconds % 60;
+			return "Time: " + std::to_string(minutes) + ":" + 
+				   (seconds < 10 ? "0" : "") + std::to_string(seconds);
+		}
+	);
+
     window.setView(camera.getView());
 
 }
@@ -78,39 +101,36 @@ void GameplayScene::unload()
     // Unload resources, reset state, etc.
 	WindowManager::getInstance().reset();
     
-    if (uiManager) {
-		delete uiManager;
-		uiManager = nullptr;
+    if (uiManager) 
+    {
+        delete uiManager;
+        uiManager = nullptr;
     }
     
-    if (pausedUI) {
-		delete pausedUI;
-		pausedUI = nullptr;
-    }
-    
-    if (inputHandler) {
+    if (inputHandler) 
+    {
         delete inputHandler;
         inputHandler = nullptr;
     }
     
-    if (gameplayCommandManager) {
+    if (gameplayCommandManager)
+    {
 		gameplayCommandManager->clear();
     }
 
     registry.clear();
     camera.stopFollowing();
+	gameClock.restart();
     
 	isLoaded = false;
     isPaused = false;
-
-
 }
 
 bool GameplayScene::handleEvent(const std::optional<sf::Event>& event) {
     bool handled = false;
     
     // First let the UI handle the event
-    if (uiManager) {
+    if (uiManager && !isPaused) {
         handled = uiManager->handleEvent(event);
     }
     
@@ -129,7 +149,6 @@ void GameplayScene::update(float deltaTime) {
     }
 
     if (isPaused) {
-		pausedUI->draw(window);
         return;
 	}
     
@@ -166,8 +185,10 @@ void GameplayScene::update(float deltaTime) {
     camera.update(deltaTime);
     window.setView(camera.getView());
 	
-    if (uiManager) {
+    if (uiManager) 
+    {
         uiManager->syncUIWithViewport();
+        uiManager->updateDynamicTexts(); // Update dynamic texts every frame
     }
     // Render the scene
     this->render();
@@ -180,19 +201,14 @@ void GameplayScene::render() {
     renderSystem.render();
 
     // Render UI on top
-    if (uiManager) {
+    if (uiManager && !isPaused) {
         uiManager->draw(window);
     }
 }
 
 void GameplayScene::pause()
 {
-	isPaused = true;
-}
-
-void GameplayScene::resume()
-{
-    isPaused = false;
+	isPaused = !isPaused;
 }
 
 void GameplayScene::restart()

@@ -6,10 +6,7 @@
 
 class MainMenu : public Scene
 {
-	// Inherited via Scene
-	// RenderWindow* window;
-	// UIManager* uiManager;
-	sf::Font* font;
+	std::string uiFilePath = "src/scenes/MainMenu/MainMenuUI.json";
 public:
 	MainMenu() = delete;
 

@@ -12,10 +12,8 @@ inline std::unordered_map<std::string, std::function<UICommand* ()>> commandFact
 {
 	{"EXIT", []() { return new Exit(); }},
 	{"PAUSE", []() { return new Pause(); }},
-	{"RESUME", []() { return new Resume(); }},
 	{"RESTART", []() { return new Restart(); }},
 	{"MAINMENU", []() { return new ChangeScene("MainMenu"); }},
-	
 	{"GAMEPLAY", []() { return new ChangeScene("Gameplay"); }}
 };
 

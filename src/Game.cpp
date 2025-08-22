@@ -22,7 +22,7 @@ Game::Game() :
 	uiCommandManager = &UICommandManager::getInstance();
 
 	// Initialize core resource managers early
-	// initializeResourceManagers();
+	initializeResourceManagers();
 
 	// Bind dispatcher to both managers
 	SoundManager::getInstance().bindDispatcher(&dispatcher);

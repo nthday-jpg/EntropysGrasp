@@ -54,3 +54,8 @@ void RewardSystem::giveReward()
 {
 
 }
+
+int RewardSystem::getCurrentReward()
+{
+	return totalGold;
+}

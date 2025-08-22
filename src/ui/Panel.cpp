@@ -48,6 +48,7 @@ void Panel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 bool Panel::handleEvent(const std::optional<sf::Event>&event)
 {
+	if (!visible) return false; 
 	if (!event.has_value()) return false; // No event to handle
 
 	if (const auto& mousePressed = event->getIf<sf::Event::MouseButtonPressed>())
@@ -143,11 +144,10 @@ bool Panel::contains(sf::Vector2i point) const
 
 bool Panel::isVisible() const
 {
-	// Panels are always visible
-	return true;
+	return visible;
 }
 
 void Panel::setVisible(bool visible)
 {
-	// Panels are always visible, so this method does nothing
+	visible = visible; 
 }
