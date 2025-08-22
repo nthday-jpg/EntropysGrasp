@@ -9,7 +9,6 @@ class MainMenu : public Scene
 	// Inherited via Scene
 	// RenderWindow* window;
 	// UIManager* uiManager;
-	sf::Font* font;
 public:
 	MainMenu() = delete;
 
