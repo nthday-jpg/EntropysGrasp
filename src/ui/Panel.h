@@ -11,7 +11,7 @@ class Panel : public UIElement
 {
 private:
     sf::RectangleShape background;
-
+	bool visible = true; 
 	// List of child UI elements
 	// The position of each child is relative to the panel's position
     std::vector<UIElement*> children;

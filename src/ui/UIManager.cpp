@@ -1,6 +1,6 @@
 #include "UIManager.h"
-#include "Panel.h"
 #include "Button.h"
+#include "Panel.h"
 #include "../manager/WindowManager.h"
 #include "../manager/FontManager.h"
 #include <fstream>
@@ -14,7 +14,6 @@ UIManager::~UIManager()
 {
 	clear();
 }
-
 
 UIElement* UIManager::parseElement(const nlohmann::json& elemJson, sf::Font* font) {
 	std::string type = elemJson["type"];
@@ -36,16 +35,31 @@ UIElement* UIManager::parseElement(const nlohmann::json& elemJson, sf::Font* fon
 		if (elemJson.contains("children")) {
 			for (const auto& child : elemJson["children"]) {
 				UIElement* childElement = parseElement(child, font);
-				panel->addElement(childElement); // You need to implement this method
+				panel->addElement(childElement);
 			}
 		}
 
 		return panel;
 	}
+	else if (type == "text") {
+		std::string text = elemJson["text"];
+		auto position = sf::Vector2f(elemJson["position"][0], elemJson["position"][1]);
+		int charSize = elemJson.value("characterSize", 30);
+		
+		Text* textElement = new Text(*font, text, position, charSize);
+		
+		// Check if this is a dynamic text element
+		if (elemJson.contains("id")) {
+			std::string id = elemJson["id"];
+			dynamicTexts[id] = textElement;
+
+		}
+		
+		return textElement;
+	}
 
 	throw std::runtime_error("Unknown element type: " + type);
 }
-
 
 void UIManager::loadFile(const std::string& filePath)
 {
@@ -79,6 +93,11 @@ void UIManager::clear()
 		delete element; 
 	}
 	elements.clear();
+	
+	// Clear the dynamic text maps since the elements are already deleted
+	dynamicTexts.clear();
+	textUpdaters.clear();
+	
 	if (background)
 	{
 		delete background;
@@ -98,6 +117,7 @@ void UIManager::syncUIWithViewport()
 	sf::View view = WindowManager::getInstance().getWindow().getView();
 	sf::Vector2f viewPosition = view.getCenter() - view.getSize() / 2.f;
 
+	// Sync all elements (including dynamic texts since they're added to elements vector)
 	for(auto& element : elements)
 	{
 		element->setDrawPosition(viewPosition + element->getPosition());
@@ -145,4 +165,30 @@ bool UIManager::handleEvent(const std::optional<sf::Event>& event)
 		}
 	}
 	return false;
+}
+
+void UIManager::addDynamicText(const std::string& id, Text* textElement, std::function<std::string()> updater) {
+	if (!textElement) {
+		throw std::runtime_error("Cannot add null text element as dynamic text.");
+	}
+	
+	dynamicTexts[id] = textElement;
+	textUpdaters[id] = updater;
+	addElement(textElement); 
+}
+
+void UIManager::updateDynamicTexts() {
+	for (const auto& [id, updater] : textUpdaters) {
+		if (auto it = dynamicTexts.find(id); it != dynamicTexts.end()) {
+			it->second->setString(updater());
+		}
+	}
+}
+
+void UIManager::updateDynamicText(const std::string& id) {
+	if (auto textIt = dynamicTexts.find(id); textIt != dynamicTexts.end()) {
+		if (auto updaterIt = textUpdaters.find(id); updaterIt != textUpdaters.end()) {
+			textIt->second->setString(updaterIt->second());
+		}
+	}
 }

@@ -7,11 +7,8 @@ Text::Text(
 ):	text(font, text, charSize),
 	position(position), visible(true)
 {
-	sf::View view = WindowManager::getInstance().getWindow().getView();
-	sf::Vector2f viewPosition = view.getCenter() - view.getSize() / 2.f;
-	sf::Vector2f drawPos = position + viewPosition;
-
-	this->text.setPosition(drawPos);
+	// Don't calculate draw position in constructor - let syncUIWithViewport handle it
+	this->text.setPosition(position); // Set initial position
 	this->text.setFillColor(sf::Color::White); // Default color
 	this->text.setCharacterSize(charSize);
 }
@@ -23,12 +20,13 @@ void Text::setString(std::string text)
 
 void Text::setPosition(sf::Vector2f position) 
 {
-	this->text.setPosition(position);
+	this->position = position; // Store logical position
+	// Don't update SFML text position here - let setDrawPosition handle it
 }
 
 sf::Vector2f Text::getPosition() const 
 {
-	return this->text.getPosition();
+	return this->position; // Return logical position, not SFML text position
 }
 
 sf::FloatRect Text::getGlobalBounds() const 
@@ -72,5 +70,5 @@ bool Text::handleEvent(const std::optional<sf::Event>& event)
 }
 
 void Text::setDrawPosition(sf::Vector2f drawPos) {
-	this->text.setPosition(drawPos);
+	this->text.setPosition(drawPos); // Set actual SFML text position for rendering
 }

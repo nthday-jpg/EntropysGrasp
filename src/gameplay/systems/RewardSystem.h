@@ -18,6 +18,7 @@ public:
 
 	// This function is used to write rewards to account
 	void giveReward();
+	int getCurrentReward();
 
 private:
 	void onEvent(const Reward& reward);

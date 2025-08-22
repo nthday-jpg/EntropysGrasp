@@ -19,12 +19,10 @@
 class GameplayScene : public Scene {
 private:
 	std::string uiFilePath = "src/scenes/Gameplay/GameplayUI.json";
-	std::string pausedUIFilePath = "src/scenes/Gameplay/PausedUI.json";
 
 	//Mapmanager* mapManager;
     GameplayCommandManager* gameplayCommandManager;
     GameplayInputHandler* inputHandler;
-	UIManager* pausedUI;
 
 	sf::Clock gameClock;
 	Camera camera;

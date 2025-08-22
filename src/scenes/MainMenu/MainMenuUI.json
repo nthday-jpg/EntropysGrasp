@@ -3,24 +3,30 @@
   "elements": [
     {
       "type": "panel",
-      "position": [100,100],
-      "size": [100,300],
+      "position": [ 100, 100 ],
+      "size": [ 100, 300 ],
       "children": [
         {
           "type": "button",
           "command": "GAMEPLAY",
           "text": "Gameplay",
-          "position": [10,30],
+          "position": [ 10, 30 ],
           "characterSize": 30
         },
         {
           "type": "button",
           "command": "EXIT",
           "text": "Exit",
-          "position": [10,230],
+          "position": [ 10, 230 ],
           "characterSize": 30
         }
       ]
+    },
+    {
+      "type": "text",
+      "text": "Main Menu",
+      "position": [ 400, 300 ],
+      "characterSize": 50
     }
   ]
 }

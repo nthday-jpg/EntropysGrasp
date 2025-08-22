@@ -25,11 +25,11 @@ void TransitionScene::setupVisuals()
     
     // Setup loading text
     font = FontManager::getInstance().getFont("default");
-    if (font) 
+    if (font)
     {
-        // Center the text on screen
-        sf::Vector2f centerPos(windowSize.x / 2.0f, windowSize.y / 2.0f);
-        loadingText.setPosition(centerPos);
+        sf::View currentView = window.getView();
+        sf::Vector2f viewCenter = currentView.getCenter();
+        loadingText.setDrawPosition(viewCenter);
         loadingText.setCharacterSize(48);
         loadingText.setFillColor(sf::Color::White);
         loadingText.setVisible(false); // Initially hidden
@@ -55,7 +55,8 @@ bool TransitionScene::handleEvent(const std::optional<sf::Event>& event)
 
 void TransitionScene::update(float deltaTime) 
 {
-    if (!isLoaded) {
+    if (!isLoaded) 
+    {
         load();
         return;
     }
@@ -114,13 +115,15 @@ void TransitionScene::updateFade(float deltaTime)
     fadeOverlay.setFillColor(sf::Color(50, 50, 50, alpha));
     
     // Update text alpha during wait phase
-    if (waitPhase && font) {
+    if (waitPhase && font) 
+    {
         std::uint8_t textAlpha = static_cast<std::uint8_t>(std::min(255.0f, fadeAlpha));
         loadingText.setFillColor(sf::Color(255, 255, 255, textAlpha));
     }
 }
 
-void TransitionScene::render() {
+void TransitionScene::render()
+{
     // Clear with black background
     window.clear(sf::Color::Black);
     
@@ -128,7 +131,8 @@ void TransitionScene::render() {
     window.draw(fadeOverlay);
     
     // Draw loading text during wait phase
-    if (waitPhase && loadingText.isVisible()) {
+    if (waitPhase && loadingText.isVisible())
+    {
         window.draw(loadingText);
-    }
+    } 
 }
