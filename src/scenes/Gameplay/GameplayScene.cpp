@@ -55,20 +55,12 @@ void GameplayScene::load()
     camera.followEntity(playerEntity);
 
     pausedUI = new UIManager();
-    pausedUI->load();
+    pausedUI->loadFile(pausedUIFilePath);
 
     inputHandler->spellManager = &spellManager;
 
     uiManager = new UIManager();
-    uiManager->addElement(
-        new Button(
-            "EXIT",
-            "Exit",
-            FontManager::getInstance().getFont("default"),
-            { 100, 100 },
-            30.0f
-        )
-    );
+	uiManager->loadFile(uiFilePath);
     window.setView(camera.getView());
 
 }
@@ -110,7 +102,7 @@ bool GameplayScene::handleEvent(const std::optional<sf::Event>& event) {
     bool handled = false;
     
     // First let the UI handle the event
-    if (uiManager) {
+    if (uiManager && !isPaused) {
         handled = uiManager->handleEvent(event);
     }
     
@@ -129,7 +121,6 @@ void GameplayScene::update(float deltaTime) {
     }
 
     if (isPaused) {
-		pausedUI->draw(window);
         return;
 	}
     
@@ -166,9 +157,14 @@ void GameplayScene::update(float deltaTime) {
     camera.update(deltaTime);
     window.setView(camera.getView());
 	
-    if (uiManager) {
+    if (uiManager) 
+    {
         uiManager->syncUIWithViewport();
     }
+    if (pausedUI)
+    {
+        pausedUI->syncUIWithViewport();
+	}
     // Render the scene
     this->render();
 
@@ -180,19 +176,17 @@ void GameplayScene::render() {
     renderSystem.render();
 
     // Render UI on top
-    if (uiManager) {
+    if (uiManager && !isPaused) {
         uiManager->draw(window);
     }
+    if (pausedUI && isPaused) {
+        pausedUI->draw(window);
+	}
 }
 
 void GameplayScene::pause()
 {
-	isPaused = true;
-}
-
-void GameplayScene::resume()
-{
-    isPaused = false;
+	isPaused = !isPaused;
 }
 
 void GameplayScene::restart()

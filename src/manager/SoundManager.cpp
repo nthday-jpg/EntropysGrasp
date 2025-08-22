@@ -29,6 +29,16 @@ void SoundManager::onStopMusic(const StopMusicEvent&)
 	stopBackgroundMusic();
 }
 
+SoundManager::~SoundManager()
+{
+	// Clean up all raw pointers
+	for (auto& [_, sound] : sounds)
+	{
+		delete sound;
+	}
+	sounds.clear();
+}
+
 void SoundManager::bindDispatcher(entt::dispatcher* dispatcher) {
 	this->dispatcher = dispatcher;
 	
@@ -63,8 +73,8 @@ void SoundManager::loadSounds(const std::string& sourcePath)
 		}
 		soundBuffers[name] = buffer;
 
-		sf::Sound sound(buffer);
-		sounds[name] = sound;
+		// Create sound with new and store raw pointer
+		sounds[name] = new sf::Sound(soundBuffers[name]);
 	}
 }
 
@@ -87,7 +97,7 @@ void SoundManager::loadMusics(const std::string& sourcePath)
 	}
 }
 
-void SoundManager::playSound(const std::string& name, bool loop = false)
+void SoundManager::playSound(const std::string& name, bool loop)
 {
 	auto bufferIt = soundBuffers.find(name);
 	if (bufferIt == soundBuffers.end()) 
@@ -96,31 +106,36 @@ void SoundManager::playSound(const std::string& name, bool loop = false)
 		return; 
 	}
 
-	auto& sound = sounds[name]; 
-	sound.setBuffer(bufferIt->second);
-	sound.setLooping(loop);
-	sound.setVolume(volume);
-	sound.play();
+	auto soundIt = sounds.find(name);
+	if (soundIt != sounds.end() && soundIt->second != nullptr) 
+	{
+		soundIt->second->setBuffer(bufferIt->second);
+		soundIt->second->setLooping(loop);
+		soundIt->second->setVolume(volume);
+		soundIt->second->play();
+	}
 }
 
 void SoundManager::stopSound(const std::string& name)
 {
 	auto it = sounds.find(name);
-	if (it != sounds.end())
+	if (it != sounds.end() && it->second != nullptr)
 	{
-		it->second.stop();
+		it->second->stop();
 	}
 }
 
 void SoundManager::stopAllSounds()
 {
-	for (auto& pair : sounds)
+	for (auto& [_, sound] : sounds)
 	{
-		pair.second.stop();
+		if (sound != nullptr) {
+			sound->stop();
+		}
 	}
 }
 
-void SoundManager::setBackgroundMusic(const std::string& filePath, bool loop = true)
+void SoundManager::setBackgroundMusic(const std::string& filePath, bool loop)
 {
 	auto it = musicFiles.find(filePath);
 	if (it == musicFiles.end())
@@ -139,7 +154,7 @@ void SoundManager::setBackgroundMusic(const std::string& filePath, bool loop = t
 	backgroundMusic.setVolume(volume);
 }
 
-void SoundManager::playBackgroundMusic(bool loop = true)
+void SoundManager::playBackgroundMusic(bool loop)
 {
 	backgroundMusic.setLooping(loop);
 	backgroundMusic.setVolume(volume);
@@ -163,7 +178,9 @@ void SoundManager::setVolume(float newVolume)
 	// Update all currently playing sounds
 	for (auto& [_, sound] : sounds)
 	{
-		sound.setVolume(volume);
+		if (sound != nullptr) {
+			sound->setVolume(volume);
+		}
 	}
 
 	backgroundMusic.setVolume(volume);

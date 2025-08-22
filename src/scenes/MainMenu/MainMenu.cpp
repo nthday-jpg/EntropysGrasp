@@ -39,7 +39,7 @@ void MainMenu::load()
 
 		uiManager = new UIManager();
 
-		uiManager->loadFile("../code/assets/UIelements.json");
+		uiManager->loadFile(uiFilePath);
 
 		isLoaded = true;
 	}

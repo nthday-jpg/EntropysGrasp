@@ -34,8 +34,6 @@ public:
 
 	void setBackground(sf::Texture* texture);
 
-	void load();
-
 	void clear();
 
 	void draw(sf::RenderTarget& target) const;
