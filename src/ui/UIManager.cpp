@@ -26,23 +26,14 @@ UIElement* UIManager::parseElement(const nlohmann::json& elemJson, sf::Font* fon
 
 		Button* button = new Button(command, text, font, position, charSize);
 		
-		// Set visibility if specified
 		if (elemJson.contains("visible")) {
 			button->setVisible(elemJson["visible"]);
 		}
 		
-		// Optional origin setting from JSON
+		// Unified origin parsing
 		if (elemJson.contains("origin")) {
 			std::string originStr = elemJson["origin"];
-			if (originStr == "topLeft") button->setOrigin(ButtonOrigin::TopLeft);
-			else if (originStr == "topCenter") button->setOrigin(ButtonOrigin::TopCenter);
-			else if (originStr == "topRight") button->setOrigin(ButtonOrigin::TopRight);
-			else if (originStr == "centerLeft") button->setOrigin(ButtonOrigin::CenterLeft);
-			else if (originStr == "center") button->setOrigin(ButtonOrigin::Center);
-			else if (originStr == "centerRight") button->setOrigin(ButtonOrigin::CenterRight);
-			else if (originStr == "bottomLeft") button->setOrigin(ButtonOrigin::BottomLeft);
-			else if (originStr == "bottomCenter") button->setOrigin(ButtonOrigin::BottomCenter);
-			else if (originStr == "bottomRight") button->setOrigin(ButtonOrigin::BottomRight);
+			button->setOrigin(UIOriginHelper::parseOriginString(originStr));
 		}
 
 		return button;
@@ -53,26 +44,16 @@ UIElement* UIManager::parseElement(const nlohmann::json& elemJson, sf::Font* fon
 
 		Panel* panel = new Panel(position, size);
 
-		// Set visibility if specified
 		if (elemJson.contains("visible")) {
 			panel->setVisible(elemJson["visible"]);
 		}
 		
-		// Optional origin setting from JSON
+		// Unified origin parsing
 		if (elemJson.contains("origin")) {
 			std::string originStr = elemJson["origin"];
-			if (originStr == "topLeft") panel->setOrigin(PanelOrigin::TopLeft);
-			else if (originStr == "topCenter") panel->setOrigin(PanelOrigin::TopCenter);
-			else if (originStr == "topRight") panel->setOrigin(PanelOrigin::TopRight);
-			else if (originStr == "centerLeft") panel->setOrigin(PanelOrigin::CenterLeft);
-			else if (originStr == "center") panel->setOrigin(PanelOrigin::Center);
-			else if (originStr == "centerRight") panel->setOrigin(PanelOrigin::CenterRight);
-			else if (originStr == "bottomLeft") panel->setOrigin(PanelOrigin::BottomLeft);
-			else if (originStr == "bottomCenter") panel->setOrigin(PanelOrigin::BottomCenter);
-			else if (originStr == "bottomRight") panel->setOrigin(PanelOrigin::BottomRight);
+			panel->setOrigin(UIOriginHelper::parseOriginString(originStr));
 		}
 
-		// Store panel with ID if provided
 		if (elemJson.contains("id")) {
 			std::string id = elemJson["id"];
 			namedElements[id] = panel;
@@ -94,26 +75,16 @@ UIElement* UIManager::parseElement(const nlohmann::json& elemJson, sf::Font* fon
 		
 		Text* textElement = new Text(*font, text, position, charSize);
 		
-		// Optional origin setting from JSON
+		// Unified origin parsing
 		if (elemJson.contains("origin")) {
 			std::string originStr = elemJson["origin"];
-			if (originStr == "topLeft") textElement->setOrigin(TextOrigin::TopLeft);
-			else if (originStr == "topCenter") textElement->setOrigin(TextOrigin::TopCenter);
-			else if (originStr == "topRight") textElement->setOrigin(TextOrigin::TopRight);
-			else if (originStr == "centerLeft") textElement->setOrigin(TextOrigin::CenterLeft);
-			else if (originStr == "center") textElement->setOrigin(TextOrigin::Center);
-			else if (originStr == "centerRight") textElement->setOrigin(TextOrigin::CenterRight);
-			else if (originStr == "bottomLeft") textElement->setOrigin(TextOrigin::BottomLeft);
-			else if (originStr == "bottomCenter") textElement->setOrigin(TextOrigin::BottomCenter);
-			else if (originStr == "bottomRight") textElement->setOrigin(TextOrigin::BottomRight);
+			textElement->setOrigin(UIOriginHelper::parseOriginString(originStr));
 		}
 		
-		// Set visibility if specified
 		if (elemJson.contains("visible")) {
 			textElement->setVisible(elemJson["visible"]);
 		}
 		
-		// Check if this is a dynamic text element
 		if (elemJson.contains("id")) {
 			std::string id = elemJson["id"];
 			dynamicTexts[id] = textElement;

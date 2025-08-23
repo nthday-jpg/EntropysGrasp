@@ -1,11 +1,11 @@
 #include "Button.h"
+#include "UIOrigin.h"  // Add UIOrigin include
 #include "../control/commands/gameControl.h"
 #include <SFML/Graphics/RenderTarget.hpp> 
 #include "../manager/WindowManager.h"
 #include <exception>
 
-
-Button::Button(
+Button::Button(		
 	std::string command,
 	std::string text,
 	sf::Font* font,
@@ -14,7 +14,7 @@ Button::Button(
 ):	font(font),
 	text(*font),
 	position(position),
-	buttonOrigin(ButtonOrigin::Center) // Initialize buttonOrigin
+	buttonOrigin(UIOrigin::Center)
 {
 	this->text.setString(text);
 	this->text.setFillColor(sf::Color::Red);
@@ -22,7 +22,7 @@ Button::Button(
 
 	// Calculate text bounds to determine button size
 	sf::FloatRect textBounds = this->text.getLocalBounds();
-	sf::Vector2f buttonSize = sf::Vector2f(textBounds.size.x + 20.0f, textBounds.size.y + 10.0f); // Add padding
+	sf::Vector2f buttonSize = sf::Vector2f(textBounds.size.x + 20.0f, textBounds.size.y + 10.0f);
 	this->shape.setSize(buttonSize);
 	this->shape.setFillColor(sf::Color::Transparent);
 
@@ -33,10 +33,8 @@ Button::Button(
 	);
 	this->text.setOrigin(textOffset);
 
-	// Set button origin (must be called after setting size)
+	// Set button origin using unified system
 	updateButtonOrigin();
-
-	// Set initial draw position
 	setDrawPosition(position);
 
 	if (commandFactories.find(command) != commandFactories.end())
@@ -51,41 +49,9 @@ Button::Button(
 
 void Button::updateButtonOrigin()
 {
-	sf::Vector2f size = this->shape.getSize(); // Use getSize() not getGlobalBounds()
-	sf::Vector2f origin;
-
-	switch (this->buttonOrigin)
-	{
-	case ButtonOrigin::TopLeft:
-		origin = { 0.0f, 0.0f };
-		break;
-	case ButtonOrigin::TopCenter:
-		origin = { size.x / 2.0f, 0.0f };
-		break;
-	case ButtonOrigin::TopRight:
-		origin = { size.x, 0.0f };
-		break;
-	case ButtonOrigin::CenterLeft:
-		origin = { 0.0f, size.y / 2.0f };
-		break;
-	case ButtonOrigin::Center:
-		origin = { size.x / 2.0f, size.y / 2.0f };
-		break;
-	case ButtonOrigin::CenterRight:
-		origin = { size.x, size.y / 2.0f };
-		break;
-	case ButtonOrigin::BottomLeft:
-		origin = { 0.0f, size.y };
-		break;
-	case ButtonOrigin::BottomCenter:
-		origin = { size.x / 2.0f, size.y };
-		break;
-	case ButtonOrigin::BottomRight:
-		origin = { size.x, size.y };
-		break;
-	}
-
-	this->shape.setOrigin(origin); // Set origin on the shape, not the text
+	sf::Vector2f size = this->shape.getSize();
+	sf::Vector2f origin = UIOriginHelper::calculateOrigin(size, buttonOrigin);
+	this->shape.setOrigin(origin);
 }
 
 void Button::setDrawPosition(sf::Vector2f drawPos)
@@ -98,7 +64,7 @@ void Button::setDrawPosition(sf::Vector2f drawPos)
 	this->text.setPosition(shapeCenter);
 }
 
-void Button::setOrigin(ButtonOrigin origin)
+void Button::setOrigin(UIOrigin origin)
 {
 	this->buttonOrigin = origin;
 	updateButtonOrigin();
@@ -106,19 +72,17 @@ void Button::setOrigin(ButtonOrigin origin)
 
 void Button::setOrigin(sf::Vector2f origin)
 {
-	this->shape.setOrigin(origin); // Set origin on shape, not text
-	// When setting custom origin, we don't update buttonOrigin enum
-	// This allows for completely custom positioning
+	this->shape.setOrigin(origin);
 }
 
-ButtonOrigin Button::getOrigin() const
+UIOrigin Button::getOrigin() const
 {
 	return buttonOrigin;
 }
 
 sf::Vector2f Button::getOriginPoint() const
 {
-	return this->shape.getOrigin(); // Return shape origin, not text origin
+	return this->shape.getOrigin();
 }
 
 void Button::setSize(sf::Vector2f size)

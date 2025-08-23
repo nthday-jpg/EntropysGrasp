@@ -2,15 +2,14 @@
 #include "../manager/WindowManager.h"
 #include <SFML/Graphics/View.hpp>
 
-Panel::Panel(sf::Vector2f centerPosition, sf::Vector2f size)
-	: position(centerPosition), draggable(false), isDragging(false), dragOffset(0.f, 0.f), panelOrigin(PanelOrigin::Center)
+Panel::Panel(sf::Vector2f position, sf::Vector2f size)
+	: position(position), draggable(false), isDragging(false), dragOffset(0.f, 0.f), panelOrigin(UIOrigin::Center)
 {
 	background.setSize(size);
-	background.setFillColor(sf::Color(50, 50, 50, 200)); // Semi-transparent gray
+	background.setFillColor(sf::Color(50, 50, 50, 200));
 	background.setOutlineColor(sf::Color::Black);
 	background.setOutlineThickness(1.f);
 	
-	// Set panel origin to center by default
 	updatePanelOrigin();
 }
 
@@ -26,42 +25,11 @@ Panel::~Panel()
 void Panel::updatePanelOrigin()
 {
 	sf::Vector2f size = background.getSize();
-	sf::Vector2f origin;
-	
-	switch (panelOrigin) {
-		case PanelOrigin::TopLeft:
-			origin = sf::Vector2f(0.0f, 0.0f);
-			break;
-		case PanelOrigin::TopCenter:
-			origin = sf::Vector2f(size.x / 2.0f, 0.0f);
-			break;
-		case PanelOrigin::TopRight:
-			origin = sf::Vector2f(size.x, 0.0f);
-			break;
-		case PanelOrigin::CenterLeft:
-			origin = sf::Vector2f(0.0f, size.y / 2.0f);
-			break;
-		case PanelOrigin::Center:
-			origin = sf::Vector2f(size.x / 2.0f, size.y / 2.0f);
-			break;
-		case PanelOrigin::CenterRight:
-			origin = sf::Vector2f(size.x, size.y / 2.0f);
-			break;
-		case PanelOrigin::BottomLeft:
-			origin = sf::Vector2f(0.0f, size.y);
-			break;
-		case PanelOrigin::BottomCenter:
-			origin = sf::Vector2f(size.x / 2.0f, size.y);
-			break;
-		case PanelOrigin::BottomRight:
-			origin = sf::Vector2f(size.x, size.y);
-			break;
-	}
-	
+	sf::Vector2f origin = UIOriginHelper::calculateOrigin(size, panelOrigin);
 	background.setOrigin(origin);
 }
 
-void Panel::setOrigin(PanelOrigin origin)
+void Panel::setOrigin(UIOrigin origin)
 {
 	this->panelOrigin = origin;
 	updatePanelOrigin();
@@ -70,11 +38,9 @@ void Panel::setOrigin(PanelOrigin origin)
 void Panel::setOrigin(sf::Vector2f origin)
 {
 	background.setOrigin(origin);
-	// When setting custom origin, we don't update panelOrigin enum
-	// This allows for completely custom positioning
 }
 
-PanelOrigin Panel::getOrigin() const
+UIOrigin Panel::getOrigin() const
 {
 	return panelOrigin;
 }

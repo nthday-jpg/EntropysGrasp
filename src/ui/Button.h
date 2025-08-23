@@ -1,5 +1,6 @@
 #pragma once
 #include "UIELement.h"
+#include "UIOrigin.h"
 #include "../control/UICommandManager.h"
 #include "../control/UICommand.h"
 #include "../control/commands/gameControl.h"
@@ -7,18 +8,6 @@
 #include <SFML/Graphics/Text.hpp>
 #include <functional>
 #include <unordered_map>
-
-enum class ButtonOrigin {
-	TopLeft,
-	TopCenter,
-	TopRight,
-	CenterLeft,
-	Center,
-	CenterRight,
-	BottomLeft,
-	BottomCenter,
-	BottomRight
-};
 
 inline std::unordered_map<std::string, std::function<UICommand* ()>> commandFactories
 {
@@ -36,20 +25,14 @@ class Button : public UIElement
 	sf::RectangleShape shape;
 	sf::Font* font;
 	sf::Text text;
-
-	// Position of the button in the window
 	sf::Vector2f position;
-
 	bool visible = true;
 	bool enabled = true;
 	bool pressed = false;
-	
-	ButtonOrigin buttonOrigin = ButtonOrigin::Center; // Default to center
-
+	UIOrigin buttonOrigin = UIOrigin::Center; // Use unified origin
 	std::function<UICommand* ()> commandFactory;
 
 public:
-	//No background by default
 	Button(
 		std::string command,
 		std::string text,
@@ -64,38 +47,23 @@ public:
 		sf::RenderStates states = sf::RenderStates::Default
 	) const override;
 
-	// update the position button and text in world coordinates
 	void setDrawPosition(sf::Vector2f drawPos) override;
-
 	void setVisible(bool visible) override;
-
 	bool isVisible() const override;
-
 	void setBackgroundColor(sf::Color color);
-
-	// Set the background texture of the button
 	void setBackground(sf::Texture* texture);
-
 	void setTextColor(sf::Color color);
-
-	// Set the position of the button relative to the window
 	void setPosition(sf::Vector2f position) override;
-
-	// Get the position of the button relative to the window
 	sf::Vector2f getPosition() const override;
-
 	void setSize(sf::Vector2f size);
-
 	sf::Vector2f getSize() const override;
-
 	bool contains(sf::Vector2i point) const override;
-
 	bool handleEvent(const std::optional<sf::Event>& event) override;
 	
-	// Origin control methods
-	void setOrigin(ButtonOrigin origin);
+	// Unified origin control methods
+	void setOrigin(UIOrigin origin);
 	void setOrigin(sf::Vector2f origin);
-	ButtonOrigin getOrigin() const;
+	UIOrigin getOrigin() const;
 	sf::Vector2f getOriginPoint() const;
 
 private:

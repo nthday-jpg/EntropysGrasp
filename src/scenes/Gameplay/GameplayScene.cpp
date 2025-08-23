@@ -7,6 +7,7 @@
 #include "../../gameplay/components/Hitbox.h"
 #include "../../ui/Button.h"
 #include "../../ui/Text.h"
+#include "../../ui/UIOrigin.h"  
 #include "../../manager/FontManager.h"
 #include "../../manager/TextureManager.h"
 #include "../../manager/AnimationManager.h"
@@ -71,7 +72,7 @@ void GameplayScene::load()
         {20.0f, 10.0f}, 
         20
     );
-    rewardText->setOrigin(TextOrigin::TopLeft); // Set to top-left alignment
+    rewardText->setOrigin(UIOrigin::TopLeft); // Use UIOrigin instead of TextOrigin
     
 	uiManager->addDynamicText("rewardText", 
 		rewardText,
@@ -88,7 +89,7 @@ void GameplayScene::load()
         {20.0f, 40.0f}, 
         20
     );
-    timeText->setOrigin(TextOrigin::TopLeft); // Set to top-left alignment
+    timeText->setOrigin(UIOrigin::TopLeft); // Use UIOrigin instead of TextOrigin
     
 	uiManager->addDynamicText("timeText",
 		timeText,
@@ -128,7 +129,7 @@ void GameplayScene::addSpellCooldownDisplays()
             {20.0f, 70.0f + (i * 25.0f)}, // Stack vertically with 25px spacing
             18 // Slightly smaller text
         );
-        spellText->setOrigin(TextOrigin::TopLeft); // Set to top-left alignment
+        spellText->setOrigin(UIOrigin::TopLeft); // Use UIOrigin instead of TextOrigin
         
 		uiManager->addDynamicText(textId, 
 			spellText,

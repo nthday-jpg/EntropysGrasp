@@ -83,6 +83,8 @@
     <ClInclude Include="src\ui\Text.h" />
     <ClInclude Include="src\ui\UIElement.h" />
     <ClInclude Include="src\ui\UIManager.h" />
+    <ClInclude Include="src\ui\UIOrigin.h" />
+    <ClInclude Include="src\ui\UIOriginHelper.h" />
     <ClInclude Include="src\utils\Random.h" />
     <ClInclude Include="src\utils\SpatialHash.h" />
     <ClInclude Include="src\utils\VectorMath.h" />
@@ -132,6 +134,7 @@
     <ClCompile Include="src\ui\Panel.cpp" />
     <ClCompile Include="src\ui\Text.cpp" />
     <ClCompile Include="src\ui\UIManager.cpp" />
+    <ClCompile Include="src\ui\UIOrigin.cpp" />
     <ClCompile Include="src\utils\Random.cpp" />
     <ClCompile Include="src\utils\SpatialHash.cpp" />
     <ClCompile Include="src\utils\VectorMath.cpp" />

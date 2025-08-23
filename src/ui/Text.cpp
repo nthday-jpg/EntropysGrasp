@@ -5,7 +5,7 @@ Text::Text(
 	const sf::Font& font, std::string text, 
 	sf::Vector2f position, unsigned int charSize
 ):	text(font, text, charSize),
-	position(position), visible(true), textOrigin(TextOrigin::Center)
+	position(position), visible(true), textOrigin(UIOrigin::Center)
 {
 	this->text.setFillColor(sf::Color::White); // Default color
 	this->text.setCharacterSize(charSize);
@@ -20,45 +20,14 @@ Text::Text(
 void Text::updateTextOrigin()
 {
 	sf::FloatRect textBounds = this->text.getLocalBounds();
-	sf::Vector2f origin;
+	sf::Vector2f textSize(textBounds.size.x, textBounds.size.y);
+	sf::Vector2f offset(textBounds.position.x, textBounds.position.y);
 	
-	switch (textOrigin) {
-		case TextOrigin::TopLeft:
-			origin = sf::Vector2f(textBounds.position.x, textBounds.position.y);
-			break;
-		case TextOrigin::TopCenter:
-			origin = sf::Vector2f(textBounds.position.x + textBounds.size.x / 2.0f, textBounds.position.y);
-			break;
-		case TextOrigin::TopRight:
-			origin = sf::Vector2f(textBounds.position.x + textBounds.size.x, textBounds.position.y);
-			break;
-		case TextOrigin::CenterLeft:
-			origin = sf::Vector2f(textBounds.position.x, textBounds.position.y + textBounds.size.y / 2.0f);
-			break;
-		case TextOrigin::Center:
-			origin = sf::Vector2f(
-				textBounds.position.x + textBounds.size.x / 2.0f,
-				textBounds.position.y + textBounds.size.y / 2.0f
-			);
-			break;
-		case TextOrigin::CenterRight:
-			origin = sf::Vector2f(textBounds.position.x + textBounds.size.x, textBounds.position.y + textBounds.size.y / 2.0f);
-			break;
-		case TextOrigin::BottomLeft:
-			origin = sf::Vector2f(textBounds.position.x, textBounds.position.y + textBounds.size.y);
-			break;
-		case TextOrigin::BottomCenter:
-			origin = sf::Vector2f(textBounds.position.x + textBounds.size.x / 2.0f, textBounds.position.y + textBounds.size.y);
-			break;
-		case TextOrigin::BottomRight:
-			origin = sf::Vector2f(textBounds.position.x + textBounds.size.x, textBounds.position.y + textBounds.size.y);
-			break;
-	}
-	
-	this->text.setOrigin(origin);
+	sf::Vector2f origin = UIOriginHelper::calculateOrigin(textSize, textOrigin);
+	this->text.setOrigin(offset + origin);
 }
 
-void Text::setOrigin(TextOrigin origin)
+void Text::setOrigin(UIOrigin origin)
 {
 	this->textOrigin = origin;
 	updateTextOrigin();
@@ -68,10 +37,9 @@ void Text::setOrigin(sf::Vector2f origin)
 {
 	this->text.setOrigin(origin);
 	// When setting custom origin, we don't update textOrigin enum
-	// This allows for completely custom positioning
 }
 
-TextOrigin Text::getOrigin() const
+UIOrigin Text::getOrigin() const
 {
 	return textOrigin;
 }
@@ -87,9 +55,9 @@ void Text::setString(std::string text)
 	updateTextOrigin(); // Recalculate origin when text changes
 }
 
-void Text::setPosition(sf::Vector2f centerPosition) 
+void Text::setPosition(sf::Vector2f position) 
 {
-	this->position = centerPosition;
+	this->position = position;
 }
 
 sf::Vector2f Text::getPosition() const 
@@ -142,7 +110,6 @@ bool Text::contains(sf::Vector2i point) const
 
 bool Text::handleEvent(const std::optional<sf::Event>& event) 
 {
-	// Text does not handle events, return false
 	return false;
 }
 
