@@ -51,7 +51,7 @@ void GameplayScene::load()
 	isLoaded = true;
     MapManager::getInstance().loadMap();
     TextureManager::getInstance().loadFromAssetFile();
-    entt::entity playerEntity = createPlayer();
+    playerEntity = createPlayer(); // Store as member variable
 
     inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
     
@@ -65,20 +65,19 @@ void GameplayScene::load()
     uiManager = new UIManager();
 	uiManager->loadFile(uiFilePath);
 
-    // Add dynamic text elements for real-time state
+    // Add dynamic text elements for real-time state - Left side HUD
     Text* rewardText = new Text(
         *FontManager::getInstance().getFont("default"), 
         "Rewards: 0", 
         {20.0f, 10.0f}, 
         20
     );
-    rewardText->setOrigin(UIOrigin::TopLeft); // Use UIOrigin instead of TextOrigin
+    rewardText->setOrigin(UIOrigin::TopLeft);
     
 	uiManager->addDynamicText("rewardText", 
 		rewardText,
 		[this]() -> std::string {
-			// Get current reward from your reward system
-			int currentReward = rewardSystem.getCurrentReward(); // You'll need to implement this
+			int currentReward = rewardSystem.getCurrentReward();
 			return "Rewards: " + std::to_string(currentReward);
 		}
 	);
@@ -89,12 +88,11 @@ void GameplayScene::load()
         {20.0f, 40.0f}, 
         20
     );
-    timeText->setOrigin(UIOrigin::TopLeft); // Use UIOrigin instead of TextOrigin
+    timeText->setOrigin(UIOrigin::TopLeft);
     
 	uiManager->addDynamicText("timeText",
 		timeText,
 		[this]() -> std::string {
-			// Get current playing time
 			int totalSeconds = static_cast<int>(gameClock.getElapsedTime().asSeconds());
 			int minutes = totalSeconds / 60;
 			int seconds = totalSeconds % 60;
@@ -103,7 +101,50 @@ void GameplayScene::load()
 		}
 	);
 
-	// Add spell cooldown displays for each usable spell
+    // Add HP display - Top right corner
+    Text* hpText = new Text(
+        *FontManager::getInstance().getFont("default"), 
+        "HP: 10000/10000", 
+        {-20.0f, 10.0f}, 
+        22
+    );
+    hpText->setOrigin(UIOrigin::TopRight);
+    
+    uiManager->addDynamicText("hpText",
+        hpText,
+        [this]() -> std::string {
+            // Get player's health component
+            if (registry.valid(playerEntity) && registry.all_of<Health>(playerEntity)) {
+                const auto& health = registry.get<Health>(playerEntity);
+                return "HP: " + std::to_string(static_cast<int>(health.current)) + 
+                       "/" + std::to_string(static_cast<int>(health.max));
+            }
+            return "HP: 0/0";
+        }
+    );
+
+    // Add Mana display - Top right corner below HP
+    Text* manaText = new Text(
+        *FontManager::getInstance().getFont("default"), 
+        "Mana: 1000", 
+        {-20.0f, 40.0f}, 
+        22
+    );
+    manaText->setOrigin(UIOrigin::TopRight);
+    
+    uiManager->addDynamicText("manaText",
+        manaText,
+        [this]() -> std::string {
+            // Get player's mana component
+            if (registry.valid(playerEntity) && registry.all_of<Mana>(playerEntity)) {
+                const auto& mana = registry.get<Mana>(playerEntity);
+                return "Mana: " + std::to_string(static_cast<int>(mana.value));
+            }
+            return "Mana: 0";
+        }
+    );
+
+	// Add spell cooldown displays for each usable spell - Left side below time
 	addSpellCooldownDisplays();
 
     window.setView(camera.getView());
@@ -323,6 +364,17 @@ void GameplayScene::hideHUDElements() {
 			timeText->second->setVisible(false);
 		}
 		
+		// Hide HP and Mana displays
+		auto hpText = uiManager->dynamicTexts.find("hpText");
+		if (hpText != uiManager->dynamicTexts.end()) {
+			hpText->second->setVisible(false);
+		}
+		
+		auto manaText = uiManager->dynamicTexts.find("manaText");
+		if (manaText != uiManager->dynamicTexts.end()) {
+			manaText->second->setVisible(false);
+		}
+		
 		// Hide spell cooldown texts
 		for (int i = 1; i <= 4; ++i) {
 			std::string textId = "spell" + std::to_string(i) + "Cooldown";
@@ -345,6 +397,17 @@ void GameplayScene::showHUDElements() {
 		auto timeText = uiManager->dynamicTexts.find("timeText");
 		if (timeText != uiManager->dynamicTexts.end()) {
 			timeText->second->setVisible(true);
+		}
+		
+		// Show HP and Mana displays
+		auto hpText = uiManager->dynamicTexts.find("hpText");
+		if (hpText != uiManager->dynamicTexts.end()) {
+			hpText->second->setVisible(true);
+		}
+		
+		auto manaText = uiManager->dynamicTexts.find("manaText");
+		if (manaText != uiManager->dynamicTexts.end()) {
+			manaText->second->setVisible(true);
 		}
 		
 		// Show spell cooldown texts

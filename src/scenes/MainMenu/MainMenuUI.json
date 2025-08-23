@@ -3,30 +3,30 @@
   "elements": [
     {
       "type": "text",
-      "text": "ENTROPY's GRASP'",
-      "position": [ 400, 60 ],
+      "text": "ENTROPY'S GRASP",
+      "position": [ 0, -200 ],
       "characterSize": 72,
       "origin": "center"
     },
     {
       "type": "text",
       "text": "Adventure Awaits",
-      "position": [ 400, 110 ],
+      "position": [ 0, -140 ],
       "characterSize": 24,
       "origin": "center"
     },
     {
       "type": "panel",
       "id": "mainMenuPanel",
-      "position": [ 400, 350 ],
-      "size": [ 200, 300 ],
+      "position": [ 0, 50 ],
+      "size": [ 200, 150 ],
       "origin": "center",
       "children": [
         {
           "type": "button",
           "command": "GAMEPLAY",
           "text": "Play",
-          "position": [ 0, -60 ],
+          "position": [ 0, -40 ],
           "characterSize": 36,
           "origin": "center"
         },
@@ -34,7 +34,7 @@
           "type": "button",
           "command": "SHUTDOWN",
           "text": "Exit",
-          "position": [ 0, 0 ],
+          "position": [ 0, 40 ],
           "characterSize": 36,
           "origin": "center"
         }

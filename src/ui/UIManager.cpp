@@ -151,18 +151,76 @@ void UIManager::setBackground(sf::Texture* texture)
 void UIManager::syncUIWithViewport()
 {
 	sf::View view = WindowManager::getInstance().getWindow().getView();
-	sf::Vector2f viewPosition = view.getCenter() - view.getSize() / 2.f;
+	sf::Vector2f viewPosition = view.getCenter() - view.getSize() / 2.f;  // Top-left corner
 	sf::Vector2f viewCenter = view.getCenter();
+	sf::Vector2f viewSize = view.getSize();
 
 	// Sync all elements (including dynamic texts since they're added to elements vector)
 	for(auto& element : elements)
 	{
-		// Center pause panel in viewport
+		// Special handling for pause panel - always center in viewport
 		if (auto it = namedElements.find("pausePanel"); it != namedElements.end() && it->second == element) {
 			element->setDrawPosition(viewCenter + element->getPosition());
-		} else {
-			element->setDrawPosition(viewPosition + element->getPosition());
+		} 
+		// Special handling for main menu panel - always center in viewport  
+		else if (auto it = namedElements.find("mainMenuPanel"); it != namedElements.end() && it->second == element) {
+			element->setDrawPosition(viewCenter + element->getPosition());
 		}
+		else {
+			// Handle different UI element types with their origins
+			sf::Vector2f anchorPoint = viewPosition; // Default to top-left
+			
+			// Check for Text elements
+			Text* textElement = dynamic_cast<Text*>(element);
+			if (textElement) {
+				UIOrigin origin = textElement->getOrigin();
+				anchorPoint = calculateAnchorPoint(viewPosition, viewCenter, viewSize, origin);
+			}
+			// Check for Panel elements  
+			else {
+				Panel* panelElement = dynamic_cast<Panel*>(element);
+				if (panelElement) {
+					UIOrigin origin = panelElement->getOrigin();
+					anchorPoint = calculateAnchorPoint(viewPosition, viewCenter, viewSize, origin);
+				}
+				// Check for Button elements
+				else {
+					Button* buttonElement = dynamic_cast<Button*>(element);
+					if (buttonElement) {
+						UIOrigin origin = buttonElement->getOrigin();
+						anchorPoint = calculateAnchorPoint(viewPosition, viewCenter, viewSize, origin);
+					}
+				}
+			}
+			
+			element->setDrawPosition(anchorPoint + element->getPosition());
+		}
+	}
+}
+
+sf::Vector2f UIManager::calculateAnchorPoint(const sf::Vector2f& viewPosition, const sf::Vector2f& viewCenter, const sf::Vector2f& viewSize, UIOrigin origin)
+{
+	switch (origin) {
+		case UIOrigin::TopLeft:
+			return viewPosition;  // Top-left corner
+		case UIOrigin::TopCenter:
+			return sf::Vector2f(viewCenter.x, viewPosition.y);  // Top-center
+		case UIOrigin::TopRight:
+			return sf::Vector2f(viewPosition.x + viewSize.x, viewPosition.y);  // Top-right corner
+		case UIOrigin::CenterLeft:
+			return sf::Vector2f(viewPosition.x, viewCenter.y);  // Center-left
+		case UIOrigin::Center:
+			return viewCenter;  // Center
+		case UIOrigin::CenterRight:
+			return sf::Vector2f(viewPosition.x + viewSize.x, viewCenter.y);  // Center-right
+		case UIOrigin::BottomLeft:
+			return sf::Vector2f(viewPosition.x, viewPosition.y + viewSize.y);  // Bottom-left
+		case UIOrigin::BottomCenter:
+			return sf::Vector2f(viewCenter.x, viewPosition.y + viewSize.y);  // Bottom-center
+		case UIOrigin::BottomRight:
+			return sf::Vector2f(viewPosition.x + viewSize.x, viewPosition.y + viewSize.y);  // Bottom-right
+		default:
+			return viewPosition;  // Default to top-left
 	}
 }
 

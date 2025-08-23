@@ -32,6 +32,9 @@ private:
     entt::registry registry;
     entt::dispatcher* dispatcher;
     
+    // Player entity reference
+    entt::entity playerEntity;
+    
     // Systems
     CollisionSystem collisionSystem;
     MovementPipeline movementPipeline;

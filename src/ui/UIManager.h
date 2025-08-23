@@ -11,6 +11,7 @@
 #include "../manager/SoundManager.h"
 #include "Text.h"
 #include "UIElement.h"
+#include "UIOrigin.h"  // Add UIOrigin include
 #include <optional>
 #include <nlohmann/json.hpp>
 #include <functional>
@@ -31,6 +32,10 @@ class UIManager
 	std::unordered_map<std::string, std::function<std::string()>> textUpdaters;
 
 	UIElement* parseElement(const nlohmann::json& elemJson, sf::Font* font);
+	
+	// Helper method for calculating anchor points based on origin
+	sf::Vector2f calculateAnchorPoint(const sf::Vector2f& viewPosition, const sf::Vector2f& viewCenter, const sf::Vector2f& viewSize, UIOrigin origin);
+	
 public:
 	// Map to store dynamic text elements by ID for easy updates
 	std::unordered_map<std::string, ::Text*> dynamicTexts; // Made public for GameplayScene access
