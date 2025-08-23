@@ -50,3 +50,11 @@ public:
         targetScene(targetScene) { }
 	void execute() override;
 };
+
+class Shutdown : public UICommand
+{
+	UICommandManager* commandManager;
+public:
+	Shutdown() : commandManager(&UICommandManager::getInstance()) {}
+	void execute() override;
+};

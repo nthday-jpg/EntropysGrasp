@@ -52,3 +52,9 @@ void ChangeScene::execute()
 	std::cout << "Changing scene to: " << targetScene << std::endl;
 	sceneManager->navigateTo(targetScene);
 }
+
+void Shutdown::execute()
+{
+	std::cout << "Shutting down the game." << std::endl;
+	WindowManager::getInstance().getWindow().close();
+}

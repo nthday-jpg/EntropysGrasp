@@ -2,31 +2,43 @@
   "font": "CarrotFlower",
   "elements": [
     {
+      "type": "text",
+      "text": "ENTROPY's GRASP'",
+      "position": [ 400, 60 ],
+      "characterSize": 72,
+      "origin": "center"
+    },
+    {
+      "type": "text",
+      "text": "Adventure Awaits",
+      "position": [ 400, 110 ],
+      "characterSize": 24,
+      "origin": "center"
+    },
+    {
       "type": "panel",
-      "position": [ 100, 100 ],
-      "size": [ 100, 300 ],
+      "id": "mainMenuPanel",
+      "position": [ 400, 350 ],
+      "size": [ 200, 300 ],
+      "origin": "center",
       "children": [
         {
           "type": "button",
           "command": "GAMEPLAY",
-          "text": "Gameplay",
-          "position": [ 50, 30 ],
-          "characterSize": 30
+          "text": "Play",
+          "position": [ 0, -60 ],
+          "characterSize": 36,
+          "origin": "center"
         },
         {
           "type": "button",
-          "command": "EXIT",
+          "command": "SHUTDOWN",
           "text": "Exit",
-          "position": [ 50, 230 ],
-          "characterSize": 30
+          "position": [ 0, 0 ],
+          "characterSize": 36,
+          "origin": "center"
         }
       ]
-    },
-    {
-      "type": "text",
-      "text": "Main Menu",
-      "position": [ 400, 300 ],
-      "characterSize": 50
     }
   ]
 }

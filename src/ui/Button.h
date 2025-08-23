@@ -8,6 +8,18 @@
 #include <functional>
 #include <unordered_map>
 
+enum class ButtonOrigin {
+	TopLeft,
+	TopCenter,
+	TopRight,
+	CenterLeft,
+	Center,
+	CenterRight,
+	BottomLeft,
+	BottomCenter,
+	BottomRight
+};
+
 inline std::unordered_map<std::string, std::function<UICommand* ()>> commandFactories
 {
 	{"EXIT", []() { return new Exit(); }},
@@ -15,7 +27,8 @@ inline std::unordered_map<std::string, std::function<UICommand* ()>> commandFact
 	{"RESUME", []() { return new Resume(); }},
 	{"RESTART", []() { return new Restart(); }},
 	{"MAINMENU", []() { return new ChangeScene("MainMenu"); }},
-	{"GAMEPLAY", []() { return new ChangeScene("Gameplay"); }}
+	{"GAMEPLAY", []() { return new ChangeScene("Gameplay"); }},
+	{"SHUTDOWN", []() { return new Shutdown(); } }
 };
 
 class Button : public UIElement
@@ -30,6 +43,8 @@ class Button : public UIElement
 	bool visible = true;
 	bool enabled = true;
 	bool pressed = false;
+	
+	ButtonOrigin buttonOrigin = ButtonOrigin::Center; // Default to center
 
 	std::function<UICommand* ()> commandFactory;
 
@@ -50,7 +65,7 @@ public:
 	) const override;
 
 	// update the position button and text in world coordinates
-	void setDrawPosition(sf::Vector2f drawPos);
+	void setDrawPosition(sf::Vector2f drawPos) override;
 
 	void setVisible(bool visible) override;
 
@@ -71,9 +86,18 @@ public:
 
 	void setSize(sf::Vector2f size);
 
-	sf::Vector2f getSize() const;
+	sf::Vector2f getSize() const override;
 
 	bool contains(sf::Vector2i point) const override;
 
 	bool handleEvent(const std::optional<sf::Event>& event) override;
+	
+	// Origin control methods
+	void setOrigin(ButtonOrigin origin);
+	void setOrigin(sf::Vector2f origin);
+	ButtonOrigin getOrigin() const;
+	sf::Vector2f getOriginPoint() const;
+
+private:
+	void updateButtonOrigin();
 };

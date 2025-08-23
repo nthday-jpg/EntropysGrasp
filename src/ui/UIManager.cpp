@@ -30,6 +30,20 @@ UIElement* UIManager::parseElement(const nlohmann::json& elemJson, sf::Font* fon
 		if (elemJson.contains("visible")) {
 			button->setVisible(elemJson["visible"]);
 		}
+		
+		// Optional origin setting from JSON
+		if (elemJson.contains("origin")) {
+			std::string originStr = elemJson["origin"];
+			if (originStr == "topLeft") button->setOrigin(ButtonOrigin::TopLeft);
+			else if (originStr == "topCenter") button->setOrigin(ButtonOrigin::TopCenter);
+			else if (originStr == "topRight") button->setOrigin(ButtonOrigin::TopRight);
+			else if (originStr == "centerLeft") button->setOrigin(ButtonOrigin::CenterLeft);
+			else if (originStr == "center") button->setOrigin(ButtonOrigin::Center);
+			else if (originStr == "centerRight") button->setOrigin(ButtonOrigin::CenterRight);
+			else if (originStr == "bottomLeft") button->setOrigin(ButtonOrigin::BottomLeft);
+			else if (originStr == "bottomCenter") button->setOrigin(ButtonOrigin::BottomCenter);
+			else if (originStr == "bottomRight") button->setOrigin(ButtonOrigin::BottomRight);
+		}
 
 		return button;
 	}

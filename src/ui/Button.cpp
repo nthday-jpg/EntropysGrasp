@@ -13,7 +13,8 @@ Button::Button(
 	int characterSize
 ):	font(font),
 	text(*font),
-	position(position)
+	position(position),
+	buttonOrigin(ButtonOrigin::Center) // Initialize buttonOrigin
 {
 	this->text.setString(text);
 	this->text.setFillColor(sf::Color::Red);
@@ -32,6 +33,9 @@ Button::Button(
 	);
 	this->text.setOrigin(textOffset);
 
+	// Set button origin (must be called after setting size)
+	updateButtonOrigin();
+
 	// Set initial draw position
 	setDrawPosition(position);
 
@@ -45,36 +49,76 @@ Button::Button(
 	}
 }
 
-void Button::setDrawPosition(sf::Vector2f centerPos)
+void Button::updateButtonOrigin()
 {
-	// Set button shape to be centered at centerPos
-	sf::Vector2f buttonSize = this->shape.getSize();
-	this->shape.setPosition(centerPos - buttonSize / 2.0f);
+	sf::Vector2f size = this->shape.getSize(); // Use getSize() not getGlobalBounds()
+	sf::Vector2f origin;
+
+	switch (this->buttonOrigin)
+	{
+	case ButtonOrigin::TopLeft:
+		origin = { 0.0f, 0.0f };
+		break;
+	case ButtonOrigin::TopCenter:
+		origin = { size.x / 2.0f, 0.0f };
+		break;
+	case ButtonOrigin::TopRight:
+		origin = { size.x, 0.0f };
+		break;
+	case ButtonOrigin::CenterLeft:
+		origin = { 0.0f, size.y / 2.0f };
+		break;
+	case ButtonOrigin::Center:
+		origin = { size.x / 2.0f, size.y / 2.0f };
+		break;
+	case ButtonOrigin::CenterRight:
+		origin = { size.x, size.y / 2.0f };
+		break;
+	case ButtonOrigin::BottomLeft:
+		origin = { 0.0f, size.y };
+		break;
+	case ButtonOrigin::BottomCenter:
+		origin = { size.x / 2.0f, size.y };
+		break;
+	case ButtonOrigin::BottomRight:
+		origin = { size.x, size.y };
+		break;
+	}
+
+	this->shape.setOrigin(origin); // Set origin on the shape, not the text
+}
+
+void Button::setDrawPosition(sf::Vector2f drawPos)
+{
+	// Set button shape position (origin is already set on the shape)
+	this->shape.setPosition(drawPos);
 	
-	// Set text to be centered at centerPos
-	this->text.setPosition(centerPos);
+	// Set text to be centered relative to the button shape's actual position
+	sf::Vector2f shapeCenter = this->shape.getPosition() + (this->shape.getSize() / 2.0f) - this->shape.getOrigin();
+	this->text.setPosition(shapeCenter);
 }
 
-void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Button::setOrigin(ButtonOrigin origin)
 {
-	if (!this->visible) return;
-	target.draw(this->shape, states);
-	target.draw(this->text, states);
+	this->buttonOrigin = origin;
+	updateButtonOrigin();
 }
 
-void Button::setPosition(sf::Vector2f centerPosition)
+void Button::setOrigin(sf::Vector2f origin)
 {
-	this->position = centerPosition;
+	this->shape.setOrigin(origin); // Set origin on shape, not text
+	// When setting custom origin, we don't update buttonOrigin enum
+	// This allows for completely custom positioning
 }
 
-sf::Vector2f Button::getPosition() const
+ButtonOrigin Button::getOrigin() const
 {
-	return this->position;
+	return buttonOrigin;
 }
 
-sf::Vector2f Button::getSize() const
+sf::Vector2f Button::getOriginPoint() const
 {
-	return this->shape.getSize();
+	return this->shape.getOrigin(); // Return shape origin, not text origin
 }
 
 void Button::setSize(sf::Vector2f size)
@@ -90,8 +134,33 @@ void Button::setSize(sf::Vector2f size)
 	);
 	this->text.setOrigin(textOffset);
 	
+	// Update button origin when size changes
+	updateButtonOrigin();
+	
 	// Update draw positions with current position
 	setDrawPosition(this->position);
+}
+
+void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	if (!this->visible) return;
+	target.draw(this->shape, states);
+	target.draw(this->text, states);
+}
+
+void Button::setPosition(sf::Vector2f position)
+{
+	this->position = position;
+}
+
+sf::Vector2f Button::getPosition() const
+{
+	return this->position;
+}
+
+sf::Vector2f Button::getSize() const
+{
+	return this->shape.getSize();
 }
 
 void Button::setVisible(bool visible) 
