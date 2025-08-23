@@ -24,7 +24,7 @@ void ParticleSystem::initializeBehaviorMap()
 
 entt::entity ParticleSystem::createOrGetEntity()
 {
-	entt::entity entity = registry.view<Inactive>().front();
+	entt::entity entity = registry.view<Inactive, ParticleTag>().front();
 	if (entity != entt::null)
 	{
 		registry.remove<Inactive>(entity);

@@ -23,3 +23,8 @@ struct Inactive
 {
 	
 };
+
+struct ParticleTag
+{
+	
+};

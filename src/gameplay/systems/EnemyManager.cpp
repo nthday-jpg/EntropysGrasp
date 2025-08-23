@@ -21,8 +21,8 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
     float speed = data.speed.value * (1.0f + gameClock.getElapsedTime().asSeconds() * 0.005f);
     float attack = data.attack.value * (1.0f + gameClock.getElapsedTime().asSeconds() * 0.005f);
 
-    auto view = registry.view<Inactive>();
-    for (auto entity : view)
+    auto view = registry.view<Inactive, EnemyTag>();
+    for (auto [entity] : view.each())
     {
         registry.remove<Inactive>(entity);
         registry.emplace_or_replace<EnemyType>(entity, type);
@@ -41,26 +41,26 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
     registry.emplace<Attack>(entity, attack);
     registry.emplace<RepelResistance>(entity, data.resistance);
     registry.emplace<EnemyType>(entity, type);
-	registry.emplace<BehaviorType>(entity, BehaviorType::HomingPlayer);
-	registry.emplace<MovementDirection>(entity, 0.0f, 0.0f);
-	registry.emplace<LookingDirection>(entity, 0.0f, 0.0f);
-	registry.emplace<Hitbox>(entity, 40.0f, 35.0f, 0.0f, 0.0f); // Assuming a default hitbox size
+    registry.emplace<BehaviorType>(entity, BehaviorType::HomingPlayer);
+    registry.emplace<MovementDirection>(entity, 0.0f, 0.0f);
+    registry.emplace<LookingDirection>(entity, 0.0f, 0.0f);
+    registry.emplace<Hitbox>(entity, 40.0f, 35.0f, 0.0f, 0.0f); // Assuming a default hitbox size
 
     int a = Random::getInt(1, 3);
-    
-    AnimationComponent animComp;
-	animComp.name = "orc" + std::to_string(a);
-	animComp.currentState = AnimationState::Walking;
-	animComp.currentDirection = Direction::Down;
-	animComp.currentFrame = { 0, 0 };
-    animComp.timer = 0.0f;
-	registry.emplace<AnimationComponent>(entity, animComp);
 
-	sf::Texture* texture = TextureManager::getInstance().getTexture("orc" + std::to_string(a) + "_walk");
-	sf::IntRect textureRect({ 0, 0 }, { 64, 64 });
+    AnimationComponent animComp;
+    animComp.name = "orc" + std::to_string(a);
+    animComp.currentState = AnimationState::Walking;
+    animComp.currentDirection = Direction::Down;
+    animComp.currentFrame = { 0, 0 };
+    animComp.timer = 0.0f;
+    registry.emplace<AnimationComponent>(entity, animComp);
+
+    sf::Texture* texture = TextureManager::getInstance().getTexture("orc" + std::to_string(a) + "_walk");
+    sf::IntRect textureRect({ 0, 0 }, { 64, 64 });
     sf::Sprite sprite(*texture);
     sprite.setTextureRect(textureRect);
-	sprite.setOrigin({ 32.0f, 32.0f }); 
+    sprite.setOrigin({ 32.0f, 32.0f });
     registry.emplace<sf::Sprite>(entity, sprite);
 
     return entity;
@@ -79,7 +79,7 @@ void EnemyManager::spawning(float dt)
                 if (isInLoadChunk(position))
                 {
                     Position randomPosition = randomizeOffScreenPosition(position);
-					spawnEnemy(info.type, randomPosition);
+                    spawnEnemy(info.type, randomPosition);
                 }
             }
             timer = 0.0f; // Reset timer after spawning all positions for this type
@@ -93,7 +93,7 @@ void EnemyManager::removing()
     auto view = registry.view<EnemyTag>(entt::exclude<Inactive>);
     for (auto entity : view) {
         auto health = registry.try_get<Health>(entity);
-		auto position = registry.try_get<Position>(entity);
+        auto position = registry.try_get<Position>(entity);
         // Use for some entities that may not have health
         if (!health || !position)
         {
@@ -101,20 +101,20 @@ void EnemyManager::removing()
         }
         if (health->current <= 0)
         {
-			registry.emplace_or_replace<Inactive>(entity);
+            registry.emplace_or_replace<Inactive>(entity);
             // Reset position to a far away place
             registry.replace<Position>(entity, -1000.0f, -1000.0f);
             if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>())
             {
 
-				// Assuming there is only one player entity
-				auto playerView = registry.view<PlayerTag>();
+                // Assuming there is only one player entity
+                auto playerView = registry.view<PlayerTag>();
                 entt::entity playerEntity = playerView.front();
 
                 EnemyType enemyType = registry.get<EnemyType>(entity);
                 Reward gold = { RewardType::Gold, static_cast<float>(getBaseGold(enemyType)), entt::null };
-				Reward exp = { RewardType::Experience, static_cast<float>(getBaseExp(enemyType)), entt::null };
-				Reward mana = { RewardType::Mana, getBaseMana(enemyType).value, playerEntity };
+                Reward exp = { RewardType::Experience, static_cast<float>(getBaseExp(enemyType)), entt::null };
+                Reward mana = { RewardType::Mana, getBaseMana(enemyType).value, playerEntity };
                 (*dispatcher)->enqueue<Reward>(gold);
                 (*dispatcher)->enqueue<Reward>(exp);
                 (*dispatcher)->enqueue<Reward>(mana);
@@ -125,7 +125,7 @@ void EnemyManager::removing()
 
 bool EnemyManager::isInLoadChunk(const Position& position) const
 {
-	float dist = pow(camera.getbaseX() - position.x, 2) + pow(camera.getbaseY() - position.y, 2);
+    float dist = pow(camera.getbaseX() - position.x, 2) + pow(camera.getbaseY() - position.y, 2);
 
     return dist < loadChunkRadius;
 }
@@ -139,7 +139,8 @@ void EnemyManager::update(float dt)
 }
 
 EnemyManager::EnemyManager(entt::registry& registry, const Camera& camera, sf::Clock& gameClock)
-    : registry(registry), gameClock(gameClock), camera(camera) {}
+    : registry(registry), gameClock(gameClock), camera(camera) {
+}
 
 Position EnemyManager::randomizeOffScreenPosition(const Position& position) const
 {
@@ -154,28 +155,28 @@ Position EnemyManager::randomizeOffScreenPosition(const Position& position) cons
         float halfHeight = camera.getSize().y * 0.5f;
         float centerX = camera.getbaseX();
         float centerY = camera.getbaseY();
-        
+
         // Choose random edge: 0=top, 1=right, 2=bottom, 3=left
         int edge = static_cast<int>(Random::getFloat(0.0f, 4.0f));
         float spawnOffset = 100.0f + Random::getFloat(0.0f, 200.0f); // Distance beyond screen edge
-        
+
         switch (edge) {
-            case 0: // Top edge
-                randomPosition.x = centerX + Random::getFloat(-halfWidth, halfWidth);
-                randomPosition.y = centerY - halfHeight - spawnOffset;
-                break;
-            case 1: // Right edge
-                randomPosition.x = centerX + halfWidth + spawnOffset;
-                randomPosition.y = centerY + Random::getFloat(-halfHeight, halfHeight);
-                break;
-            case 2: // Bottom edge
-                randomPosition.x = centerX + Random::getFloat(-halfWidth, halfWidth);
-                randomPosition.y = centerY + halfHeight + spawnOffset;
-                break;
-            case 3: // Left edge
-                randomPosition.x = centerX - halfWidth - spawnOffset;
-                randomPosition.y = centerY + Random::getFloat(-halfHeight, halfHeight);
-                break;
+        case 0: // Top edge
+            randomPosition.x = centerX + Random::getFloat(-halfWidth, halfWidth);
+            randomPosition.y = centerY - halfHeight - spawnOffset;
+            break;
+        case 1: // Right edge
+            randomPosition.x = centerX + halfWidth + spawnOffset;
+            randomPosition.y = centerY + Random::getFloat(-halfHeight, halfHeight);
+            break;
+        case 2: // Bottom edge
+            randomPosition.x = centerX + Random::getFloat(-halfWidth, halfWidth);
+            randomPosition.y = centerY + halfHeight + spawnOffset;
+            break;
+        case 3: // Left edge
+            randomPosition.x = centerX - halfWidth - spawnOffset;
+            randomPosition.y = centerY + Random::getFloat(-halfHeight, halfHeight);
+            break;
         }
 
         return randomPosition;
