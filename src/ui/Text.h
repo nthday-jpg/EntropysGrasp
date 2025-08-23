@@ -7,12 +7,26 @@
 #include <SFML/Graphics/Color.hpp>
 #include <string>
 
+enum class TextOrigin {
+	TopLeft,
+	TopCenter,
+	TopRight,
+	CenterLeft,
+	Center,
+	CenterRight,
+	BottomLeft,
+	BottomCenter,
+	BottomRight
+};
+
 class Text : public UIElement {
 	sf::Text text;
 
 	sf::Vector2f position;
 
 	bool visible;
+	
+	TextOrigin textOrigin = TextOrigin::Center; // Default to center
 
 public:
 	Text(const sf::Font& font, std::string text, sf::Vector2f position, unsigned int charSize = 30);
@@ -45,4 +59,13 @@ public:
 
 	void setFillColor(sf::Color color);
 
+	sf::Vector2f getSize() const override;
+
+	void updateTextOrigin();
+	
+	// New methods for origin control
+	void setOrigin(TextOrigin origin);
+	void setOrigin(sf::Vector2f origin);
+	TextOrigin getOrigin() const;
+	sf::Vector2f getOriginPoint() const;
 };

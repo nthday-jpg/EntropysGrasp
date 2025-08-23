@@ -24,17 +24,19 @@ class UIManager
 
 	std::vector<UIElement*> elements;
 	
-	// Map to store dynamic text elements by ID for easy updates
-	std::unordered_map<std::string, Text*> dynamicTexts;
+	// Map to store named elements by ID
+	std::unordered_map<std::string, UIElement*> namedElements;
 	
 	// Map to store update functions for dynamic texts
 	std::unordered_map<std::string, std::function<std::string()>> textUpdaters;
 
 	UIElement* parseElement(const nlohmann::json& elemJson, sf::Font* font);
 public:
+	// Map to store dynamic text elements by ID for easy updates
+	std::unordered_map<std::string, ::Text*> dynamicTexts; // Made public for GameplayScene access
+	
 	UIManager();
 	~UIManager();
-
 
 	void loadFile(const std::string& filePath);
 
@@ -51,7 +53,7 @@ public:
 	void addElement(UIElement* element);
 	
 	// Add dynamic text element with update function
-	void addDynamicText(const std::string& id, Text* textElement, std::function<std::string()> updater);
+	void addDynamicText(const std::string& id, ::Text* textElement, std::function<std::string()> updater);
 	
 	// Update all dynamic texts
 	void updateDynamicTexts();
@@ -62,4 +64,7 @@ public:
 	void syncUIWithViewport();
 
 	bool handleEvent(const std::optional<sf::Event>& event);
+	
+	// Get element by ID
+	UIElement* getElementByID(const std::string& id);
 };

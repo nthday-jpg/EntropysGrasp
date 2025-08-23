@@ -10,14 +10,14 @@ class UIElement : public sf::Drawable {
 public:
     virtual ~UIElement() = default;
 
-	// Set position in window coordinates
-    virtual void setPosition(sf::Vector2f position) = 0;
+	// Set center position in window coordinates
+    virtual void setPosition(sf::Vector2f centerPosition) = 0;
 
-	// Get position of the element in window coordinates
+	// Get center position of the element in window coordinates
     virtual sf::Vector2f getPosition() const = 0;
 
-	// set the position of the element in world coordinates
-	virtual void setDrawPosition(sf::Vector2f drawPos) = 0;
+	// set the center position of the element in world coordinates for rendering
+	virtual void setDrawPosition(sf::Vector2f centerDrawPos) = 0;
 
     // Check if point is inside element
 	// The point is in window coordinates
@@ -29,6 +29,9 @@ public:
 	virtual void setVisible(bool visible) = 0;
 
 	virtual bool isVisible() const = 0;
+
+	// Get the size of the element (needed for center positioning calculations)
+	virtual sf::Vector2f getSize() const = 0;
 
 	//draw is pure virtual inherited from sf::Drawable
 };

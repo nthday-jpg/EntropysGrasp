@@ -25,6 +25,17 @@ void Restart::execute()
 	}
 }
 
+void Resume::execute()
+{
+	SceneManager& sceneManager = SceneManager::getInstance();
+	if (auto currentScene = dynamic_cast<GameplayScene*>(sceneManager.getCurrentScene())) {
+		currentScene->pause(); // Toggle pause state
+		std::cout << "Game resumed." << std::endl;
+	} else {
+		std::cerr << "No current scene to resume." << std::endl;
+	}
+}
+
 void Exit::execute()
 {
 	SceneManager& sceneManager = SceneManager::getInstance();

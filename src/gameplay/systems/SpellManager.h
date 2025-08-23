@@ -35,4 +35,8 @@ public:
     SpellID currentSpell() const;
     void setCurrentSpell(SpellID spellID);
     SpellID getSpellID(int i) const;
+    
+    // Add getter for usable spells
+    const std::vector<SpellID>& getUsableSpells() const { return usableSpells; }
+    size_t getUsableSpellsCount() const { return usableSpells.size(); }
 };

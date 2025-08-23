@@ -15,20 +15,25 @@ Button::Button(
 	text(*font),
 	position(position)
 {
-	
-	sf::View view = WindowManager::getInstance().getWindow().getView();
-	sf::Vector2f viewPosition = view.getCenter() - view.getSize() / 2.f;
-	sf::Vector2f drawPos = position + viewPosition;
-
 	this->text.setString(text);
 	this->text.setFillColor(sf::Color::Red);
 	this->text.setCharacterSize(characterSize);
-	this->text.setPosition(drawPos);
 
+	// Calculate text bounds to determine button size
 	sf::FloatRect textBounds = this->text.getLocalBounds();
-	this->shape.setSize(textBounds.size);
-	this->shape.setPosition(drawPos + textBounds.position);
+	sf::Vector2f buttonSize = sf::Vector2f(textBounds.size.x + 20.0f, textBounds.size.y + 10.0f); // Add padding
+	this->shape.setSize(buttonSize);
 	this->shape.setFillColor(sf::Color::Transparent);
+
+	// Center the text within the button
+	sf::Vector2f textOffset = sf::Vector2f(
+		textBounds.position.x + textBounds.size.x / 2.0f,
+		textBounds.position.y + textBounds.size.y / 2.0f
+	);
+	this->text.setOrigin(textOffset);
+
+	// Set initial draw position
+	setDrawPosition(position);
 
 	if (commandFactories.find(command) != commandFactories.end())
 	{
@@ -40,11 +45,16 @@ Button::Button(
 	}
 }
 
-void Button::setDrawPosition(sf::Vector2f drawPos)
+void Button::setDrawPosition(sf::Vector2f centerPos)
 {
-	this->text.setPosition(drawPos);
-	this->shape.setPosition(drawPos + this->text.getLocalBounds().position);
+	// Set button shape to be centered at centerPos
+	sf::Vector2f buttonSize = this->shape.getSize();
+	this->shape.setPosition(centerPos - buttonSize / 2.0f);
+	
+	// Set text to be centered at centerPos
+	this->text.setPosition(centerPos);
 }
+
 void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (!this->visible) return;
@@ -52,9 +62,9 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(this->text, states);
 }
 
-void Button::setPosition(sf::Vector2f position)
+void Button::setPosition(sf::Vector2f centerPosition)
 {
-	this->position = position;
+	this->position = centerPosition;
 }
 
 sf::Vector2f Button::getPosition() const
@@ -62,10 +72,26 @@ sf::Vector2f Button::getPosition() const
 	return this->position;
 }
 
+sf::Vector2f Button::getSize() const
+{
+	return this->shape.getSize();
+}
+
 void Button::setSize(sf::Vector2f size)
 {
 	this->shape.setSize(size);
 	this->text.setCharacterSize(static_cast<unsigned int>(size.y * 0.5f)); // Adjust text size based on button height
+	
+	// Recalculate text centering when size changes
+	sf::FloatRect textBounds = this->text.getLocalBounds();
+	sf::Vector2f textOffset = sf::Vector2f(
+		textBounds.position.x + textBounds.size.x / 2.0f,
+		textBounds.position.y + textBounds.size.y / 2.0f
+	);
+	this->text.setOrigin(textOffset);
+	
+	// Update draw positions with current position
+	setDrawPosition(this->position);
 }
 
 void Button::setVisible(bool visible) 
@@ -85,11 +111,6 @@ bool Button::contains(sf::Vector2i point) const
 		return true;
 	}
 	return false;
-}
-
-sf::Vector2f Button::getSize() const
-{
-	return this->shape.getSize();
 }
 
 void Button::setTextColor(sf::Color color)

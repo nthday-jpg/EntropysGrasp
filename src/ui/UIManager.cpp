@@ -24,13 +24,45 @@ UIElement* UIManager::parseElement(const nlohmann::json& elemJson, sf::Font* fon
 		auto position = sf::Vector2f(elemJson["position"][0], elemJson["position"][1]);
 		int charSize = elemJson.value("characterSize", 30);
 
-		return new Button(command, text, font, position, charSize);
+		Button* button = new Button(command, text, font, position, charSize);
+		
+		// Set visibility if specified
+		if (elemJson.contains("visible")) {
+			button->setVisible(elemJson["visible"]);
+		}
+
+		return button;
 	}
 	else if (type == "panel") {
 		auto position = sf::Vector2f(elemJson["position"][0], elemJson["position"][1]);
 		auto size = sf::Vector2f(elemJson["size"][0], elemJson["size"][1]);
 
 		Panel* panel = new Panel(position, size);
+
+		// Set visibility if specified
+		if (elemJson.contains("visible")) {
+			panel->setVisible(elemJson["visible"]);
+		}
+		
+		// Optional origin setting from JSON
+		if (elemJson.contains("origin")) {
+			std::string originStr = elemJson["origin"];
+			if (originStr == "topLeft") panel->setOrigin(PanelOrigin::TopLeft);
+			else if (originStr == "topCenter") panel->setOrigin(PanelOrigin::TopCenter);
+			else if (originStr == "topRight") panel->setOrigin(PanelOrigin::TopRight);
+			else if (originStr == "centerLeft") panel->setOrigin(PanelOrigin::CenterLeft);
+			else if (originStr == "center") panel->setOrigin(PanelOrigin::Center);
+			else if (originStr == "centerRight") panel->setOrigin(PanelOrigin::CenterRight);
+			else if (originStr == "bottomLeft") panel->setOrigin(PanelOrigin::BottomLeft);
+			else if (originStr == "bottomCenter") panel->setOrigin(PanelOrigin::BottomCenter);
+			else if (originStr == "bottomRight") panel->setOrigin(PanelOrigin::BottomRight);
+		}
+
+		// Store panel with ID if provided
+		if (elemJson.contains("id")) {
+			std::string id = elemJson["id"];
+			namedElements[id] = panel;
+		}
 
 		if (elemJson.contains("children")) {
 			for (const auto& child : elemJson["children"]) {
@@ -48,11 +80,29 @@ UIElement* UIManager::parseElement(const nlohmann::json& elemJson, sf::Font* fon
 		
 		Text* textElement = new Text(*font, text, position, charSize);
 		
+		// Optional origin setting from JSON
+		if (elemJson.contains("origin")) {
+			std::string originStr = elemJson["origin"];
+			if (originStr == "topLeft") textElement->setOrigin(TextOrigin::TopLeft);
+			else if (originStr == "topCenter") textElement->setOrigin(TextOrigin::TopCenter);
+			else if (originStr == "topRight") textElement->setOrigin(TextOrigin::TopRight);
+			else if (originStr == "centerLeft") textElement->setOrigin(TextOrigin::CenterLeft);
+			else if (originStr == "center") textElement->setOrigin(TextOrigin::Center);
+			else if (originStr == "centerRight") textElement->setOrigin(TextOrigin::CenterRight);
+			else if (originStr == "bottomLeft") textElement->setOrigin(TextOrigin::BottomLeft);
+			else if (originStr == "bottomCenter") textElement->setOrigin(TextOrigin::BottomCenter);
+			else if (originStr == "bottomRight") textElement->setOrigin(TextOrigin::BottomRight);
+		}
+		
+		// Set visibility if specified
+		if (elemJson.contains("visible")) {
+			textElement->setVisible(elemJson["visible"]);
+		}
+		
 		// Check if this is a dynamic text element
 		if (elemJson.contains("id")) {
 			std::string id = elemJson["id"];
 			dynamicTexts[id] = textElement;
-
 		}
 		
 		return textElement;
@@ -97,6 +147,7 @@ void UIManager::clear()
 	// Clear the dynamic text maps since the elements are already deleted
 	dynamicTexts.clear();
 	textUpdaters.clear();
+	namedElements.clear();
 	
 	if (background)
 	{
@@ -116,11 +167,17 @@ void UIManager::syncUIWithViewport()
 {
 	sf::View view = WindowManager::getInstance().getWindow().getView();
 	sf::Vector2f viewPosition = view.getCenter() - view.getSize() / 2.f;
+	sf::Vector2f viewCenter = view.getCenter();
 
 	// Sync all elements (including dynamic texts since they're added to elements vector)
 	for(auto& element : elements)
 	{
-		element->setDrawPosition(viewPosition + element->getPosition());
+		// Center pause panel in viewport
+		if (auto it = namedElements.find("pausePanel"); it != namedElements.end() && it->second == element) {
+			element->setDrawPosition(viewCenter + element->getPosition());
+		} else {
+			element->setDrawPosition(viewPosition + element->getPosition());
+		}
 	}
 }
 
@@ -191,4 +248,9 @@ void UIManager::updateDynamicText(const std::string& id) {
 			textIt->second->setString(updaterIt->second());
 		}
 	}
+}
+
+UIElement* UIManager::getElementByID(const std::string& id) {
+	auto it = namedElements.find(id);
+	return (it != namedElements.end()) ? it->second : nullptr;
 }

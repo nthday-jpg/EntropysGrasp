@@ -53,6 +53,10 @@ void GameplayScene::load()
     entt::entity playerEntity = createPlayer();
 
     inputHandler = new GameplayInputHandler(playerEntity, gameplayCommandManager);
+    
+    // Connect the pause state to the input handler
+    inputHandler->setPauseStatePtr(&isPaused);
+    
     camera.followEntity(playerEntity);
 
     inputHandler->spellManager = &spellManager;
@@ -61,13 +65,16 @@ void GameplayScene::load()
 	uiManager->loadFile(uiFilePath);
 
     // Add dynamic text elements for real-time state
+    Text* rewardText = new Text(
+        *FontManager::getInstance().getFont("default"), 
+        "Rewards: 0", 
+        {20.0f, 10.0f}, 
+        20
+    );
+    rewardText->setOrigin(TextOrigin::TopLeft); // Set to top-left alignment
+    
 	uiManager->addDynamicText("rewardText", 
-		new Text(
-			*FontManager::getInstance().getFont("default"), 
-			"Rewards: 0", 
-			{10.0f, 10.0f}, 
-			20
-		),
+		rewardText,
 		[this]() -> std::string {
 			// Get current reward from your reward system
 			int currentReward = rewardSystem.getCurrentReward(); // You'll need to implement this
@@ -75,16 +82,19 @@ void GameplayScene::load()
 		}
 	);
 	
+    Text* timeText = new Text(
+        *FontManager::getInstance().getFont("default"), 
+        "Time: 00:00", 
+        {20.0f, 40.0f}, 
+        20
+    );
+    timeText->setOrigin(TextOrigin::TopLeft); // Set to top-left alignment
+    
 	uiManager->addDynamicText("timeText",
-		new Text(
-			*FontManager::getInstance().getFont("default"), 
-			"Time: 00:00", 
-			{10.0f, 40.0f}, 
-			20
-		),
+		timeText,
 		[this]() -> std::string {
 			// Get current playing time
-			int totalSeconds = static_cast<int>(gameClock.getElapsedTime().asSeconds()); // You'll need to implement this
+			int totalSeconds = static_cast<int>(gameClock.getElapsedTime().asSeconds());
 			int minutes = totalSeconds / 60;
 			int seconds = totalSeconds % 60;
 			return "Time: " + std::to_string(minutes) + ":" + 
@@ -92,8 +102,54 @@ void GameplayScene::load()
 		}
 	);
 
-    window.setView(camera.getView());
+	// Add spell cooldown displays for each usable spell
+	addSpellCooldownDisplays();
 
+    window.setView(camera.getView());
+}
+
+void GameplayScene::addSpellCooldownDisplays()
+{
+	const std::vector<std::string> spellNames = {"Fireball", "IceSpike", "PoisonCloud", "PenetratingShot"};
+	
+	const auto& usableSpells = spellManager.getUsableSpells(); // Use getter method
+	
+	for (size_t i = 0; i < usableSpells.size() && i < spellNames.size(); ++i) 
+	{
+		SpellID spellID = usableSpells[i];
+		const std::string& spellName = spellNames[i];
+		
+		// Create dynamic text for each spell cooldown
+		std::string textId = "spell" + std::to_string(i + 1) + "Cooldown";
+		
+        Text* spellText = new Text(
+            *FontManager::getInstance().getFont("default"), 
+            spellName + ": Ready", 
+            {20.0f, 70.0f + (i * 25.0f)}, // Stack vertically with 25px spacing
+            18 // Slightly smaller text
+        );
+        spellText->setOrigin(TextOrigin::TopLeft); // Set to top-left alignment
+        
+		uiManager->addDynamicText(textId, 
+			spellText,
+			[this, spellID, spellName]() -> std::string {
+				// Check if spell is on cooldown
+				auto cooldownIt = spellManager.cooldowns.find(spellID);
+				if (cooldownIt != spellManager.cooldowns.end() && cooldownIt->second > 0.0f) 
+				{
+					// Format cooldown time to 1 decimal place
+					float cooldownTime = cooldownIt->second;
+					std::ostringstream oss;
+					oss << std::fixed << std::setprecision(1) << cooldownTime;
+					return spellName + ": " + oss.str() + "s";
+				}
+				else 
+				{
+					return spellName + ": Ready";
+				}
+			}
+		);
+	}
 }
 
 void GameplayScene::unload() 
@@ -129,12 +185,12 @@ void GameplayScene::unload()
 bool GameplayScene::handleEvent(const std::optional<sf::Event>& event) {
     bool handled = false;
     
-    // First let the UI handle the event
-    if (uiManager && !isPaused) {
+    // First let the UI handle the event (pause menu gets priority)
+    if (uiManager) {
         handled = uiManager->handleEvent(event);
     }
     
-    // If UI didn't handle it, let the input handler handle discrete events
+    // Let the input handler handle events (it now knows about pause state)
     if (!handled && inputHandler) {
         handled = inputHandler->handleEvent(event);
     }
@@ -149,6 +205,14 @@ void GameplayScene::update(float deltaTime) {
     }
 
     if (isPaused) {
+        // Update UI even when paused (for pause menu interaction)
+        if (uiManager) 
+        {
+            uiManager->syncUIWithViewport();
+            // Don't update dynamic texts when paused to freeze the time display
+        }
+        // Still render when paused
+        this->render();
         return;
 	}
     
@@ -192,7 +256,6 @@ void GameplayScene::update(float deltaTime) {
     }
     // Render the scene
     this->render();
-
 }
 
 void GameplayScene::render() {
@@ -200,8 +263,8 @@ void GameplayScene::render() {
     // This is where you would typically render your sprites, entities, etc.
     renderSystem.render();
 
-    // Render UI on top
-    if (uiManager && !isPaused) {
+    // Render UI on top (both HUD and pause menu)
+    if (uiManager) {
         uiManager->draw(window);
     }
 }
@@ -209,6 +272,89 @@ void GameplayScene::render() {
 void GameplayScene::pause()
 {
 	isPaused = !isPaused;
+	
+	// Control the game clock based on pause state
+	if (isPaused) {
+		gameClock.stop();  // Stop the clock when paused
+		showPauseMenu();   // Show pause menu
+	} else {
+		gameClock.start(); // Resume the clock when unpaused
+		hidePauseMenu();   // Hide pause menu
+	}
+}
+
+void GameplayScene::showPauseMenu() {
+	if (uiManager) {
+		// Hide all HUD elements
+		hideHUDElements();
+		
+		// Show pause panel
+		UIElement* pausePanel = uiManager->getElementByID("pausePanel");
+		if (pausePanel) {
+			pausePanel->setVisible(true);
+		}
+	}
+}
+
+void GameplayScene::hidePauseMenu() {
+	if (uiManager) {
+		// Hide pause panel
+		UIElement* pausePanel = uiManager->getElementByID("pausePanel");
+		if (pausePanel) {
+			pausePanel->setVisible(false);
+		}
+		
+		// Show all HUD elements
+		showHUDElements();
+	}
+}
+
+void GameplayScene::hideHUDElements() {
+	if (uiManager) {
+		// Hide dynamic text elements
+		auto rewardText = uiManager->dynamicTexts.find("rewardText");
+		if (rewardText != uiManager->dynamicTexts.end()) {
+			rewardText->second->setVisible(false);
+		}
+		
+		auto timeText = uiManager->dynamicTexts.find("timeText");
+		if (timeText != uiManager->dynamicTexts.end()) {
+			timeText->second->setVisible(false);
+		}
+		
+		// Hide spell cooldown texts
+		for (int i = 1; i <= 4; ++i) {
+			std::string textId = "spell" + std::to_string(i) + "Cooldown";
+			auto spellText = uiManager->dynamicTexts.find(textId);
+			if (spellText != uiManager->dynamicTexts.end()) {
+				spellText->second->setVisible(false);
+			}
+		}
+	}
+}
+
+void GameplayScene::showHUDElements() {
+	if (uiManager) {
+		// Show dynamic text elements
+		auto rewardText = uiManager->dynamicTexts.find("rewardText");
+		if (rewardText != uiManager->dynamicTexts.end()) {
+			rewardText->second->setVisible(true);
+		}
+		
+		auto timeText = uiManager->dynamicTexts.find("timeText");
+		if (timeText != uiManager->dynamicTexts.end()) {
+			timeText->second->setVisible(true);
+		}
+		
+		// Show spell cooldown texts
+		for (int i = 1; i <= 4; ++i) {
+			std::string textId = "spell" + std::to_string(i) + "Cooldown";
+			auto spellText = uiManager->dynamicTexts.find(textId);
+			if (spellText != uiManager->dynamicTexts.end()) {
+				spellText->second->setVisible(true);
+			}
+		}
+	}
 }
 
 void GameplayScene::restart()

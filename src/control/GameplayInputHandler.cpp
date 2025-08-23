@@ -80,6 +80,11 @@ void GameplayInputHandler::handleMouse()
 
 void GameplayInputHandler::handleInput()
 {
+    // Only handle continuous input if game is not paused
+    if (isPausedPtr && *isPausedPtr) {
+        return; // Skip continuous input when paused
+    }
+    
     Command* resetCmd = new ResetTempComponents(playerEntity);
     if (commandManager) {
         commandManager->queueCommand(resetCmd);
@@ -106,12 +111,14 @@ bool GameplayInputHandler::handleEvent(const std::optional<sf::Event>& event)
                 
                 // Only process discrete actions in this method
                 if (discreteActions.find(action) != discreteActions.end()) {
+                    
+                    // PAUSE command always works, regardless of pause state
                     if (action == "PAUSE") {
-                        // Special handling for pause - directly queue to UICommandManager
                         createCommand(action); // This will queue the pause command
                         handled = true;
-                    } else {
-                        // Regular gameplay commands go to GameplayCommandManager
+                    }
+                    // Other commands only work when not paused
+                    else if (!isPausedPtr || !(*isPausedPtr)) {
                         Command* cmd = createCommand(action);
                         if (cmd && commandManager) {
                             commandManager->queueCommand(cmd);
@@ -126,10 +133,17 @@ bool GameplayInputHandler::handleEvent(const std::optional<sf::Event>& event)
 
     // Handle discrete mouse button events if needed
     else if (const auto mousePressed = event->getIf<sf::Event::MouseButtonPressed>()) {
-        handled = true;
+        // Only handle mouse events when not paused
+        if (!isPausedPtr || !(*isPausedPtr)) {
+            handled = true;
+        }
     }
 
     return handled;
+}
+
+void GameplayInputHandler::setPauseStatePtr(bool* pausedPtr) {
+    isPausedPtr = pausedPtr;
 }
 
 GameplayInputHandler::GameplayInputHandler(
@@ -137,7 +151,8 @@ GameplayInputHandler::GameplayInputHandler(
 ) : playerEntity(playerEntity),
     commandManager(commandManager),
     gameConfig(&GameConfig::getInstance()),
-    keyBindings(gameConfig->getKeyBindings())
+    keyBindings(gameConfig->getKeyBindings()),
+    isPausedPtr(nullptr) // Initialize to nullptr
 {
     initCommandFactory();
     initActionTypes();
@@ -145,8 +160,6 @@ GameplayInputHandler::GameplayInputHandler(
 
 GameplayInputHandler::~GameplayInputHandler()
 {
-    for (auto& pair : commandFactory) {
-        Command* cmd = pair.second();
-        delete cmd;
-    }
+    // Note: Don't create commands in destructor - just clean up
+    commandFactory.clear();
 }

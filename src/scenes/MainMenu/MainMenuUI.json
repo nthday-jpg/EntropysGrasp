@@ -10,14 +10,14 @@
           "type": "button",
           "command": "GAMEPLAY",
           "text": "Gameplay",
-          "position": [ 10, 30 ],
+          "position": [ 50, 30 ],
           "characterSize": 30
         },
         {
           "type": "button",
           "command": "EXIT",
           "text": "Exit",
-          "position": [ 10, 230 ],
+          "position": [ 50, 230 ],
           "characterSize": 30
         }
       ]

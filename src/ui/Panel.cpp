@@ -2,13 +2,16 @@
 #include "../manager/WindowManager.h"
 #include <SFML/Graphics/View.hpp>
 
-Panel::Panel(sf::Vector2f position, sf::Vector2f size)
-	: position(position), draggable(false), isDragging(false), dragOffset(0.f, 0.f)
+Panel::Panel(sf::Vector2f centerPosition, sf::Vector2f size)
+	: position(centerPosition), draggable(false), isDragging(false), dragOffset(0.f, 0.f), panelOrigin(PanelOrigin::Center)
 {
 	background.setSize(size);
 	background.setFillColor(sf::Color(50, 50, 50, 200)); // Semi-transparent gray
 	background.setOutlineColor(sf::Color::Black);
 	background.setOutlineThickness(1.f);
+	
+	// Set panel origin to center by default
+	updatePanelOrigin();
 }
 
 Panel::~Panel()
@@ -18,6 +21,67 @@ Panel::~Panel()
 		delete child; // Clean up child elements
 	}
 	children.clear();
+}
+
+void Panel::updatePanelOrigin()
+{
+	sf::Vector2f size = background.getSize();
+	sf::Vector2f origin;
+	
+	switch (panelOrigin) {
+		case PanelOrigin::TopLeft:
+			origin = sf::Vector2f(0.0f, 0.0f);
+			break;
+		case PanelOrigin::TopCenter:
+			origin = sf::Vector2f(size.x / 2.0f, 0.0f);
+			break;
+		case PanelOrigin::TopRight:
+			origin = sf::Vector2f(size.x, 0.0f);
+			break;
+		case PanelOrigin::CenterLeft:
+			origin = sf::Vector2f(0.0f, size.y / 2.0f);
+			break;
+		case PanelOrigin::Center:
+			origin = sf::Vector2f(size.x / 2.0f, size.y / 2.0f);
+			break;
+		case PanelOrigin::CenterRight:
+			origin = sf::Vector2f(size.x, size.y / 2.0f);
+			break;
+		case PanelOrigin::BottomLeft:
+			origin = sf::Vector2f(0.0f, size.y);
+			break;
+		case PanelOrigin::BottomCenter:
+			origin = sf::Vector2f(size.x / 2.0f, size.y);
+			break;
+		case PanelOrigin::BottomRight:
+			origin = sf::Vector2f(size.x, size.y);
+			break;
+	}
+	
+	background.setOrigin(origin);
+}
+
+void Panel::setOrigin(PanelOrigin origin)
+{
+	this->panelOrigin = origin;
+	updatePanelOrigin();
+}
+
+void Panel::setOrigin(sf::Vector2f origin)
+{
+	background.setOrigin(origin);
+	// When setting custom origin, we don't update panelOrigin enum
+	// This allows for completely custom positioning
+}
+
+PanelOrigin Panel::getOrigin() const
+{
+	return panelOrigin;
+}
+
+sf::Vector2f Panel::getOriginPoint() const
+{
+	return background.getOrigin();
 }
 
 void Panel::setPosition(sf::Vector2f position)
@@ -36,6 +100,8 @@ void Panel::setDrawPosition(sf::Vector2f drawPos)
 
 void Panel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	if (!visible) return;
+	
 	target.draw(background, states);
 	for (const auto& child : children)
 	{
@@ -108,7 +174,9 @@ void Panel::addElement(UIElement* element)
 	if (element)
 	{
 		children.push_back(element);
-		// No need to set position here, as children are positioned relative to the panel
+		// Children are positioned relative to panel center
+		sf::Vector2f childWorldPos = this->position + element->getPosition();
+		element->setDrawPosition(childWorldPos);
 	}
 	else
 	{
@@ -149,5 +217,11 @@ bool Panel::isVisible() const
 
 void Panel::setVisible(bool visible)
 {
-	visible = visible; 
+	this->visible = visible; 
 }
+
+sf::Vector2f Panel::getSize() const
+{
+	return background.getSize();
+}
+

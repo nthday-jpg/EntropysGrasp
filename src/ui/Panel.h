@@ -7,6 +7,18 @@
 #include <SFML/Window/Event.hpp>
 #include "UIElement.h"
 
+enum class PanelOrigin {
+	TopLeft,
+	TopCenter,
+	TopRight,
+	CenterLeft,
+	Center,
+	CenterRight,
+	BottomLeft,
+	BottomCenter,
+	BottomRight
+};
+
 class Panel : public UIElement
 {
 private:
@@ -21,6 +33,8 @@ private:
     bool draggable;
     bool isDragging;
     sf::Vector2f dragOffset;
+    
+    PanelOrigin panelOrigin = PanelOrigin::Center; // Default to center like other UI elements
 
 public:
     Panel(sf::Vector2f position, sf::Vector2f size);
@@ -50,10 +64,21 @@ public:
 
     sf::FloatRect getGlobalBounds() const;
 
+	sf::Vector2f getSize() const override;
+
     // Panel-specific methods
     void addElement(UIElement* element);
     void setBackgroundColor(sf::Color color);
     void setOutlineColor(sf::Color color);
     void setOutlineThickness(float thickness);
     void setDraggable(bool draggable);
+    
+    // Origin control methods
+    void setOrigin(PanelOrigin origin);
+    void setOrigin(sf::Vector2f origin);
+    PanelOrigin getOrigin() const;
+    sf::Vector2f getOriginPoint() const;
+    
+private:
+    void updatePanelOrigin();
 };

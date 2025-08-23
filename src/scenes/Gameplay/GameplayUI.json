@@ -3,22 +3,39 @@
   "elements": [
     {
       "type": "panel",
-      "position": [ 100, 100 ],
-      "size": [ 100, 300 ],
+      "id": "pausePanel",
+      "position": [ 0, 0 ],
+      "size": [ 300, 400 ],
+      "visible": false,
+      "origin": "center",
       "children": [
+        {
+          "type": "text",
+          "text": "GAME PAUSED",
+          "position": [ 0, -120 ],
+          "characterSize": 36,
+          "origin": "center"
+        },
+        {
+          "type": "button",
+          "command": "RESUME",
+          "text": "Resume",
+          "position": [ 0, -50 ],
+          "characterSize": 24
+        },
         {
           "type": "button",
           "command": "RESTART",
           "text": "Restart",
-          "position": [ 10, 30 ],
-          "characterSize": 30
+          "position": [ 0, 0 ],
+          "characterSize": 24
         },
         {
           "type": "button",
           "command": "EXIT",
-          "text": "Exit",
-          "position": [ 10, 230 ],
-          "characterSize": 30
+          "text": "Exit to Menu",
+          "position": [ 0, 50 ],
+          "characterSize": 24
         }
       ]
     }

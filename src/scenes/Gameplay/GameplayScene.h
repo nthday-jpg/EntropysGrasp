@@ -15,6 +15,8 @@
 #include "../../gameplay/systems/ParticleSystem.h"
 #include <entt/entity/registry.hpp>
 #include "../../gameplay/manager/MapManager.h"
+#include <sstream>
+#include <iomanip>
 
 class GameplayScene : public Scene {
 private:
@@ -64,4 +66,9 @@ public:
     
 private:
 	entt::entity createPlayer();
+	void addSpellCooldownDisplays();
+	void showPauseMenu();
+	void hidePauseMenu();
+	void hideHUDElements();
+	void showHUDElements();
 };

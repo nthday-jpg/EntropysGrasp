@@ -23,6 +23,13 @@ public:
 	void execute() override;
 };
 
+class Resume : public UICommand
+{
+	UICommandManager* commandManager;
+public:
+	Resume() : commandManager(&UICommandManager::getInstance()) {}
+	void execute() override;
+};
 
 class Exit : public UICommand
 {
