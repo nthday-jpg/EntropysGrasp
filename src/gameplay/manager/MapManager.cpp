@@ -1,6 +1,9 @@
 ﻿#include "MapManager.h"
 #include <tinyxml2.h>
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <stdexcept>
 #include "../../manager/TextureManager.h"
 
 using namespace tinyxml2;

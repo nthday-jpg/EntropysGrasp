@@ -303,6 +303,15 @@
     <ClInclude Include="src\gameplay\systems\AccountManager.h">
       <Filter>Header Files\gameplay\systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\gameplay\components\SoundEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\UIOrigin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\UIOriginHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\control\GameplayCommandManager.cpp">
@@ -445,6 +454,9 @@
     </ClCompile>
     <ClCompile Include="src\gameplay\systems\AccountManager.cpp">
       <Filter>Source Files\gameplay\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\UIOrigin.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
