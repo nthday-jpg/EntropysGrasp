@@ -173,10 +173,10 @@ bool Button::handleEvent(const std::optional<sf::Event>& event)
 		if (mousePressed->button == sf::Mouse::Button::Left
 			&& this->contains({ mousePressed->position.x, mousePressed->position.y}))
 		{
-			UICommand* command = commandFactory();
+			GameCommand* command = commandFactory();
 			if (command)
 			{
-				UICommandManager::getInstance().queueCommand(command);
+				GameCommandManager::getInstance().queueCommand(command);
 				return true; 
 			}
 		}

@@ -3,7 +3,7 @@
 #include "../gameplay/components/MovementComponents.h"
 #include "../gameplay/components/LookingDirection.h"
 #include "../control/commands/gameControl.h"
-#include "../control/UICommandManager.h"
+#include "../control/GameCommandManager.h"
 
 using namespace sf;
 using namespace std;
@@ -23,7 +23,7 @@ void GameplayInputHandler::initCommandFactory()
 	commandFactory["SPELL4"] = [this]() { return new ChangeSpell(spellManager->getSpellID(4), spellManager); };
 	commandFactory["PAUSE"] = [this]() { 
         // Queue the pause command to UICommandManager instead of GameplayCommandManager
-        UICommandManager::getInstance().queueCommand(new Pause());
+        GameCommandManager::getInstance().queueCommand(new Pause());
         return nullptr; // Return nullptr since we're not queuing to gameplayCommandManager
     };
     // Add more commands as needed

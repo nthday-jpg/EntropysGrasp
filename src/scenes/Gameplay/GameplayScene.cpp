@@ -429,7 +429,7 @@ void GameplayScene::restart()
 
 void GameplayScene::exit()
 {
-	UICommandManager::getInstance().queueCommand(new ChangeScene("MainMenu"));
+	GameCommandManager::getInstance().queueCommand(new ChangeScene("MainMenu"));
 }
 
 entt::entity GameplayScene::createPlayer() {

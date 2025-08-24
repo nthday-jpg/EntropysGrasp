@@ -19,7 +19,7 @@ Game::Game() :
 	windowManager->setFramerateLimit(FPS);
 
 	sceneManager = &SceneManager::getInstance();
-	uiCommandManager = &UICommandManager::getInstance();
+	gameCommandManager = &GameCommandManager::getInstance();
 
 	// Initialize core resource managers early
 	initializeResourceManagers();
@@ -95,7 +95,7 @@ void Game::processEvents()
 void Game::update(float deltatime)
 {
 	sceneManager->update(deltatime);
-	uiCommandManager->executeCommands();
+	gameCommandManager->executeCommands();
 }
 
 void Game::render()

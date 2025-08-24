@@ -1,46 +1,46 @@
 #pragma once
-#include "../UICommand.h"
-#include "../UICommandManager.h"
+#include "../GameCommand.h"
+#include "../GameCommandManager.h"
 #include "../../manager/SceneManager.h"
 #include <string>
 
 // Control commands for game control actions
 // The bindings of these commands are defined in Button.h
 
-class Pause : public UICommand
+class Pause : public GameCommand
 {
-	UICommandManager* commandManager;
+	GameCommandManager* commandManager;
 public: 
-	Pause() : commandManager(&UICommandManager::getInstance()) {}
+	Pause() : commandManager(&GameCommandManager::getInstance()) {}
 	void execute() override;
 };
 
-class Restart : public UICommand
+class Restart : public GameCommand
 {
-	UICommandManager* commandManager;
+	GameCommandManager* commandManager;
 public: 
-	Restart() : commandManager(&UICommandManager::getInstance()) {}
+	Restart() : commandManager(&GameCommandManager::getInstance()) {}
 	void execute() override;
 };
 
-class Resume : public UICommand
+class Resume : public GameCommand
 {
-	UICommandManager* commandManager;
+	GameCommandManager* commandManager;
 public:
-	Resume() : commandManager(&UICommandManager::getInstance()) {}
+	Resume() : commandManager(&GameCommandManager::getInstance()) {}
 	void execute() override;
 };
 
-class Exit : public UICommand
+class Exit : public GameCommand
 {
-	UICommandManager* commandManager;
+	GameCommandManager* commandManager;
 public:
-	Exit() : commandManager(&UICommandManager::getInstance()) {}
+	Exit() : commandManager(&GameCommandManager::getInstance()) {}
 	void execute() override;
 };
 
 
-class ChangeScene : public UICommand
+class ChangeScene : public GameCommand
 {
     SceneManager* sceneManager;
     std::string targetScene;
@@ -51,10 +51,10 @@ public:
 	void execute() override;
 };
 
-class Shutdown : public UICommand
+class Shutdown : public GameCommand
 {
-	UICommandManager* commandManager;
+	GameCommandManager* commandManager;
 public:
-	Shutdown() : commandManager(&UICommandManager::getInstance()) {}
+	Shutdown() : commandManager(&GameCommandManager::getInstance()) {}
 	void execute() override;
 };

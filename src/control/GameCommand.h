@@ -1,8 +1,8 @@
 #pragma once
 
-class UICommand 
+class GameCommand
 {
 public:
-	virtual ~UICommand() = default;
+	virtual ~GameCommand() = default;
 	virtual void execute() = 0;
 };

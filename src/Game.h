@@ -3,7 +3,7 @@
 #include <entt/signal/dispatcher.hpp>
 #include "manager/SceneManager.h"
 #include "manager/WindowManager.h"
-#include "control/UICommandManager.h"
+#include "control/GameCommandManager.h"
 #include "manager/SoundManager.h"
 #include "GameConfig.h"
 
@@ -24,7 +24,7 @@ private:
 	~Game() = default;
 
 	WindowManager* windowManager;
-	UICommandManager* uiCommandManager;
+	GameCommandManager* gameCommandManager;
 	SceneManager* sceneManager;
 	GameConfig& gameConfig = GameConfig::getInstance();
 

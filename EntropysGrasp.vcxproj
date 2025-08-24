@@ -24,8 +24,8 @@
     <ClInclude Include="src\control\commands\PlayerControl.h" />
     <ClInclude Include="src\control\GameplayCommandManager.h" />
     <ClInclude Include="src\control\GameplayInputHandler.h" />
-    <ClInclude Include="src\control\UICommand.h" />
-    <ClInclude Include="src\control\UICommandManager.h" />
+    <ClInclude Include="src\control\GameCommand.h" />
+    <ClInclude Include="src\control\GameCommandManager.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameConfig.h" />
     <ClInclude Include="src\gameplay\components\Account.h" />
@@ -94,7 +94,7 @@
     <ClCompile Include="src\control\commands\PlayerControl.cpp" />
     <ClCompile Include="src\control\GameplayCommandManager.cpp" />
     <ClCompile Include="src\control\GameplayInputHandler.cpp" />
-    <ClCompile Include="src\control\UICommandManager.cpp" />
+    <ClCompile Include="src\control\GameCommandManager.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameConfig.cpp" />
     <ClCompile Include="src\gameplay\manager\Map.cpp" />

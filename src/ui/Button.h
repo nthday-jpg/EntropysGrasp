@@ -1,15 +1,15 @@
 #pragma once
 #include "UIELement.h"
 #include "UIOrigin.h"
-#include "../control/UICommandManager.h"
-#include "../control/UICommand.h"
+#include "../control/GameCommandManager.h"
+#include "../control/GameCommand.h"
 #include "../control/commands/gameControl.h"
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <functional>
 #include <unordered_map>
 
-inline std::unordered_map<std::string, std::function<UICommand* ()>> commandFactories
+inline std::unordered_map<std::string, std::function<GameCommand* ()>> commandFactories
 {
 	{"EXIT", []() { return new Exit(); }},
 	{"PAUSE", []() { return new Pause(); }},
@@ -30,7 +30,7 @@ class Button : public UIElement
 	bool enabled = true;
 	bool pressed = false;
 	UIOrigin buttonOrigin = UIOrigin::Center; // Use unified origin
-	std::function<UICommand* ()> commandFactory;
+	std::function<GameCommand* ()> commandFactory;
 
 public:
 	Button(
