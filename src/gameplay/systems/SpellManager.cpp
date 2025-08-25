@@ -13,10 +13,41 @@
 #include "../components/CollisionEvent.h"
 #include "../../manager/TextureManager.h"
 #include "../components/Animation.h"
+#include "StateSystem.h"
 
 using namespace std;
 
 const float PI = 3.14159265358979323846f;
+
+Direction getDirectionFromMovement(const MovementDirection& movementDir) {
+    float x = movementDir.x;
+    float y = movementDir.y;
+    float angle = std::atan2(y, x) * 180.0f / static_cast<float>(PI); // Convert to degrees
+    if (angle <= 22.5 && angle > -22.5) {
+        return Direction::Right;
+    }
+    else if (angle > 22.5 && angle <= 67.5) {
+        return Direction::DownRight;
+    }
+    else if (angle > 67.5 && angle <= 112.5) {
+        return Direction::Down;
+    }
+    else if (angle > 112.5 && angle <= 157.5) {
+        return Direction::DownLeft;
+    }
+    else if (angle > 157.5 || angle <= -157.5) {
+        return Direction::Left;
+    }
+    else if (angle > -157.5 && angle <= -112.5) {
+        return Direction::UpLeft;
+    }
+    else if (angle > -112.5 && angle <= -67.5) {
+        return Direction::Up;
+    }
+    else {
+        return Direction::UpRight;
+    }
+}
 
 vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spellID)
 {
@@ -40,25 +71,35 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
         registry.emplace<Speed>(spellEntity, spellData.speed);
         registry.emplace<MovementDirection>(spellEntity, directions[i]);
         registry.emplace<BehaviorType>(spellEntity, spellData.behaviorType);
-        registry.emplace<Hitbox>(spellEntity, Hitbox(15.0f, 15.0f, 0.0f, 0.0f));
+		registry.emplace<Hitbox>(spellEntity, Hitbox{ 15.0f, 15.0f, 0.0f, 0.0f });
         registry.emplace<RepelResistance>(spellEntity, 0.5f); // Example resistance value
 
 		std::string name = "pulse";
+
+		Direction dir = getDirectionFromMovement(directions[i]);
+
+		StateComponent stateComp;
+		stateComp.currentState = EntityState::Attacking;
+		stateComp.currentDirection = dir;
+		stateComp.previousState = EntityState::Attacking;
+		stateComp.previousDirection = dir;
+		stateComp.timer = 0.0f;
+		stateComp.duration = spellData.duration;
+		registry.emplace<StateComponent>(spellEntity, stateComp);
+
         AnimationComponent animComp;
 		int ID = (int)spellID;
 		animComp.name = name;
-		animComp.currentState = AnimationState::Attacking;
-		animComp.currentDirection = Direction::Down;
 		animComp.currentFrame = { 0, 0 };
 		animComp.timer = 0.0f;
 		registry.emplace<AnimationComponent>(spellEntity, animComp);
 
-        sf::Texture* texture = TextureManager::getInstance().getTexture(name);
-        sf::IntRect textureRect({0, 0}, {32, 32});
-		sf::Sprite spellSprite(*texture);
-		spellSprite.setTextureRect(textureRect);
-		spellSprite.setOrigin({textureRect.size.x/2.0f, textureRect.size.y/2.0f}); // Set origin to center
-		registry.emplace<sf::Sprite>(spellEntity, spellSprite);
+  //      sf::Texture* texture = TextureManager::getInstance().getTexture(name);
+  //      sf::IntRect textureRect({0, 0}, {69,68});
+		//sf::Sprite spellSprite(*texture);
+		//spellSprite.setTextureRect(textureRect);
+		//spellSprite.setOrigin({textureRect.size.x/2.0f, textureRect.size.y/2.0f}); // Set origin to center
+		//registry.emplace<sf::Sprite>(spellEntity, spellSprite);
 
         spellEntities.push_back(spellEntity);
     }
@@ -189,6 +230,18 @@ void SpellManager::update(float dt)
     updateCastingSystem(dt);
     updateCooldownSystem(dt);
     updateDurationSystem(dt);
+	auto view = registry.view<SpellTag, MovementDirection, StateComponent>();
+    for (auto [entity, movementDir, stateComp] : view.each())
+    {
+        Direction newDirection = getDirectionFromMovement(movementDir);
+        if (stateComp.currentDirection != newDirection)
+        {
+            if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>())
+            {
+				dispatcher->enqueue<StateChangeEventDirection>(entity, newDirection);
+			}
+        }
+	}
 }
 
 void SpellManager::sinkEvents() 

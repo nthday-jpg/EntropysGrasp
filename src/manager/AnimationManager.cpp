@@ -1,6 +1,7 @@
 ﻿#include "AnimationManager.h"
 #include "TextureManager.h"
 #include <string>
+#include <iostream>
 
 AnimationManager& AnimationManager::getInstance() {
 	static AnimationManager instance;
@@ -55,7 +56,7 @@ AnimationData AnimationManager::loadMageAnimations() {
 	const int framesPerRow = textureOut->getSize().x / frameSize.x;
 	const float frameDuration = 0.1f;
 
-	auto add = [&](AnimationState state, Direction dir, int row) {
+	auto add = [&](EntityState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = textureOut;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
@@ -65,12 +66,31 @@ AnimationData AnimationManager::loadMageAnimations() {
 		data.animations[{ state, dir }] = anim;
 		};
 
-	for (int i = 0; i < 8; i++) {
-		// Idle animations
-		add(AnimationState::Idle, (Direction)i, 3*i);
-		add(AnimationState::Walking, (Direction)i, 3*i + 1);
-		add(AnimationState::Attacking, (Direction)i, 3*i + 2);
-	}
+	
+	add(EntityState::Idle, Direction::Down, 0);
+	add(EntityState::Walking, Direction::Down, 1);
+	add(EntityState::Attacking, Direction::Down, 2);
+	add(EntityState::Idle, Direction::DownLeft, 3);
+	add(EntityState::Walking, Direction::DownLeft, 4);
+	add(EntityState::Attacking, Direction::DownLeft, 5);
+	add(EntityState::Idle, Direction::Left, 6);
+	add(EntityState::Walking, Direction::Left, 7);
+	add(EntityState::Attacking, Direction::Left, 8);
+	add(EntityState::Idle, Direction::UpLeft, 9);
+	add(EntityState::Walking, Direction::UpLeft, 10);
+	add(EntityState::Attacking, Direction::UpLeft, 11);
+	add(EntityState::Idle, Direction::Up, 12);
+	add(EntityState::Walking, Direction::Up, 13);
+	add(EntityState::Attacking, Direction::Up, 14);
+	add(EntityState::Idle, Direction::DownRight, 15);
+	add(EntityState::Walking, Direction::DownRight, 16);
+	add(EntityState::Attacking, Direction::DownRight, 17);
+	add(EntityState::Idle, Direction::Right, 18);
+	add(EntityState::Walking, Direction::Right, 19);
+	add(EntityState::Attacking, Direction::Right, 20);
+	add(EntityState::Idle, Direction::UpRight, 21);
+	add(EntityState::Walking, Direction::UpRight, 22);
+	add(EntityState::Attacking, Direction::UpRight, 23);
 
 	return data;
 }
@@ -84,7 +104,7 @@ AnimationData AnimationManager::loadOrcAnimations(int a) {
 	sf::Texture* textureDeath = TextureManager::getInstance().getTexture(name + "_death");
 	const sf::Vector2i frameSize = { 64, 64 };
 	const float frameDuration = 0.1f;
-	auto add = [&](sf::Texture* texture,AnimationState state, Direction dir, int row) {
+	auto add = [&](sf::Texture* texture,EntityState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = texture;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
@@ -93,22 +113,22 @@ AnimationData AnimationManager::loadOrcAnimations(int a) {
 		anim.frameDuration = frameDuration;
 		data.animations[{ state, dir }] = anim;
 		};
-	add(textureIdle, AnimationState::Idle, (Direction)0, 0);
-	add(textureWalk, AnimationState::Walking, (Direction)0, 0);
-	add(textureAttack, AnimationState::Attacking, (Direction)0, 0);
-	add(textureDeath, AnimationState::Dead, (Direction)0, 0);
-	add(textureIdle, AnimationState::Idle, (Direction)4, 1);
-	add(textureWalk, AnimationState::Walking, (Direction)4, 1);
-	add(textureAttack, AnimationState::Attacking, (Direction)4, 1);
-	add(textureDeath, AnimationState::Dead, (Direction)4, 1);
-	add(textureIdle, AnimationState::Idle, (Direction)2, 2);
-	add(textureWalk, AnimationState::Walking, (Direction)2, 2);
-	add(textureAttack, AnimationState::Attacking, (Direction)2, 2);
-	add(textureDeath, AnimationState::Dead, (Direction)2, 2);
-	add(textureIdle, AnimationState::Idle, (Direction)6, 3);
-	add(textureWalk, AnimationState::Walking, (Direction)6, 3);
-	add(textureAttack, AnimationState::Attacking, (Direction)6, 3);
-	add(textureDeath, AnimationState::Dead, (Direction)6, 3);
+	add(textureIdle, EntityState::Idle, Direction::Down, 0);
+	add(textureWalk, EntityState::Walking, Direction::Down, 0);
+	add(textureAttack, EntityState::Attacking, Direction::Down, 0);
+	add(textureDeath, EntityState::Dead, Direction::Down, 0);
+	add(textureIdle, EntityState::Idle, Direction::Up, 1);
+	add(textureWalk, EntityState::Walking, Direction::Up, 1);
+	add(textureAttack, EntityState::Attacking, Direction::Up, 1);
+	add(textureDeath, EntityState::Dead, Direction::Up, 1);
+	add(textureIdle, EntityState::Idle, Direction::Left, 2);
+	add(textureWalk, EntityState::Walking, Direction::Left, 2);
+	add(textureAttack, EntityState::Attacking, Direction::Left, 2);
+	add(textureDeath, EntityState::Dead, Direction::Left, 2);
+	add(textureIdle, EntityState::Idle, Direction::Right, 3);
+	add(textureWalk, EntityState::Walking, Direction::Right, 3);
+	add(textureAttack, EntityState::Attacking, Direction::Right, 3);
+	add(textureDeath, EntityState::Dead,Direction::Right, 3);
 
 	return data;
 }
@@ -122,31 +142,31 @@ AnimationData AnimationManager::loadSlimeAnimations(int a) {
 	sf::Texture* textureDeath = TextureManager::getInstance().getTexture(name + "_death");
 	const sf::Vector2i frameSize = { 64, 64 };
 	const float frameDuration = 0.1f;
-	auto add = [&](sf::Texture* texture, AnimationState state, Direction dir, int row, int framesPerRow) {
+	auto add = [&](sf::Texture* texture, EntityState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = texture;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
-		anim.frameCount = sf::Vector2u(framesPerRow, 1);
+		anim.frameCount = sf::Vector2u(texture->getSize().x / frameSize.x, 1);
 		anim.startFrame = sf::Vector2u(0u, static_cast<unsigned int>(row));
 		anim.frameDuration = frameDuration;
 		data.animations[{ state, dir }] = anim;
 		};
-	add(textureIdle, AnimationState::Idle, (Direction)0, 0, 6);
-	add(textureWalk, AnimationState::Walking, (Direction)0, 0, 8);
-	add(textureAttack, AnimationState::Attacking, (Direction)0, 0, 9);
-	add(textureDeath, AnimationState::Dead, (Direction)0, 0, 10);
-	add(textureIdle, AnimationState::Idle, (Direction)4, 1, 6);
-	add(textureWalk, AnimationState::Walking, (Direction)4, 1, 8);
-	add(textureAttack, AnimationState::Attacking, (Direction)4, 1, 9);
-	add(textureDeath, AnimationState::Dead, (Direction)4, 1, 10);
-	add(textureIdle, AnimationState::Idle, (Direction)2, 2, 6);
-	add(textureWalk, AnimationState::Walking, (Direction)2, 2, 8);
-	add(textureAttack, AnimationState::Attacking, (Direction)2, 2, 9);
-	add(textureDeath, AnimationState::Dead, (Direction)2, 2, 10);
-	add(textureIdle, AnimationState::Idle, (Direction)6, 3, 6);
-	add(textureWalk, AnimationState::Walking, (Direction)6, 3, 8);
-	add(textureAttack, AnimationState::Attacking, (Direction)6, 3, 9);
-	add(textureDeath, AnimationState::Dead, (Direction)6, 3, 10);
+	add(textureIdle, EntityState::Idle, Direction::Down, 0);
+	add(textureWalk, EntityState::Walking, Direction::Down, 0);
+	add(textureAttack, EntityState::Attacking, Direction::Down, 0);
+	add(textureDeath, EntityState::Dead, Direction::Down, 0);
+	add(textureIdle, EntityState::Idle, Direction::Up, 1);
+	add(textureWalk, EntityState::Walking, Direction::Up, 1);
+	add(textureAttack, EntityState::Attacking, Direction::Up, 1);
+	add(textureDeath, EntityState::Dead, Direction::Up, 1);
+	add(textureIdle, EntityState::Idle, Direction::Left, 2);
+	add(textureWalk, EntityState::Walking, Direction::Left, 2);
+	add(textureAttack, EntityState::Attacking, Direction::Left, 2);
+	add(textureDeath, EntityState::Dead, Direction::Left, 2);
+	add(textureIdle, EntityState::Idle, Direction::Right, 3);
+	add(textureWalk, EntityState::Walking, Direction::Right, 3);
+	add(textureAttack, EntityState::Attacking, Direction::Right, 3);
+	add(textureDeath, EntityState::Dead, Direction::Right, 3);
 
 	return data;
 }
@@ -158,7 +178,7 @@ AnimationData AnimationManager::loadSpellAnimations(const std::string& name, int
 	const sf::Vector2i frameSize = { 64, 64 };
 	const int framesPerRow = textureCast->getSize().x / frameSize.x;
 	const float frameDuration = 0.1f;
-	auto add = [&](AnimationState state, Direction dir, int row) {
+	auto add = [&](EntityState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = textureCast;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
@@ -167,7 +187,7 @@ AnimationData AnimationManager::loadSpellAnimations(const std::string& name, int
 		anim.frameDuration = frameDuration;
 		data.animations[{ state, dir }] = anim;
 		};
-	add(AnimationState::Attacking, Direction::Down, color);
+	add(EntityState::Attacking, Direction::Down, color);
 	return data;
 }
 
@@ -177,7 +197,7 @@ AnimationData AnimationManager::loadBoltSpellAnimations() {
 	const sf::Vector2i frameSize = { 58, 58 };
 	const int framesPerRow = textureCast->getSize().x / frameSize.x;
 	const float frameDuration = 0.1f;
-	auto add = [&](AnimationState state, Direction dir, int row) {
+	auto add = [&](EntityState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = textureCast;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
@@ -188,7 +208,7 @@ AnimationData AnimationManager::loadBoltSpellAnimations() {
 		};
 	int a = 0;
 	for (int i = 10; i > 2; --i) {
-		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+		add(EntityState::Attacking, (Direction)(i % 8), a++);
 	}
 	return data;
 }
@@ -199,7 +219,7 @@ AnimationData AnimationManager::loadChargedSpellAnimations() {
 	const sf::Vector2i frameSize = { 79, 80 };
 	const int framesPerRow = textureCast->getSize().x / frameSize.x;
 	const float frameDuration = 0.1f;
-	auto add = [&](AnimationState state, Direction dir, int row) {
+	auto add = [&](EntityState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = textureCast;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
@@ -210,7 +230,7 @@ AnimationData AnimationManager::loadChargedSpellAnimations() {
 		};
 	int a = 0;
 	for (int i = 14; i > 6; --i) {
-		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+		add(EntityState::Attacking, (Direction)(i % 8), a++);
 	}
 	return data;
 }
@@ -221,7 +241,7 @@ AnimationData AnimationManager::loadCrossSpellAnimations() {
 	const sf::Vector2i frameSize = { 46, 46 };
 	const int framesPerRow = textureCast->getSize().x / frameSize.x;
 	const float frameDuration = 0.1f;
-	auto add = [&](AnimationState state, Direction dir, int row) {
+	auto add = [&](EntityState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = textureCast;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
@@ -232,7 +252,7 @@ AnimationData AnimationManager::loadCrossSpellAnimations() {
 		};
 	int a = 0;
 	for (int i = 14; i > 6; --i) {
-		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+		add(EntityState::Attacking, (Direction)(i % 8), a++);
 	}
 	return data;
 }
@@ -244,7 +264,7 @@ AnimationData AnimationManager::loadPulseSpellAnimations() {
 	const sf::Vector2i frameSize = { 69, 68 };
 	const int framesPerRow = textureCast->getSize().x / frameSize.x;
 	const float frameDuration = 0.1f;
-	auto add = [&](AnimationState state, Direction dir, int row) {
+	auto add = [&](EntityState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = textureCast;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
@@ -255,7 +275,7 @@ AnimationData AnimationManager::loadPulseSpellAnimations() {
 		};
 	int a = 0;
 	for (int i = 14; i > 6; --i) {
-		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+		add(EntityState::Attacking, (Direction)(i % 8), a++);
 	}
 	return data;
 }
@@ -266,7 +286,7 @@ AnimationData AnimationManager::loadSparkSpellAnimations() {
 	const sf::Vector2i frameSize = { 69, 68 };
 	const int framesPerRow = textureCast->getSize().x / frameSize.x;
 	const float frameDuration = 0.1f;
-	auto add = [&](AnimationState state, Direction dir, int row) {
+	auto add = [&](EntityState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = textureCast;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
@@ -277,7 +297,7 @@ AnimationData AnimationManager::loadSparkSpellAnimations() {
 		};
 	int a = 0;
 	for (int i = 14; i > 6; --i) {
-		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+		add(EntityState::Attacking, (Direction)(i % 8), a++);
 	}
 	return data;
 }
@@ -288,7 +308,7 @@ AnimationData AnimationManager::loadWaveSpellAnimations() {
 	const sf::Vector2i frameSize = { 95, 95 };
 	const int framesPerRow = textureCast->getSize().x / frameSize.x;
 	const float frameDuration = 0.1f;
-	auto add = [&](AnimationState state, Direction dir, int row) {
+	auto add = [&](EntityState state, Direction dir, int row) {
 		Animation anim;
 		anim.texture = textureCast;
 		anim.frameSize = sf::Vector2f(static_cast<float>(frameSize.x), static_cast<float>(frameSize.y));
@@ -299,7 +319,7 @@ AnimationData AnimationManager::loadWaveSpellAnimations() {
 		};
 	int a = 0;
 	for (int i = 14; i > 6; --i) {
-		add(AnimationState::Attacking, (Direction)(i % 8), a++);
+		add(EntityState::Attacking, (Direction)(i % 8), a++);
 	}
 	return data;
 }

@@ -114,12 +114,6 @@
     <ClInclude Include="src\control\GameplayInputHandler.h">
       <Filter>Header Files\control</Filter>
     </ClInclude>
-    <ClInclude Include="src\control\UICommand.h">
-      <Filter>Header Files\control</Filter>
-    </ClInclude>
-    <ClInclude Include="src\control\UICommandManager.h">
-      <Filter>Header Files\control</Filter>
-    </ClInclude>
     <ClInclude Include="src\control\commands\GameControl.h">
       <Filter>Header Files\control\commands</Filter>
     </ClInclude>
@@ -312,15 +306,24 @@
     <ClInclude Include="src\ui\UIOriginHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\control\GameCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\control\GameCommandManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\systems\StateSystem.h">
+      <Filter>Header Files\gameplay\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameplay\components\State.h">
+      <Filter>Header Files\gameplay\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\control\GameplayCommandManager.cpp">
       <Filter>Source Files\control</Filter>
     </ClCompile>
     <ClCompile Include="src\control\GameplayInputHandler.cpp">
-      <Filter>Source Files\control</Filter>
-    </ClCompile>
-    <ClCompile Include="src\control\UICommandManager.cpp">
       <Filter>Source Files\control</Filter>
     </ClCompile>
     <ClCompile Include="src\manager\EnemyLibrary.cpp">
@@ -456,7 +459,13 @@
       <Filter>Source Files\gameplay\systems</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\UIOrigin.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\control\GameCommandManager.cpp">
+      <Filter>Source Files\control</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameplay\systems\StateSystem.cpp">
+      <Filter>Source Files\gameplay\systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

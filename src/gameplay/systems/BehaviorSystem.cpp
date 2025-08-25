@@ -57,9 +57,9 @@ void BehaviorSystem::initializeBehaviorMap()
 		SpellLibrary& spellLibrary = SpellLibrary::getInstance();
 		Position position = registry.get<Position>(entity); //spell entity
 		Position centerPosition = registry.get<Position>(center);
-		Hitbox size = registry.get<Hitbox>(center);
-		centerPosition.x += size.width / 2 - 15; // Adjust center position to the center of the hitbox
-		centerPosition.y += size.height / 2 - 8; // Adjust center position to the center of the hitbox
+		//Hitbox size = registry.get<Hitbox>(center);
+		//centerPosition.x += size.width / 2; // Adjust center position to the center of the hitbox
+		//centerPosition.y += size.height / 2; // Adjust center position to the center of the hitbox
 
 		Velocity velocity;
 		Velocity velocityCenter = registry.get<Velocity>(center); // center entity

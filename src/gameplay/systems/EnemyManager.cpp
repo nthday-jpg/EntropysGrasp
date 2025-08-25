@@ -12,6 +12,28 @@
 #include "../components/Hitbox.h"
 #include "../../manager/TextureManager.h"
 #include "../components/Animation.h"
+#include "StateSystem.h"
+
+const float PI = 3.14159265358979323846f;
+
+Direction getDirectionFromMovementEnemy(const MovementDirection& movementDir) {
+    float x = movementDir.x;
+    float y = movementDir.y;
+    float angle = std::atan2(y, x) * 180.0f / static_cast<float>(PI); // Convert to degrees
+    if (angle <= 45.0f && angle > -45.0f) {
+        return Direction::Right;
+    }
+    else if (angle > 45.0f && angle <= 135.0f) {
+        return Direction::Down;
+    }
+    else if (angle > 135.0f || angle <= -135.0f) {
+        return Direction::Left;
+    }
+    else {
+        return Direction::Up;
+    }
+}
+
 
 entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 {
@@ -48,20 +70,27 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 
     int a = Random::getInt(1, 3);
 
+	StateComponent stateComp;
+	stateComp.currentState = EntityState::Walking;
+	stateComp.currentDirection = Direction::Down;
+	stateComp.previousState = EntityState::Walking;
+	stateComp.previousDirection = Direction::Down;
+	stateComp.timer = 0.0f;
+	stateComp.duration = -1.0f; // Infinite duration for walking state
+	registry.emplace<StateComponent>(entity, stateComp);
+
     AnimationComponent animComp;
-    animComp.name = "orc" + std::to_string(a);
-    animComp.currentState = AnimationState::Walking;
-    animComp.currentDirection = Direction::Down;
+    animComp.name = "slime" + std::to_string(a);
     animComp.currentFrame = { 0, 0 };
     animComp.timer = 0.0f;
     registry.emplace<AnimationComponent>(entity, animComp);
 
-    sf::Texture* texture = TextureManager::getInstance().getTexture("orc" + std::to_string(a) + "_walk");
-    sf::IntRect textureRect({ 0, 0 }, { 64, 64 });
-    sf::Sprite sprite(*texture);
-    sprite.setTextureRect(textureRect);
-    sprite.setOrigin({ 32.0f, 32.0f });
-    registry.emplace<sf::Sprite>(entity, sprite);
+    //sf::Texture* texture = TextureManager::getInstance().getTexture("orc" + std::to_string(a) + "_walk");
+    //sf::IntRect textureRect({ 0, 0 }, { 64, 64 });
+    //sf::Sprite sprite(*texture);
+    //sprite.setTextureRect(textureRect);
+    //sprite.setOrigin({ 32.0f, 32.0f });
+    //registry.emplace<sf::Sprite>(entity, sprite);
 
     return entity;
 }
@@ -136,6 +165,18 @@ void EnemyManager::update(float dt)
     spawning(dt);
 
     removing();
+
+    auto view = registry.view<EnemyTag, MovementDirection, StateComponent, Position>(entt::exclude<Inactive>);
+    for (auto [entity, movementDir, stateComp, position] : view.each()) {
+        Direction newDirection = getDirectionFromMovementEnemy(movementDir);
+        if (stateComp.currentDirection != newDirection)
+        {
+            if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>())
+            {
+                dispatcher->enqueue<StateChangeEventDirection>(entity, newDirection);
+            }
+        }
+	}
 }
 
 EnemyManager::EnemyManager(entt::registry& registry, const Camera& camera, sf::Clock& gameClock)

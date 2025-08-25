@@ -45,6 +45,7 @@
     <ClInclude Include="src\gameplay\components\Reward.h" />
     <ClInclude Include="src\gameplay\components\Spell.h" />
     <ClInclude Include="src\gameplay\components\StatComponent.h" />
+    <ClInclude Include="src\gameplay\components\State.h" />
     <ClInclude Include="src\gameplay\components\Tile.h" />
     <ClInclude Include="src\gameplay\manager\Map.h" />
     <ClInclude Include="src\gameplay\manager\MapManager.h" />
@@ -65,6 +66,7 @@
     <ClInclude Include="src\gameplay\systems\RenderSystem.h" />
     <ClInclude Include="src\gameplay\systems\RewardSystem.h" />
     <ClInclude Include="src\gameplay\systems\SpellManager.h" />
+    <ClInclude Include="src\gameplay\systems\StateSystem.h" />
     <ClInclude Include="src\manager\AnimationManager.h" />
     <ClInclude Include="src\manager\EnemyLibrary.h" />
     <ClInclude Include="src\manager\FontManager.h" />
@@ -116,6 +118,7 @@
     <ClCompile Include="src\gameplay\systems\RenderSystem.cpp" />
     <ClCompile Include="src\gameplay\systems\RewardSystem.cpp" />
     <ClCompile Include="src\gameplay\systems\SpellManager.cpp" />
+    <ClCompile Include="src\gameplay\systems\StateSystem.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\manager\AnimationManager.cpp" />
     <ClCompile Include="src\manager\EnemyLibrary.cpp" />

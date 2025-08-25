@@ -5,24 +5,21 @@
 #include "CollisionSystem.h"
 #include "../../manager/SpellLibrary.h"
 #include "../../manager/EnemyLibrary.h"
+#include "StateSystem.h"
 
 CombatSystem::CombatSystem(entt::registry& registry)
 	: registry(registry)
-{
-	
-}
+{}
 
 void CombatSystem::handleEvent(const CollisionEvent& event)
 {
 	if (event.type1 == CollisionType::Player && event.type2 == CollisionType::Enemy)
 	{
 		handlePlayerEnemyCollision(event.entity1, event.entity2);
-		//applyDamage(event.entity1, event.entity2);
 	}
 	else if (event.type1 == CollisionType::Enemy && event.type2 == CollisionType::Spell)
 	{
 		handleEnemySpellCollision(event.entity1, event.entity2);
-		//applyDamage(event.entity1, event.entity2);
 		if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
 			(*dispatcher)->enqueue<SpellReduction>(SpellReduction{ event.entity2 });
 		} else {
@@ -38,6 +35,9 @@ void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity 
 	float damage = registry.get<Attack>(enemy).value;
 	// Example: Player deals damage to enemy
 	playerHealth.current -= damage;
+	if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>()) {
+		dispatcher->enqueue<StateChangeEventState>(enemy, EntityState::Attacking, -1.0f);
+	}
 	if (playerHealth.current <= 0)
 	{
 		exit(0); // Player dies, exit the game
@@ -51,6 +51,7 @@ void CombatSystem::handleEnemySpellCollision(entt::entity enemy, entt::entity sp
 	SpellID spellName = registry.get<SpellID>(spell);
 	float damage = SpellLibrary::getInstance().getSpell(spellName).damage; // Assuming SpellData has a damage field
 	EnemyHealth.current -= damage;
+
 
 	// Optionally trigger death animation using dispatcher
 	//if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {

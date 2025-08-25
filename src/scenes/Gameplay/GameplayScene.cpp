@@ -24,7 +24,8 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
     renderSystem(registry), 
 	particleSystem(registry),
 	animationSystem(registry),
-	rewardSystem(registry)
+	rewardSystem(registry),
+	stateSystem(registry)
 {
     gameplayCommandManager = new GameplayCommandManager(registry);
     // Store dispatcher in registry context for all systems to access
@@ -33,8 +34,8 @@ GameplayScene::GameplayScene(sf::RenderWindow& window, entt::dispatcher* dispatc
 	combatSystem.sinkEvents();
 	spellManager.sinkEvents();
 	enemyManager.sinkEvents();
-    animationSystem.sinkEvents();
     rewardSystem.sinkEvents();
+	stateSystem.sinkEvents();
 }
 
 GameplayScene::~GameplayScene() {
@@ -282,6 +283,7 @@ void GameplayScene::update(float deltaTime) {
     physicsSystem.updateVelocity(deltaTime);
     enemyManager.update(deltaTime);
 	particleSystem.update(deltaTime);
+	stateSystem.update(deltaTime);
 	animationSystem.update(deltaTime);
     if (auto* dispatcher = registry.ctx().find<entt::dispatcher*>()) {
         (*dispatcher)->update();
@@ -447,21 +449,28 @@ entt::entity GameplayScene::createPlayer() {
 
     sf::Texture* mageTexture = TextureManager::getInstance().getTexture("Mage");
 
+	StateComponent stateComp;
+	stateComp.currentState = EntityState::Idle;
+	stateComp.currentDirection = Direction::Down;
+	stateComp.previousState = EntityState::Idle;
+	stateComp.previousDirection = Direction::Down;
+	stateComp.timer = 0.0f;
+	stateComp.duration = -1.0f; // Infinite duration for idle state
+	registry.emplace<StateComponent>(player, stateComp);
+
     AnimationComponent animComp;
     animComp.name = "Mage";
-    animComp.currentState = AnimationState::Idle;
-    animComp.currentDirection = Direction::Down;
     animComp.currentFrame = { 0, 0 };
     animComp.timer = 0.0f;
     registry.emplace<AnimationComponent>(player, animComp);
 
-    // sprite gắn vào để render
-    sf::IntRect textureRect({ 0, 0 }, { 32, 48}); // Assuming each frame is 50x50 pixels
-    sf::Sprite sprite(*mageTexture);
-	sprite.setTextureRect(textureRect);
-	sprite.setOrigin({ 16.f, 24.f }); // Set origin to center of the sprite
-    sprite.setPosition({ 0.f, 0.f });
+ //   // sprite gắn vào để render
+ //   sf::IntRect textureRect({ 0, 0 }, { 32, 48}); // Assuming each frame is 50x50 pixels
+ //   sf::Sprite sprite(*mageTexture);
+	//sprite.setTextureRect(textureRect);
+	//sprite.setOrigin({ 16.f, 24.f }); // Set origin to center of the sprite
+ //   sprite.setPosition({ 0.f, 0.f });
 
-    registry.emplace<sf::Sprite>(player, sprite);	
+ //   registry.emplace<sf::Sprite>(player, sprite);	
     return player;
 }

@@ -3,25 +3,7 @@
 #include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
-
-enum class Direction {
-	Down, // 0
-	DownLeft, // 1
-	Left, // 2
-	UpLeft, // 3
-	Up, // 4
-	DownRight, // 5
-	Right, // 6
-	UpRight, // 7
-};
-
-enum class AnimationState {
-	Idle,
-	Walking,
-	Attacking,
-	Dashing,
-	Dead,
-};
+#include "State.h"
 
 struct Animation {
 	sf::Vector2u frameCount; // Number of frames in the animation
@@ -32,16 +14,13 @@ struct Animation {
 };
 
 struct AnimationData {
-	std::map<std::pair<AnimationState, Direction>, Animation> animations;
+	std::map<std::pair<EntityState, Direction>, Animation> animations;
 };
 
 struct AnimationComponent { // được gắn vào entity
 	std::string name; // tên animation
-	AnimationState currentState;
+	EntityState currentState;
 	Direction currentDirection;
 	sf::Vector2u currentFrame;
 	float timer;
-
-	AnimationState prevState; // Lưu trạng thái trước đó
-	float duration; // Thời gian tồn tại của trạng thái hiện tại
 };

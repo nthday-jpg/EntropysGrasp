@@ -46,6 +46,7 @@ private:
 	ParticleSystem particleSystem;
 	AnimationSystem animationSystem;
 	RewardSystem rewardSystem;
+	StateSystem stateSystem;
 
     // UI
 	bool isLoaded = false;

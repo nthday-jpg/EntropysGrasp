@@ -74,7 +74,22 @@ void RenderSystem::render() {
         WindowManager::getInstance().draw(sprite);
     }
 
-    renderParticles();
+	//auto view = registry.view<Position, Hitbox>(entt::exclude<Inactive>);
+ //   for (auto [entity, position, hitbox] : view.each()) 
+ //   {
+ //       if (!registry.all_of<sf::RectangleShape>(entity))
+ //       {
+	//		sf::RectangleShape rect;
+	//		rect.getFillColor() = sf::Color(200, 200, 200, 255);
+	//		rect.setSize({ hitbox.width, hitbox.height });
+	//		rect.setOrigin({ hitbox.width / 2.0f, hitbox.height / 2.0f });
+	//		registry.emplace<sf::RectangleShape>(entity, rect);
+ //       }
+	//	sf::RectangleShape& rect = registry.get<sf::RectangleShape>(entity);
+ //       rect.setPosition({ position.x, position.y });
+	//	WindowManager::getInstance().draw(rect);
+ //   }
+ //   renderParticles();
 }
 
 void RenderSystem::renderParticles() {

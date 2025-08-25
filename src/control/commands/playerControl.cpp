@@ -55,6 +55,7 @@ Direction getDirectionFromLooking(const LookingDirection& lookingDir) {
 	}
 }
 
+
 // Helper function to check if player is currently moving
 bool isPlayerMoving(entt::registry& registry, entt::entity playerEntity) {
 	if (registry.all_of<MovementDirection>(playerEntity)) {
@@ -74,6 +75,13 @@ void MoveDown::execute(entt::registry& registry)
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += down;
 	// Animation is handled by LookAtMouse command based on where player is looking
+	const StateComponent& stateComp = registry.get<StateComponent>(playerEntity);
+	if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>())
+	{
+		if (stateComp.currentState != EntityState::Walking && isPlayerMoving(registry, playerEntity)) {
+			dispatcher->enqueue<StateChangeEventState>(playerEntity, EntityState::Walking, -1.0f);
+		}
+	}
 }
 
 void MoveUp::execute(entt::registry& registry)
@@ -86,6 +94,13 @@ void MoveUp::execute(entt::registry& registry)
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += up;
 	// Animation is handled by LookAtMouse command based on where player is looking
+	const StateComponent& stateComp = registry.get<StateComponent>(playerEntity);
+	if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>())
+	{
+		if (stateComp.currentState != EntityState::Walking && isPlayerMoving(registry, playerEntity)) {
+			dispatcher->enqueue<StateChangeEventState>(playerEntity, EntityState::Walking, -1.0f);
+		}
+	}
 }
 
 void MoveLeft::execute(entt::registry& registry)
@@ -98,6 +113,13 @@ void MoveLeft::execute(entt::registry& registry)
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += left;
 	// Animation is handled by LookAtMouse command based on where player is looking
+	const StateComponent& stateComp = registry.get<StateComponent>(playerEntity);
+	if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>())
+	{
+		if (stateComp.currentState != EntityState::Walking && isPlayerMoving(registry, playerEntity)) {
+			dispatcher->enqueue<StateChangeEventState>(playerEntity, EntityState::Walking, -1.0f);
+		}
+	}
 }
 
 void MoveRight::execute(entt::registry& registry)
@@ -110,6 +132,13 @@ void MoveRight::execute(entt::registry& registry)
 	MovementDirection& direction = registry.get<MovementDirection>(playerEntity);
 	direction += right;
 	// Animation is handled by LookAtMouse command based on where player is looking
+	const StateComponent& stateComp = registry.get<StateComponent>(playerEntity);
+	if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>())
+	{
+		if (stateComp.currentState != EntityState::Walking && isPlayerMoving(registry, playerEntity)) {
+			dispatcher->enqueue<StateChangeEventState>(playerEntity, EntityState::Walking, -1.0f);
+		}
+	}
 }
 
 void CastSpell::execute(entt::registry& registry)
@@ -117,6 +146,11 @@ void CastSpell::execute(entt::registry& registry)
 	spellManager->castSpell(spellManager->currentSpell());
 	
 	// Trigger casting animation based on looking direction
+	if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>())
+	{
+		dispatcher->enqueue<StateChangeEventState>(playerEntity, EntityState::Attacking, 1.0f);
+	}
+
 }
 
 void ChangeSpell::execute(entt::registry& registry)
@@ -141,6 +175,12 @@ void ResetTempComponents::execute(entt::registry& registry)
 	LookingDirection currentLookingDir(0.0f, 0.0f);
 	if (registry.all_of<LookingDirection>(playerEntity)) {
 		currentLookingDir = registry.get<LookingDirection>(playerEntity);
+	}
+	if (!isPlayerMoving(registry, playerEntity)) {
+		if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>())
+		{
+			dispatcher->enqueue<StateChangeEventState>(playerEntity, EntityState::Idle, -1.0f);
+		}
 	}
 
 	// Reset movement direction (this stops movement)
@@ -173,9 +213,10 @@ void LookAtMouse::execute(entt::registry& registry)
 		std::cerr << "Window is not open or does not exist." << std::endl;
 		return;
 	}
-	Direction oldDirection = Direction::Down;
-	if (registry.all_of<Direction>(playerEntity)) {
-		oldDirection = registry.get<Direction>(playerEntity);
+	
+	StateComponent stateComp;
+	if (registry.all_of<StateComponent>(playerEntity)) {
+		stateComp = registry.get<StateComponent>(playerEntity);
 	}
 
 	Position& playerPosition = registry.get<Position>(playerEntity);
@@ -191,5 +232,11 @@ void LookAtMouse::execute(entt::registry& registry)
 
 	// Calculate the angle difference to avoid unnecessary animation updates
 	Direction newDirection = getDirectionFromLooking(lookingDirection);
+	if (newDirection != stateComp.currentDirection) {
+		if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>())
+		{
+			dispatcher->enqueue<StateChangeEventDirection>(playerEntity, newDirection);
+		}
+	}
 	registry.emplace_or_replace<LookingDirection>(playerEntity, lookingDirection);
 }

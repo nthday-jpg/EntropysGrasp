@@ -5,20 +5,15 @@
 #include "../components/Animation.h"
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
-
-struct AnimationChangeEvent {
-	entt::entity entity;
-	AnimationState newState;
-	Direction newDirection;
-	float duration = 0.f;
-};
+#include "StateSystem.h"
 
 class AnimationSystem {
 	entt::registry& registry;
 	float frameDuration; // Duration for each frame
 public:
 	void update(float deltaTime); //tăng timer tăng currentframe reset timer
-	void changeAnimation(const AnimationChangeEvent& event);
-	void sinkEvents();
+	//void changeAnimationState(const StateChangeEventState& event);
+	//void changeAnimationDirection(const StateChangeEventDirection& event);
+	//void sinkEvents();
 	AnimationSystem(entt::registry& registry);
 };
