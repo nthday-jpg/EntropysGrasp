@@ -363,3 +363,8 @@ MigrationBackup/
 FodyWeavers.xsd
 
 AI-LOG.md
+/dependencies/SFML/lib/sfml-audio-s-d.lib
+/dependencies/SFML/lib/sfml-graphics-d.lib
+/dependencies/SFML/lib/sfml-network-d.lib
+/dependencies/SFML/lib/sfml-system-d.lib
+/dependencies/SFML/lib/sfml-window-d.lib
