@@ -132,10 +132,26 @@ void BehaviorSystem::updateBehavior(entt::registry& registry, float dt)
 				else if (spell.behaviorType == BehaviorType::HomingEnemy) 
 				{
 					auto view = registry.view<PlayerTag>();
+					float minDistance = 9999999999.0f;
+					entt::entity target;
 					for (entt::entity player : view)
 					{
-						it->second(entity, player, registry, dt);
+						const Position& playerPos = registry.get<Position>(player);
+						auto viewEnemy = registry.view<EnemyTag>();
+						for (entt::entity enemy : viewEnemy)
+						{
+							const Position& enemyPos = registry.get<Position>(enemy);
+							float dx = playerPos.x - enemyPos.x;
+							float dy = playerPos.y - enemyPos.y;
+							float ans = sqrt(dx * dx + dy * dy);
+							if (ans < minDistance)
+							{
+								minDistance = ans;
+								target = enemy;
+							}
+						}
 					}
+					it->second(entity, target, registry, dt);
 				}
 				else if (spell.behaviorType == BehaviorType::Orbit) 
 				{

@@ -28,5 +28,35 @@
       "behaviorType": "Orbit",
       "count": 10
     }
+  },
+  "PoisonCloud": {
+    "stats": {
+      "damage": 50,
+      "manaCost": 0.1,
+      "castTime": 0.2,
+      "cooldowns": 0.5,
+      "speed": 500,
+      "timeDecreasePerHit": 5,
+      "duration": 100,
+      "radius": 1,
+      "effect": "Poison",
+      "behaviorType": "HomingEnemy",
+      "count": 5
+    }
+  },
+  "PenetratingShot": {
+    "stats": {
+      "damage": 50,
+      "manaCost": 0.1,
+      "castTime": 0.2,
+      "cooldowns": 0.5,
+      "speed": 500,
+      "timeDecreasePerHit": 5,
+      "duration": 100,
+      "radius": 1,
+      "effect": "Poison",
+      "behaviorType": "HomingEnemy",
+      "count": 5
+    }
   }
 }

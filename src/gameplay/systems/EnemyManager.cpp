@@ -80,7 +80,10 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 	registry.emplace<StateComponent>(entity, stateComp);
 
     AnimationComponent animComp;
-    animComp.name = "slime" + std::to_string(a);
+    if (type == EnemyType::Orc) 
+        animComp.name = "orc" + std::to_string(a);
+	else
+        animComp.name = "slime" + std::to_string(a);
     animComp.currentFrame = { 0, 0 };
     animComp.timer = 0.0f;
     registry.emplace<AnimationComponent>(entity, animComp);

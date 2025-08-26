@@ -8,10 +8,6 @@
       "speed": 100,
       "resistance": 1
     },
-    "appearance": {
-      "color": "green",
-      "size": "small"
-    },
     "reward": {
       "gold": 50,
       "experience": 20
@@ -25,10 +21,6 @@
       "defense": 5,
       "speed": 100,
       "resistance": 3
-    },
-    "appearance": {
-      "color": "dark green",
-      "size": "medium"
     },
     "reward": {
       "gold": 100,
