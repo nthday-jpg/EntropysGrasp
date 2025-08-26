@@ -2,7 +2,7 @@
 
 *   **Movement:** Use the **W, A, S, and D** keys to move your character.
 *   **Attack:** Press the **F** key to use your equipped magic or spell.
-*   **Change Skills:** Press the **1, 2, 3, or 4** keys to switch between different skills.
+*   **Change Skills:** Press the **1, 2, 3, 4, 5, 6 or 7** keys to switch between different skills.
 
 # Project Setup Instructions
 
