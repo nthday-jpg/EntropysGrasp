@@ -13,6 +13,7 @@ Ensure you have the following software installed before you begin:
 *   **Visual Studio 2022** (with the "Desktop development with C++" workload)
 *   **CMake** (version 3.22 or newer)
 *   **Git**
+*   **Dependencies and assets** (https://github.com/nthday-jpg/EntropysGrasp.git)
 
 ## 2. Clone the Repository
 
