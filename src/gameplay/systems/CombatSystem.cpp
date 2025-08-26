@@ -36,7 +36,7 @@ void CombatSystem::handlePlayerEnemyCollision(entt::entity player, entt::entity 
 	// Example: Player deals damage to enemy
 	playerHealth.current -= damage;
 	if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>()) {
-		dispatcher->enqueue<StateChangeEventState>(enemy, EntityState::Attacking, -1.0f);
+		dispatcher->enqueue<StateChangeEventState>({ enemy, EntityState::Attacking, 1.0f });
 	}
 	if (playerHealth.current <= 0)
 	{

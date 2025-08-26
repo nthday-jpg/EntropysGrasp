@@ -23,6 +23,7 @@ public:
 	AnimationData loadOrcAnimations(int a);
 	AnimationData loadSlimeAnimations(int a);
 	AnimationData loadSpellAnimations(const std::string& name, int i);
+	AnimationData loadSpellCircleAnimations(int i);
 	AnimationData loadBoltSpellAnimations();
 	AnimationData loadChargedSpellAnimations();
 	AnimationData loadCrossSpellAnimations();

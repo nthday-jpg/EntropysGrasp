@@ -1,4 +1,4 @@
-#include "BehaviorSystem.h"
+﻿#include "BehaviorSystem.h"
 #include "../../manager/SpellLibrary.h"
 #include "../components/Spell.h"
 #include "../components/MovementComponents.h"
@@ -53,34 +53,31 @@ void BehaviorSystem::initializeBehaviorMap()
 		velo = registry.emplace_or_replace<Velocity>(entity, velo);
 	};
 	behaviorMap[BehaviorType::Orbit] = [](entt::entity entity, entt::entity center, entt::registry& registry, float dt)
-	{
-		SpellLibrary& spellLibrary = SpellLibrary::getInstance();
-		Position position = registry.get<Position>(entity); //spell entity
-		Position centerPosition = registry.get<Position>(center);
-		//Hitbox size = registry.get<Hitbox>(center);
-		//centerPosition.x += size.width / 2; // Adjust center position to the center of the hitbox
-		//centerPosition.y += size.height / 2; // Adjust center position to the center of the hitbox
+		{
+			SpellLibrary& spellLibrary = SpellLibrary::getInstance();
+			Position position = registry.get<Position>(entity);
+			Position centerPosition = registry.get<Position>(center);
+			Velocity velocityCenter = registry.get<Velocity>(center);
 
-		Velocity velocity;
-		Velocity velocityCenter = registry.get<Velocity>(center); // center entity
-		
-		SpellID spellID = registry.get<SpellID>(entity);
-		const SpellData& spellData = spellLibrary.getSpell(spellID);
-		float speed = spellData.speed;
-		float radius = spellData.radius;
+			SpellID spellID = registry.get<SpellID>(entity);
+			const SpellData& spellData = spellLibrary.getSpell(spellID);
 
-		sf::Vector2f distance = position - centerPosition;
+			float speed = spellData.speed;
+			float radius = spellData.radius;
+			sf::Vector2f offset = position - centerPosition;
+			float dist = magnitude(offset);
 
-		float devitate = magnitude(distance) - radius; 
+			if (dist == 0.f) dist = 0.0001f;
+			sf::Vector2f dir = offset / dist;
+			sf::Vector2f tangent(-dir.y, dir.x);
+			sf::Vector2f correction = (radius - dist) * dir;
 
-		normalize(distance);
-		sf::Vector2f movementDir(-distance.y, distance.x);
+			Velocity velocity;
+			velocity.x = tangent.x * speed + velocityCenter.x + correction.x;
+			velocity.y = tangent.y * speed + velocityCenter.y + correction.y;
 
-		velocity.x = movementDir.x * speed + velocityCenter.x - devitate * distance.x;
-		velocity.y = movementDir.y * speed + velocityCenter.y - devitate * distance.y;
-
-		registry.emplace_or_replace<Velocity>(entity, velocity);
-	};
+			registry.emplace_or_replace<Velocity>(entity, velocity);
+		};
 	behaviorMap[BehaviorType::HomingPlayer] = [](entt::entity entity, entt::entity target, entt::registry& registry, float dt)
 	{
 		EnemyLibrary& enemyLibrary = EnemyLibrary::getInstance();
@@ -133,7 +130,7 @@ void BehaviorSystem::updateBehavior(entt::registry& registry, float dt)
 				{
 					auto view = registry.view<PlayerTag>();
 					float minDistance = 9999999999.0f;
-					entt::entity target;
+					entt::entity target = entt::null;
 					for (entt::entity player : view)
 					{
 						const Position& playerPos = registry.get<Position>(player);
@@ -150,8 +147,14 @@ void BehaviorSystem::updateBehavior(entt::registry& registry, float dt)
 								target = enemy;
 							}
 						}
+						if (target == entt::null)
+						{
+							auto map = behaviorMap.find(BehaviorType::Straight);
+							map->second(entity, player, registry, dt);
+						}
+						else
+							it->second(entity, target, registry, dt);
 					}
-					it->second(entity, target, registry, dt);
 				}
 				else if (spell.behaviorType == BehaviorType::Orbit) 
 				{

@@ -12,12 +12,11 @@ void AnimationSystem::update(float deltaTime) {
 
     for (auto [entity, animation, state] : view.each()) {
 
-        if (registry.all_of<EnemyTag>(entity)) {
-			std::cout << static_cast<int>(animation.currentState) << std::endl;
+        if (animation.currentState != state.currentState || animation.currentDirection != state.currentDirection) 
+        {
+            animation.currentState = state.currentState;
+            animation.currentDirection = state.currentDirection;
         }
-        // Cập nhật trạng thái và hướng hiện tại từ StateComponent
-        animation.currentState = state.currentState;
-        animation.currentDirection = state.currentDirection;
 
         auto it = AnimationManager::getInstance().getAnimationData(animation.name)->animations.find({ animation.currentState, animation.currentDirection });
         if (it == AnimationManager::getInstance().getAnimationData(animation.name)->animations.end()) continue;
@@ -71,6 +70,5 @@ void AnimationSystem::update(float deltaTime) {
             sprite->setTextureRect(frameRect);
         }
 
-        // Không cần replace sprite nữa
     }
 }

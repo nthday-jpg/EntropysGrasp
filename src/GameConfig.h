@@ -74,5 +74,8 @@ private:
 		{sf::Keyboard::Scancode::Num2, "SPELL2"},
 		{sf::Keyboard::Scancode::Num3, "SPELL3"},
 		{sf::Keyboard::Scancode::Num4, "SPELL4"},
+		{sf::Keyboard::Scancode::Num5, "SPELL5"},
+		{sf::Keyboard::Scancode::Num6, "SPELL6"},
+		{sf::Keyboard::Scancode::Num7, "SPELL7"},
 	};
 };

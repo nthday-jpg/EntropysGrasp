@@ -76,7 +76,7 @@ entt::entity EnemyManager::spawnEnemy(EnemyType type, Position position)
 	stateComp.previousState = EntityState::Walking;
 	stateComp.previousDirection = Direction::Down;
 	stateComp.timer = 0.0f;
-	stateComp.duration = -1.0f; // Infinite duration for walking state
+	stateComp.duration = -1.0f;
 	registry.emplace<StateComponent>(entity, stateComp);
 
     AnimationComponent animComp;
@@ -169,8 +169,8 @@ void EnemyManager::update(float dt)
 
     removing();
 
-    auto view = registry.view<EnemyTag, MovementDirection, StateComponent, Position>(entt::exclude<Inactive>);
-    for (auto [entity, movementDir, stateComp, position] : view.each()) {
+    auto view = registry.view<EnemyTag, MovementDirection, StateComponent>(entt::exclude<Inactive>);
+    for (auto [entity, movementDir, stateComp] : view.each()) {
         Direction newDirection = getDirectionFromMovementEnemy(movementDir);
         if (stateComp.currentDirection != newDirection)
         {

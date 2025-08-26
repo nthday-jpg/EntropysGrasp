@@ -71,6 +71,18 @@ inline SpellID stringToSpellID(const std::string& str)
 	return SpellID::Unknown; // Default case if not found
 }
 
+inline std::string spellIDToString(SpellID id) 
+{
+	for (const auto& pair : stringToSpellIDMap) 
+	{
+		if (pair.second == id) 
+		{
+			return pair.first;
+		}
+	}
+	return "Unknown";
+}
+
 inline SpellEffect stringToSpellEffect(const std::string& str) 
 {
 	if (str == "Burn") return SpellEffect::Burn;

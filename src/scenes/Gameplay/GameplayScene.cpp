@@ -152,31 +152,24 @@ void GameplayScene::load()
 }
 
 void GameplayScene::addSpellCooldownDisplays()
-{
-	const std::vector<std::string> spellNames = {"Fireball", "IceSpike", "PoisonCloud", "PenetratingShot"};
-	
-	const auto& usableSpells = spellManager.getUsableSpells(); // Use getter method
-	
-	for (size_t i = 0; i < usableSpells.size() && i < spellNames.size(); ++i) 
-	{
-		SpellID spellID = usableSpells[i];
-		const std::string& spellName = spellNames[i];
-		
+{	
 		// Create dynamic text for each spell cooldown
-		std::string textId = "spell" + std::to_string(i + 1) + "Cooldown";
+		std::string textId = "spellCooldown";
 		
         Text* spellText = new Text(
             *FontManager::getInstance().getFont("default"), 
-            spellName + ": Ready", 
-            {20.0f, 70.0f + (i * 25.0f)}, // Stack vertically with 25px spacing
+             "Spell : Ready", 
+            {20.0f, 70.0f }, // Stack vertically with 25px spacing
             18 // Slightly smaller text
         );
         spellText->setOrigin(UIOrigin::TopLeft); // Use UIOrigin instead of TextOrigin
         
 		uiManager->addDynamicText(textId, 
 			spellText,
-			[this, spellID, spellName]() -> std::string {
+			[this]() -> std::string {
 				// Check if spell is on cooldown
+		        SpellID spellID = spellManager.currentSpell();
+		        const std::string& spellName = spellIDToString(spellID);
 				auto cooldownIt = spellManager.cooldowns.find(spellID);
 				if (cooldownIt != spellManager.cooldowns.end() && cooldownIt->second > 0.0f) 
 				{
@@ -192,7 +185,6 @@ void GameplayScene::addSpellCooldownDisplays()
 				}
 			}
 		);
-	}
 }
 
 void GameplayScene::unload() 
@@ -444,7 +436,7 @@ entt::entity GameplayScene::createPlayer() {
     registry.emplace<Hitbox>(player, Hitbox{25.0f, 20.0f, 0.0f, 0.0f});
     registry.emplace<MovementDirection>(player, 0.0f, 0.0f);
     registry.emplace<LookingDirection>(player, 0.0f, 0.0f);
-    registry.emplace<Mana>(player, 1000.0f);
+    registry.emplace<Mana>(player, 1000000.0f);
     registry.emplace<RepelResistance>(player, 0.5f);
 
     sf::Texture* mageTexture = TextureManager::getInstance().getTexture("Mage");

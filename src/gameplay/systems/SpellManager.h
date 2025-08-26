@@ -15,6 +15,9 @@ class SpellManager
         SpellID::IceSpike,
         SpellID::PoisonCloud,
         SpellID::PenetratingShot,
+		SpellID::ExplosionWave,
+        SpellID::SummonCreature,
+		SpellID::KnockbackBlast
     };
 public:
     std::unordered_map<SpellID, float> castTimes; // Maps spell names to their cast times

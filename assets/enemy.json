@@ -1,29 +1,29 @@
 {
   "Goblin": {
     "stats": {
-      "health": 50,
-      "mana": 10,
+      "health": 400,
+      "mana": 40,
       "attack": 5,
       "defense": 2,
       "speed": 100,
       "resistance": 1
     },
     "reward": {
-      "gold": 50,
-      "experience": 20
+      "gold": 100,
+      "experience": 100
     }
   },
   "Orc": {
     "stats": {
-      "health": 50,
-      "mana": 5,
+      "health": 200,
+      "mana": 20,
       "attack": 10,
-      "defense": 5,
+      "defense": 2,
       "speed": 100,
       "resistance": 3
     },
     "reward": {
-      "gold": 100,
+      "gold": 50,
       "experience": 50
     }
   }

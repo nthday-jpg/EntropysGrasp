@@ -21,6 +21,9 @@ void GameplayInputHandler::initCommandFactory()
 	commandFactory["SPELL2"] = [this]() { return new ChangeSpell(spellManager->getSpellID(2), spellManager); };
 	commandFactory["SPELL3"] = [this]() { return new ChangeSpell(spellManager->getSpellID(3), spellManager); };
 	commandFactory["SPELL4"] = [this]() { return new ChangeSpell(spellManager->getSpellID(4), spellManager); };
+	commandFactory["SPELL5"] = [this]() { return new ChangeSpell(spellManager->getSpellID(5), spellManager); };
+	commandFactory["SPELL6"] = [this]() { return new ChangeSpell(spellManager->getSpellID(6), spellManager); };
+	commandFactory["SPELL7"] = [this]() { return new ChangeSpell(spellManager->getSpellID(7), spellManager); };
 	commandFactory["PAUSE"] = [this]() { 
         // Queue the pause command to UICommandManager instead of GameplayCommandManager
         GameCommandManager::getInstance().queueCommand(new Pause());
@@ -37,7 +40,7 @@ void GameplayInputHandler::initActionTypes()
     };
     
     discreteActions = {
-		"CAST", "DASH", "PAUSE", "SPELL1", "SPELL2", "SPELL3", "SPELL4"
+		"CAST", "DASH", "PAUSE", "SPELL1", "SPELL2", "SPELL3", "SPELL4", "SPELL5", "SPELL6", "SPELL7"
     };
 }
 

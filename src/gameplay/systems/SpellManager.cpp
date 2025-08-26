@@ -19,6 +19,36 @@ using namespace std;
 
 const float PI = 3.14159265358979323846f;
 
+Direction getDirectionFromVelocity(const Velocity& velo) {
+    float x = velo.x;
+    float y = velo.y;
+    float angle = std::atan2(y, x) * 180.0f / static_cast<float>(PI); // Convert to degrees
+    if (angle <= 22.5 && angle > -22.5) {
+        return Direction::Right;
+    }
+    else if (angle > 22.5 && angle <= 67.5) {
+        return Direction::DownRight;
+    }
+    else if (angle > 67.5 && angle <= 112.5) {
+        return Direction::Down;
+    }
+    else if (angle > 112.5 && angle <= 157.5) {
+        return Direction::DownLeft;
+    }
+    else if (angle > 157.5 || angle <= -157.5) {
+        return Direction::Left;
+    }
+    else if (angle > -157.5 && angle <= -112.5) {
+        return Direction::UpLeft;
+    }
+    else if (angle > -112.5 && angle <= -67.5) {
+        return Direction::Up;
+    }
+    else {
+        return Direction::UpRight;
+    }
+}
+
 Direction getDirectionFromMovement(const MovementDirection& movementDir) {
     float x = movementDir.x;
     float y = movementDir.y;
@@ -67,14 +97,45 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
 
         registry.emplace<SpellTag>(spellEntity);
         registry.emplace<SpellID>(spellEntity, spellID); // Pass spellID directly without creating a temporary object
-        registry.emplace<Position>(spellEntity, position);
+        if (spellData.count > 1)
+			registry.emplace<Position>(spellEntity, position.x + Random::getFloat(-10.0f, 10.0f), position.y + Random::getFloat(-10.0f, 10.0f));
+        else
+            registry.emplace<Position>(spellEntity, position);
         registry.emplace<Speed>(spellEntity, spellData.speed);
         registry.emplace<MovementDirection>(spellEntity, directions[i]);
         registry.emplace<BehaviorType>(spellEntity, spellData.behaviorType);
-		registry.emplace<Hitbox>(spellEntity, Hitbox{ 15.0f, 15.0f, 0.0f, 0.0f });
+        if (spellID == SpellID::KnockbackBlast)
+			registry.emplace<Hitbox>(spellEntity, Hitbox{ 64.0f, 64.0f, 0.0f, 0.0f });
+        else
+            registry.emplace<Hitbox>(spellEntity, Hitbox{ 15.0f, 15.0f, 0.0f, 0.0f });
         registry.emplace<RepelResistance>(spellEntity, 0.5f); // Example resistance value
 
-		std::string name = "pulse";
+
+		std::string name;
+        if (spellID == SpellID::Fireball) {
+            name = "spell30";
+        }
+        else if (spellID == SpellID::IceSpike) {
+            name = "spell22";
+        }
+        else if (spellID == SpellID::PoisonCloud) {
+            name = "cross";
+        }
+        else if (spellID == SpellID::PenetratingShot) {
+            name = "spark";
+        }
+        else if (spellID == SpellID::ExplosionWave) {
+            name = "wave";
+        }
+        else if (spellID == SpellID::SummonCreature) {
+            name = "bolt";
+		}
+        else if (spellID == SpellID::KnockbackBlast) {
+            name = "spellCircle0";
+        }
+        else {
+            name = "spell30";
+		}
 
 		Direction dir = getDirectionFromMovement(directions[i]);
 
@@ -84,7 +145,7 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
 		stateComp.previousState = EntityState::Attacking;
 		stateComp.previousDirection = dir;
 		stateComp.timer = 0.0f;
-		stateComp.duration = spellData.duration;
+		stateComp.duration = -1.0f;
 		registry.emplace<StateComponent>(spellEntity, stateComp);
 
         AnimationComponent animComp;
@@ -125,7 +186,6 @@ vector<MovementDirection> SpellManager::putDirection(SpellID spellID, int count,
     }
     else
     {
-        // Fire all spells in the caster's looking direction
         for (int i = 0; i < count; ++i)
         {
             directions.emplace_back(direction.x, direction.y);
@@ -230,10 +290,10 @@ void SpellManager::update(float dt)
     updateCastingSystem(dt);
     updateCooldownSystem(dt);
     updateDurationSystem(dt);
-	auto view = registry.view<SpellTag, MovementDirection, StateComponent>();
-    for (auto [entity, movementDir, stateComp] : view.each())
+	auto view = registry.view<SpellTag, Velocity, StateComponent>();
+    for (auto [entity, velo, stateComp] : view.each())
     {
-        Direction newDirection = getDirectionFromMovement(movementDir);
+        Direction newDirection = getDirectionFromVelocity(velo);
         if (stateComp.currentDirection != newDirection)
         {
             if (entt::dispatcher* dispatcher = *registry.ctx().find<entt::dispatcher*>())
