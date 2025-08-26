@@ -91,6 +91,7 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
     }
     vector<entt::entity> spellEntities;
     vector<MovementDirection> directions = putDirection(spellID, spellData.count, caster);
+	int a = Random::getInt(0, 8);
     for (int i = 0; i < spellData.count; ++i)
     {
         entt::entity spellEntity = registry.create();
@@ -111,31 +112,24 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
         registry.emplace<RepelResistance>(spellEntity, 0.5f); // Example resistance value
 
 
+
 		std::string name;
-        if (spellID == SpellID::Fireball) {
+        if (spellID == SpellID::Fireball) 
             name = "spell30";
-        }
-        else if (spellID == SpellID::IceSpike) {
+        else if (spellID == SpellID::IceSpike)
             name = "spell22";
-        }
-        else if (spellID == SpellID::PoisonCloud) {
+        else if (spellID == SpellID::PoisonCloud) 
             name = "cross";
-        }
-        else if (spellID == SpellID::PenetratingShot) {
+        else if (spellID == SpellID::PenetratingShot) 
             name = "spark";
-        }
-        else if (spellID == SpellID::ExplosionWave) {
+        else if (spellID == SpellID::ExplosionWave) 
             name = "wave";
-        }
-        else if (spellID == SpellID::SummonCreature) {
+        else if (spellID == SpellID::SummonCreature) 
             name = "bolt";
-		}
-        else if (spellID == SpellID::KnockbackBlast) {
-            name = "spellCircle0";
-        }
-        else {
-            name = "spell30";
-		}
+        else if (spellID == SpellID::KnockbackBlast) 
+            name = "spellCircle" + std::to_string(a);
+        else 
+            name = "spell10" + std::to_string(a);
 
 		Direction dir = getDirectionFromMovement(directions[i]);
 
@@ -155,12 +149,6 @@ vector<entt::entity> SpellManager::createSpell(entt::entity caster, SpellID spel
 		animComp.timer = 0.0f;
 		registry.emplace<AnimationComponent>(spellEntity, animComp);
 
-  //      sf::Texture* texture = TextureManager::getInstance().getTexture(name);
-  //      sf::IntRect textureRect({0, 0}, {69,68});
-		//sf::Sprite spellSprite(*texture);
-		//spellSprite.setTextureRect(textureRect);
-		//spellSprite.setOrigin({textureRect.size.x/2.0f, textureRect.size.y/2.0f}); // Set origin to center
-		//registry.emplace<sf::Sprite>(spellEntity, spellSprite);
 
         spellEntities.push_back(spellEntity);
     }

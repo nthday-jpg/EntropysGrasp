@@ -94,7 +94,7 @@
       "damage": 500,
       "manaCost": 15,
       "castTime": 0.3,
-      "cooldowns": 20.0,
+      "cooldowns": 30.0,
       "speed": 400,
       "timeDecreasePerHit": 5.0,
       "duration": 5.0,
